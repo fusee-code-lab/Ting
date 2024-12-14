@@ -18,9 +18,9 @@ const buildConfig = async (archPath, archTarget) => {
   envConfig['process.env.PORT'] = JSON.stringify(4891);
 
   /**  config配置  **/
-  config.appId = `org.${packageCfg.author.name}.${packageCfg.name}`;
-  config.copyright = `Copyright © 2024 ${packageCfg.name}`; //版权
-  config.productName = packageCfg.name; // 名称
+  config.appId = `org.fuseecodelab.music`;
+  config.copyright = `Copyright © 2024 fuseecodelab`; //版权
+  config.productName = packageCfg.productName; // 名称
   config.npmRebuild = true; //是否Rebuild编译
   config.asar = true; //asar开关
 
@@ -35,7 +35,7 @@ const buildConfig = async (archPath, archTarget) => {
 
   /** linux配置 **/
   config.linux.target = 'AppImage'; //默认为AppImage
-  config.linux.executableName = packageCfg.name;
+  config.linux.executableName = packageCfg.productName;
 
   /** mac配置 **/
   signConfig.mac.identity && (config.mac.identity = signConfig.mac.identity); // 证书标识
