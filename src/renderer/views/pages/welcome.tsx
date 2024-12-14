@@ -11,7 +11,7 @@ import Button from '../components/basis/button';
 
 const imgStyle = css`
   position: absolute;
-  width: 100%;
+  width: 60%;
   height: 100%;
   object-fit: contain;
 `;
@@ -47,7 +47,7 @@ const mainStyle = css`
   top: 0;
   bottom: 0;
   width: 380px;
-  background-color: rgba(255, 255, 255, 0.65);
+  background-color: var(--basic-color-65);
   backdrop-filter: blur(5px);
   display: flex;
   flex-direction: column;

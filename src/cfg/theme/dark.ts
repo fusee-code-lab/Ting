@@ -1,1 +1,1 @@
-export default { basicColor: '#333', symbolColor: '#fff' };
+export default { basicColor: '#333333', symbolColor: '#ffffff' };

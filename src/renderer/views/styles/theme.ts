@@ -15,28 +15,30 @@ preload.on('theme-updated', async (themeSource) => {
 export const themeStyle = css`
   html[theme='dark'] {
     :root {
+      --basic-color-65: ${darkTheme.basicColor + '65'};
       --basic-color: ${darkTheme.basicColor};
       --symbol-color: ${darkTheme.symbolColor};
       --label-color: #ffffff;
-      --secondary-label-color: #3C3C4360;
-      --tertiary-label-color: #3C3C4330;
+      --secondary-label-color: #3c3c4360;
+      --tertiary-label-color: #3c3c4330;
     }
   }
 
   html[theme='light'] {
     :root {
+      --basic-color-65: ${lightTheme.basicColor + '65'};
       --basic-color: ${lightTheme.basicColor};
       --symbol-color: ${lightTheme.symbolColor};
       --label-color: #000000;
-      --secondary-label-color: #3C3C4360;
-      --tertiary-label-color: #3C3C4330;
+      --secondary-label-color: #3c3c4360;
+      --tertiary-label-color: #3c3c4330;
     }
   }
 
   :root {
     --accent-color: ${theme.accentColor};
     --white-color: #ffffff;
-    --blue-color: #3B78D6;
-    --pink-color: #DD4E7C;
+    --blue-color: #3b78d6;
+    --pink-color: #dd4e7c;
   }
 `;
