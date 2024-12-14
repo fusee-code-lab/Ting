@@ -1,13 +1,10 @@
 {
-  "name": "electron-template",
-  "productName": "electron-template",
+  "name": "ting",
+  "productName": "Ting",
   "version": "1.0.0",
-  "description": "electron template",
+  "description": "Ting Music",
   "main": "index.js",
-  "author": {
-    "name": "youliso",
-    "email": "youliso@Hotmail.com"
-  },
+  "author": "fusee-code-lab",
   "license": "MIT",
   "scripts": {
     "dev": "node scripts/dev.cjs",
