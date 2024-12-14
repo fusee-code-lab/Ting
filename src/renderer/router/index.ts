@@ -1,15 +1,31 @@
-import pageRoute from '@/renderer/router/modular/page';
-import dialogRoute from '@/renderer/router/modular/dialog';
-import { Router } from 'ym-web';
-import { windowUpdate } from 'ym-electron/renderer/window';
+import { type RouteDefinition } from '@solidjs/router';
+import { lazy } from 'solid-js';
 
-const router = new Router('inner', [...pageRoute, ...dialogRoute]);
+let routes: RouteDefinition[] = [
+  {
+    path: '/welcome',
+    component: lazy(() => import('@/renderer/views/pages/welcome'))
+  },
+  {
+    path: '/',
+    component: lazy(() => import('@/renderer/views/layout')),
+    children: [
+      {
+        path: '/home',
+        component: lazy(() => import('@/renderer/views/pages/home'))
+      }
+    ]
+  }
+];
 
-router.onBeforeRoute = (route) => {
-  windowUpdate(route.path);
-  return true;
+const router = (route?: string) => {
+  if (route && route !== '/') {
+    routes.unshift({
+      path: '/',
+      preload: () => (window.location.hash = '#' + route)
+    });
+  }
+  return routes;
 };
-
-router.onAfterRoute = (route) => {};
 
 export default router;

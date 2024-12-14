@@ -1,13 +1,12 @@
-const asarmor = require('asarmor');
-const { join } = require('path');
+const fuses = require('./plugins/fuses');
+const removeLocales = require('./plugins/removeLocales');
 
-exports.default = async ({ appOutDir, packager }) => {
+exports.default = async ({ appOutDir, packager, electronPlatformName, arch }) => {
   try {
-    const asarPath = join(packager.getResourcesDir(appOutDir), 'app.asar');
-    console.log(`  \x1B[34m•\x1B[0m afterPack applying asarmor patches  \x1B[34mfile\x1B[0m=${asarPath}`);
-    const archive = await asarmor.open(asarPath);
-    archive.patch(); // apply default patches
-    await archive.write(asarPath);
+    await fuses(appOutDir, packager, electronPlatformName, arch)
+    if (packager.appInfo.platformSpecificOptions.target[0].target === 'nsis') {
+      removeLocales(appOutDir);
+    }
   } catch (err) {
     console.error(err);
   }

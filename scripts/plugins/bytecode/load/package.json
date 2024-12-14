@@ -1,0 +1,13 @@
+{
+  "name": "load",
+  "version": "1.0.0",
+  "description": "rust bytecode load",
+  "license": "MIT",
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "build": "napi build --release"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^2.18.4"
+  }
+}

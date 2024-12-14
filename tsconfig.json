@@ -13,18 +13,17 @@
     "traceResolution": false,
     "listEmittedFiles": false,
     "listFiles": false,
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "ESNext",
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": "./",
     "isolatedModules": true,
     "allowJs": true,
     "importHelpers": true,
-    "jsx": "preserve",
-    "jsxFactory": "h",
-    "jsxFragmentFactory": "f",
     "allowSyntheticDefaultImports": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
     "paths": {
       "@/*": ["src/*"]
     }

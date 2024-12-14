@@ -1,0 +1,91 @@
+{
+  "compression": "maximum",
+  "directories": {
+    "output": "out"
+  },
+  "files": [
+    {
+      "from": "./",
+      "to": "./",
+      "filter": ["package.json"]
+    },
+    {
+      "from": "dist",
+      "to": "./",
+      "filter": ["**/*"]
+    },
+    {
+      "from": "resources/inside",
+      "to": "inside/",
+      "filter": ["**/*"]
+    }
+  ],
+  "extraFiles": [
+    {
+      "from": "resources/root",
+      "to": "./"
+    }
+  ],
+  "nsis": {
+    "oneClick": false,
+    "perMachine": true,
+    "allowElevation": true,
+    "installerIcon": "scripts/icons/icon.ico",
+    "installerHeaderIcon": "scripts/icons/icon.ico",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "include": "scripts/cfg/installer.nsh"
+  },
+  "dmg": {
+    "sign": false,
+    "contents": [
+      {
+        "x": 410,
+        "y": 150,
+        "type": "link",
+        "path": "/Applications"
+      },
+      {
+        "x": 130,
+        "y": 150,
+        "type": "file"
+      }
+    ]
+  },
+  "mac": {
+    "additionalArguments": ["--deep"],
+    "hardenedRuntime": true,
+    "gatekeeperAssess": false,
+    "entitlements": "scripts/entitlements.mac.plist",
+    "entitlementsInherit": "scripts/entitlements.mac.plist",
+    "category": "public.app-category.business",
+    "icon": "scripts/icons/icon.icns",
+    "target": ["dmg"]
+  },
+  "win": {
+    "icon": "scripts/icons/icon.ico",
+    "requestedExecutionLevel": "asInvoker",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ]
+  },
+  "linux": {
+    "icon": "scripts/icons",
+    "category": "Utility"
+  },
+  "extraResources": [
+    {
+      "from": "resources/extern",
+      "to": "extern/",
+      "filter": ["**/*"]
+    },
+    {
+      "from": "resources/platform/win32",
+      "to": "platform/win32",
+      "filter": ["**/*"]
+    }
+  ]
+}

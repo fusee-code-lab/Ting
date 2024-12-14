@@ -1,3 +1,3 @@
-import { preloadDefaultInit } from 'ym-electron/preload';
+import { preload } from '@youliso/electronic/preload';
 
-preloadDefaultInit();
+preload.initialize();

@@ -1,41 +1,39 @@
 {
-  "name": "ting",
-  "productName": "Ting",
-  "version": "0.0.1",
-  "description": "Ting 音乐播放器",
-  "main": "dist/main/index.js",
+  "name": "electron-template",
+  "productName": "electron-template",
+  "version": "1.0.0",
+  "description": "electron template",
+  "main": "index.js",
   "author": {
     "name": "youliso",
     "email": "youliso@Hotmail.com"
   },
   "license": "MIT",
   "scripts": {
-    "erf": "electron-rebuild -f",
-    "dev": "node scripts/buildCfg.js && node scripts/dev.js",
-    "build": "node scripts/buildCfg.js && node scripts/build.js",
+    "dev": "node scripts/dev.cjs",
+    "build": "node scripts/release.cjs",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
-    "@emotion/css": "^11.9.0",
-    "@rollup/plugin-alias": "^3.1.9",
-    "@rollup/plugin-commonjs": "^22.0.0",
-    "@rollup/plugin-image": "^2.1.1",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.3.0",
-    "asarmor": "^2.0.0",
-    "electron": "^19.0.4",
-    "electron-builder": "^23.0.3",
-    "electron-rebuild": "^3.2.7",
-    "esbuild": "^0.14.46",
-    "javascript-obfuscator": "^4.0.0",
-    "prettier": "^2.7.1",
-    "rollup": "^2.75.6",
-    "rollup-plugin-esbuild": "^4.9.1",
-    "rollup-plugin-obfuscator": "^0.2.2",
-    "typescript": "^4.7.4",
-    "vite": "^2.9.12",
-    "vite-plugin-babel-macros": "^1.0.6",
-    "ym-electron": "^2.0.1",
-    "ym-web": "^1.0.0"
+    "@babel/preset-typescript": "^7.26.0",
+    "@electron/fuses": "^1.8.0",
+    "@emotion/babel-plugin": "^11.13.5",
+    "@emotion/css": "^11.13.5",
+    "@rspack/core": "^1.1.6",
+    "@rspack/dev-server": "^1.0.10",
+    "@solidjs/router": "^0.15.1",
+    "@types/node": "^22.10.1",
+    "@youliso/electronic": "^5.4.3",
+    "babel-loader": "^9.2.1",
+    "babel-preset-solid": "^1.9.3",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "prettier": "^3.4.2",
+    "solid-js": "^1.9.3",
+    "solid-refresh": "^0.7.5"
+  },
+  "dependencies": {
+    "NeteaseCloudMusicApi": "^4.25.0",
+    "qq-music-api": "^1.1.2"
   }
 }
