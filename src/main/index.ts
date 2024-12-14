@@ -1,5 +1,3 @@
-import type { BrowserWindowConstructorOptions } from 'electron';
-import type { Customize } from '@youliso/electronic/types';
 import {
   type WindowDefaultCfg,
   machineOn,
@@ -12,45 +10,16 @@ import {
   preload
 } from '@youliso/electronic/main';
 import { join } from 'node:path';
-import { app, Menu, nativeImage, Tray } from 'electron';
+import { app } from 'electron';
 import { resourcesOn } from './modular/resources';
 import { defaultSessionInit, sessionOn } from './modular/session';
-import { theme, themeOn, themeRefresh } from './modular/theme';
-import { baseTheme } from '@/cfg/theme';
-import trayLogo from '@/assets/tray.png';
+import { themeOn, themeRefresh } from './modular/theme';
 import { musicApiOn } from './modular/musicapi';
+import { createWelcome } from './modular/windows';
 
 preload.initialize();
 
 themeRefresh();
-
-// 初始渲染进程参数
-let route = '/welcome';
-let customize: Customize = {
-  route
-};
-
-// 初始窗口参数
-let browserWindowOptions: BrowserWindowConstructorOptions = {
-  width: 800,
-  height: 600,
-  show: false,
-  webPreferences: {
-    devTools: true
-  }
-};
-
-if (process.platform === 'darwin') {
-  browserWindowOptions.titleBarStyle = 'hidden';
-  browserWindowOptions.trafficLightPosition = { x: 10, y: 10 };
-} else {
-  browserWindowOptions.titleBarStyle = 'hidden';
-  browserWindowOptions.titleBarOverlay = {
-    color: theme().basicColor,
-    symbolColor: theme().symbolColor,
-    height: baseTheme.headHeight
-  };
-}
 
 // 初始窗口组参数
 let windowDefaultCfg: WindowDefaultCfg = {
@@ -61,13 +30,6 @@ let windowDefaultCfg: WindowDefaultCfg = {
 
 // 调试模式
 if (!app.isPackaged) {
-  if (browserWindowOptions.webPreferences) {
-    browserWindowOptions.webPreferences.devTools = true;
-  } else {
-    browserWindowOptions.webPreferences = {
-      devTools: true
-    };
-  }
   windowDefaultCfg.defaultLoadType = 'url';
   windowDefaultCfg.defaultUrl = `http://localhost:${process.env.PORT}`;
 }
@@ -96,10 +58,8 @@ app.on('window-all-closed', () => {
 app.whenReady().then(async () => {
   app.on('activate', () => {
     const mainWin = windowInstance.getMain();
-    if (mainWin && mainWin.customize.route === route) {
+    if (mainWin) {
       mainWin.show();
-    } else {
-      windowInstance.new(customize, browserWindowOptions);
     }
   });
   // 获得焦点时发出
@@ -131,21 +91,6 @@ app.whenReady().then(async () => {
   shortcutInstance.on();
 
   musicApiOn();
-  
-  // 创建托盘
-  const tray = new Tray(nativeImage.createFromPath(join(__dirname, trayLogo)));
-  tray.setToolTip(app.getName());
-  tray.setContextMenu(
-    Menu.buildFromTemplate([
-      {
-        label: '退出',
-        click: () => {
-          app.quit();
-        }
-      }
-    ])
-  );
-  tray.on('click', () => windowInstance.func('show'));
-  // 创建窗口
-  windowInstance.new(customize, browserWindowOptions);
+
+  createWelcome();
 });

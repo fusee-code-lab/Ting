@@ -1,4 +1,8 @@
-import { preload } from "@youliso/electronic/render";
+import { preload } from '@youliso/electronic/render';
+
+export const random = (low: number, high: number) => {
+  return Math.random() * (high - low) + low;
+};
 
 export const getWebFilePath = (file: File) => {
   return preload.bridge<string>('utils-file-path', file);

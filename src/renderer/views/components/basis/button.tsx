@@ -7,7 +7,7 @@ const defaultStyle = css`
   outline: none;
   border: none;
   padding: 0 8px;
-  border-radius: 3px;
+  border-radius: var(--size-radius-xs);
 
   &:active {
     opacity: 0.95;

@@ -25,6 +25,7 @@
     "babel-preset-solid": "^1.9.3",
     "electron": "^33.2.1",
     "electron-builder": "^25.1.8",
+    "gsap": "^3.12.5",
     "prettier": "^3.4.2",
     "solid-js": "^1.9.3",
     "solid-refresh": "^0.7.5"

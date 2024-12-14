@@ -15,7 +15,7 @@ preload.on('theme-updated', async (themeSource) => {
 export const themeStyle = css`
   html[theme='dark'] {
     :root {
-      --basic-color-65: ${darkTheme.basicColor + '65'};
+      --basic-color-a1: ${darkTheme.basicColor + 'a1'};
       --basic-color: ${darkTheme.basicColor};
       --symbol-color: ${darkTheme.symbolColor};
       --label-color: #ffffff;
@@ -26,7 +26,7 @@ export const themeStyle = css`
 
   html[theme='light'] {
     :root {
-      --basic-color-65: ${lightTheme.basicColor + '65'};
+      --basic-color-a1: ${lightTheme.basicColor + 'a1'};
       --basic-color: ${lightTheme.basicColor};
       --symbol-color: ${lightTheme.symbolColor};
       --label-color: #000000;
@@ -40,5 +40,16 @@ export const themeStyle = css`
     --white-color: #ffffff;
     --blue-color: #3b78d6;
     --pink-color: #dd4e7c;
+
+    --size-xxs: 14px;
+    --size-xs: 16px;
+    --size-sm: 17px;
+    --size-lg: 19px;
+    --size-xl: 20px;
+    --size-xxl: 21px;
+    --size-xxxl: 30px;
+
+    --size-radius-xs: 3px;
+    --size-radius-sm: 6px;
   }
 `;
