@@ -32,8 +32,8 @@ let customize: Customize = {
 
 // 初始窗口参数
 let browserWindowOptions: BrowserWindowConstructorOptions = {
-  width: 400,
-  height: 400,
+  width: 800,
+  height: 600,
   show: false,
   webPreferences: {
     devTools: true

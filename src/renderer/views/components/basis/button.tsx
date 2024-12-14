@@ -6,7 +6,7 @@ const defaultStyle = css`
   ${nodragStyle}
   outline: none;
   border: none;
-  padding: 4px 8px;
+  padding: 0 8px;
   border-radius: 3px;
 
   &:active {
