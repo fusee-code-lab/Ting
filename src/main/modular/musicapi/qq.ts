@@ -1,15 +1,28 @@
-const Qq = require('qq-music-api');
+const QQ = require('qq-music-api');
+
+export const set_cookie = (data: string) => QQ.setCookie(data);
+
+export const get_cookie = () => QQ.cookie;
 
 // 0：单曲，2：歌单，7：歌词，8：专辑，9：歌手，12：mv
-export enum SearchType {
-  single = 0,
-  album = 8,
-  playlist = 2,
-  user = 9,
-  mv = 12,
-  lyric = 7,
-}
+export const search = async (key: string, limit: number, offset: number, type: number) => {
+  const res = await QQ.api('search', { key, pageNo: offset, pageSize: limit, t: type }).catch(
+    (error: Error) => {
+      console.error(error);
+      return null;
+    }
+  );
+  if (res && res.list && res.list.length > 0) {
+    const songs = res.list as any[];
+    const total = res.total as number;
+    return {
+      total,
+      songs
+    };
+  }
+  return;
+};
 
-export const search = async (key: string, limit: number, offset: number, type: SearchType = SearchType.single) => {
-  return Qq.api('search', { key, pageNo: offset, pageSize: limit, t: type })
-}
+export const song_url = (id: string) => {
+  return QQ.api('song/urls', { id });
+};

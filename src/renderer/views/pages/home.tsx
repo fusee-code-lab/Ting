@@ -1,17 +1,25 @@
 import { type RouteSectionProps } from '@solidjs/router';
 import { windowShow } from '@youliso/electronic/render';
-import { createSignal, Index, onMount, Show } from 'solid-js';
-import { containerStyle } from '../styles';
+import { onMount } from 'solid-js';
 import { css } from '@emotion/css';
 
+import Menu from '../components/menu';
+import Content from '../components/content';
+
 const style = css`
-  overflow: hidden;
-  overflow-y: auto;
-  height: calc(100% - 25px);
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
 `;
 
 export default (props: RouteSectionProps) => {
   onMount(() => windowShow());
 
-  return <div class={containerStyle}></div>;
+  return (
+    <div class={style}>
+      <Menu />
+      <Content />
+    </div>
+  );
 };

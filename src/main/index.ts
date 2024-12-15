@@ -15,7 +15,7 @@ import { resourcesOn } from './modular/resources';
 import { defaultSessionInit, sessionOn } from './modular/session';
 import { themeOn, themeRefresh } from './modular/theme';
 import { musicApiOn } from './modular/musicapi';
-import { createWelcome } from './modular/windows';
+import { createHome } from './modular/windows';
 
 preload.initialize();
 
@@ -92,5 +92,5 @@ app.whenReady().then(async () => {
 
   musicApiOn();
 
-  createWelcome();
+  createHome();
 });

@@ -1,4 +1,4 @@
 export default {
-  headHeight: 30,
+  headHeight: 32,
   eventWidth: 138
 };

@@ -42,6 +42,7 @@ const Input = (props: {
     | 'url';
   value?: string;
   onInput?: (e: InputEvent) => void;
+  onKeyDown?: (e: KeyboardEvent) => void;
   onClick?: () => void;
   children?: JSX.Element;
 }) => {
@@ -51,6 +52,7 @@ const Input = (props: {
       placeholder={props.placeholder}
       value={props.value ?? ''}
       onInput={props.onInput}
+      onKeyDown={props.onKeyDown}
       disabled={props.disabled}
       type={props.type ?? 'text'}
     />

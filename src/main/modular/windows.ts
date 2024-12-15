@@ -34,9 +34,22 @@ export const createWelcome = () => {
     route: '/welcome'
   };
   let browserWindowOptions: BrowserWindowConstructorOptions = createOpts({
-    width: 700,
-    height: 460,
+    width: 650,
+    height: 430,
     resizable: false
+  });
+  windowInstance.new(customize, browserWindowOptions);
+};
+
+
+
+export const createHome = () => {
+  let customize: Customize = {
+    route: '/home'
+  };
+  let browserWindowOptions: BrowserWindowConstructorOptions = createOpts({
+    width: 940,
+    height: 650
   });
   windowInstance.new(customize, browserWindowOptions);
 };

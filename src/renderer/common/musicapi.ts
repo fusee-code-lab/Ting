@@ -1,8 +1,25 @@
-import { preload } from "@youliso/electronic/render";
+import { MusicList, MusicSearchType, MusicType, SoundQualityType } from '@/types/music';
+import { preload } from '@youliso/electronic/render';
 
 /**
  * 搜索
  */
-export async function search(keywords: string, limit: number = 5, offset: number = 1) {
-  return await preload.invoke('musicapi-search', { keywords, limit, offset });
-}
+export const search = (
+  keywords: string,
+  limit: number = 5,
+  offset: number = 1,
+  type: MusicSearchType = MusicSearchType.single
+) => {
+  return preload.invoke<MusicList>('musicapi-search', { keywords, limit, offset, type });
+};
+
+/**
+ * 获取播放链接
+ */
+export const song_url = (
+  type: MusicType,
+  id: string | number,
+  level: SoundQualityType = SoundQualityType.exhigh
+) => {
+  return preload.invoke('musicapi-songurl', { type, id, level });
+};

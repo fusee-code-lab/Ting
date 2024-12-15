@@ -118,7 +118,7 @@ const rendererConfig = (isDevelopment, envConfig) => ({
       ...rules,
       {
         test: /\.(png|jpg|jpeg|gif|svg|mp4)$/i,
-        type: 'asset'
+        type: 'asset/resource'
       },
       {
         test: /\.tsx?$/,

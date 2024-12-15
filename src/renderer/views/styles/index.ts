@@ -1,4 +1,3 @@
-import { baseTheme } from '@/cfg/theme';
 import { css, injectGlobal } from '@emotion/css';
 import { themeStyle } from './theme';
 
@@ -8,13 +7,6 @@ export const dragStyle = css`
 
 export const nodragStyle = css`
   -webkit-app-region: no-drag;
-`;
-
-export const containerStyle = css`
-  position: relative;
-  padding: ${baseTheme.headHeight + 1}px 10px 10px;
-  width: 100%;
-  height: 100%;
 `;
 
 injectGlobal`
