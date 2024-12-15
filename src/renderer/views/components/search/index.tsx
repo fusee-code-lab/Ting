@@ -1,7 +1,7 @@
 import { css, cx } from '@emotion/css';
-import Input from '../../basis/input';
-import { createSignal } from 'solid-js';
+import Input from '@/renderer/views/components/basis/input';
 import { search } from '@/renderer/common/musicapi';
+import { search_val, set_search_val, set_song_search_list } from '@/renderer/store/song';
 
 const style = css`
   > input {
@@ -14,17 +14,16 @@ const style = css`
 `;
 
 const onSearch = async (val: string) => {
-  console.log(val);
   const res = await search(val);
-  console.log(res);
+  if (res) {
+    set_song_search_list(res);
+  }
 };
 
 export default (props: { class?: string }) => {
-  const [val, setVal] = createSignal('');
-
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.code !== 'Enter') return;
-    const str = val();
+    const str = search_val();
     str && onSearch(str);
   };
 
@@ -32,8 +31,8 @@ export default (props: { class?: string }) => {
     <div class={cx(style, props.class)}>
       <Input
         placeholder="搜索"
-        value={val()}
-        onInput={(e) => setVal((e.currentTarget as HTMLInputElement).value)}
+        value={search_val()}
+        onInput={(e) => set_search_val((e.currentTarget as HTMLInputElement).value)}
         onKeyDown={onKeyDown}
       />
     </div>

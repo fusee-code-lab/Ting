@@ -24,12 +24,17 @@ export const enum SoundQualityType {
   sky = 'sky'
 }
 
+export interface SongItem {
+  cover_url: string;
+  [key: string]: any;
+}
+
 export interface MusicItem {
   total: number;
-  songs: any[];
+  songs: SongItem[];
 }
 
 export interface MusicList {
-  netease: MusicItem[] | undefined;
-  qq: MusicItem[] | undefined;
+  netease: MusicItem | undefined;
+  qq: MusicItem | undefined;
 }

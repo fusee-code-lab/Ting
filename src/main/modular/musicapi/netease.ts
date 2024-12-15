@@ -1,7 +1,7 @@
 import Netease from 'NeteaseCloudMusicApi';
 
 export const search = async (keywords: string, limit: number, offset: number, type: number) => {
-  const res = await Netease.search({
+  const res = await Netease.cloudsearch({
     keywords,
     limit,
     offset,
@@ -21,9 +21,16 @@ export const search = async (keywords: string, limit: number, offset: number, ty
   return;
 };
 
-export const song_url = (id: string | number, level: Netease.SoundQualityType) => {
-  return Netease.song_url_v1({
+export const song_url = async (id: string | number, level: Netease.SoundQualityType) => {
+  const res = await Netease.song_url_v1({
     id,
     level
+  }).catch((error: Error) => {
+    console.error(error);
+    return null;
   });
+  if (res && res.status === 200 && res.body.code === 200) {
+    return (res.body.data as any[])[0];
+  }
+  return;
 };

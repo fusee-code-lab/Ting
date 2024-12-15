@@ -44,6 +44,9 @@ export const themeStyle = css`
   :root {
     --event-width: ${baseTheme.eventWidth}px;
     --head-height: ${baseTheme.headHeight}px;
+    --menu-width: ${baseTheme.menuWidth}px;
+    --audio-height: ${baseTheme.audioHeight}px;
+
     --accent-color: ${theme.accentColor};
     --white-color: #ffffff;
     --blue-color: #3b78d6;

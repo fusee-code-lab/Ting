@@ -1,9 +1,9 @@
 import { css } from '@emotion/css';
 import { Item, ItemTitle } from './inner/item';
-import Search from './inner/search';
+import Search from '@/renderer/views/components/search';
 
 const style = css`
-  width: 220px;
+  width: var(--menu-width);
   background-color: var(--menu-bg-color);
   > .head {
     height: var(--head-height);

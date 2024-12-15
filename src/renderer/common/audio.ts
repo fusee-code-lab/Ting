@@ -17,9 +17,7 @@ export class AudioHelper {
 
   addTrack(track: MediaStreamTrack) {
     this.mediaStream.addTrack(track);
-    const srcAudioNode = this.audioctx.createMediaStreamSource(
-      this.mediaStream
-    );
+    const srcAudioNode = this.audioctx.createMediaStreamSource(this.mediaStream);
     srcAudioNode.connect(this.gainNode);
   }
 
@@ -111,6 +109,8 @@ export class AudioPlay {
   private audioPause = new Event('audio-pause');
   // 监听音频播放完毕
   private audioEnd = new Event('audio-end');
+  // 监听音频总时长
+  private audioAllTime = new Event('audio-time-all');
   // 监听音频时间更新
   private audioTimeUpdate = new Event('audio-time-update');
   // 音频Context
@@ -154,6 +154,7 @@ export class AudioPlay {
     this.currentAudio.ondurationchange = () => {
       //可获得歌曲时长
       this.allTime = this.currentAudio.duration;
+      dispatchEvent(this.audioAllTime);
     };
 
     this.currentAudio.onplay = () => {

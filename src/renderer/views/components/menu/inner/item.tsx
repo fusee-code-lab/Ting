@@ -2,6 +2,7 @@ import { css, cx } from '@emotion/css';
 
 import play_list_icon from '@/assets/icons/play_list_icon.png';
 import play_list_icon2x from '@/assets/icons/play_list_icon@2x.png';
+import { textEllipsis } from '@/renderer/views/styles';
 
 const titleStyle = css`
   font-size: var(--size-xxxs);
@@ -23,13 +24,11 @@ const itemStyle = css`
     object-fit: contain;
   }
   > .title {
+    ${textEllipsis}
     width: calc(100% - var(--icon-size));
     padding-left: 6px;
     font-size: var(--size-xxxs);
     line-height: var(--size-xxs);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 `;
 export const Item = (props: { class?: string; title: string }) => {

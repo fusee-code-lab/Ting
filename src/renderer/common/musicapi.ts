@@ -21,5 +21,5 @@ export const song_url = (
   id: string | number,
   level: SoundQualityType = SoundQualityType.exhigh
 ) => {
-  return preload.invoke('musicapi-songurl', { type, id, level });
+  return preload.invoke<{ id: string; url: string }>('musicapi-songurl', { type, id, level });
 };
