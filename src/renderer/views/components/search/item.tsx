@@ -1,15 +1,14 @@
 import { css, cx } from '@emotion/css';
 import { textEllipsis } from '../../styles';
-import { MusicType, SongItem } from '@/types/music';
 import { Match, Switch } from 'solid-js';
 import { audioPlay } from '@/renderer/store/audio';
+import { MusicType, SongItem } from 'ting_lib/src/types/music';
 
 const style = css`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  --size-img: 120px;
   width: 100%;
 
   > .img {
@@ -22,31 +21,33 @@ const style = css`
     ${textEllipsis}
     width: 100%;
     font-size: var(--size-xxs);
+    line-height: var(--title-height);
+    height: var(--title-height);
   }
   > .text {
     ${textEllipsis}
     width: 100%;
+    font-size: var(--size-xxxs);
+    color: var(--secondary-label-color);
+    line-height: var(--text-height);
+    height: var(--text-height);
   }
 `;
 
-const onClick = (type: MusicType, data: any) => {
+const onClick = (type: MusicType, data: SongItem) => {
   console.log(data);
-  audioPlay(type, type === MusicType.QQ ? data.songmid : data.id);
+  audioPlay(type, data.id);
 };
 
 const NeteaseDom = (props: { data: SongItem }) => (
   <>
-    <img class="img" src={`${props.data?.al?.picUrl}?param=120y120`} />
-    <div class="title">{props.data?.name}</div>
-    <div class="text"></div>
+    <img class="img" src={`${props.data.song_img_url}?param=120y120`} />
   </>
 );
 
 const QQDom = (props: { data: SongItem }) => (
   <>
-    <img class="img" src={props.data.cover_url} />
-    <div class="title">{props.data?.songname}</div>
-    <div class="text"></div>
+    <img class="img" src={`${props.data.song_img_url}?max_age=2592000`} />
   </>
 );
 
@@ -61,6 +62,8 @@ export default (props: { class?: string; type: MusicType; data: SongItem }) => {
           <QQDom data={props.data} />
         </Match>
       </Switch>
+      <div class="title">{props.data.song_name}</div>
+      <div class="text">{props.data.song_desc}</div>
     </div>
   );
 };

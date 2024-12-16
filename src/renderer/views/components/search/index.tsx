@@ -16,6 +16,7 @@ const style = css`
 const onSearch = async (val: string) => {
   const res = await search(val);
   if (res) {
+    console.log(res);
     set_song_search_list(res);
   }
 };

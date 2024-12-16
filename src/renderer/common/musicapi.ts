@@ -1,5 +1,5 @@
-import { MusicList, MusicSearchType, MusicType, SoundQualityType } from '@/types/music';
 import { preload } from '@youliso/electronic/render';
+import { MusicSearchType, MusicType, SongQualityType } from 'ting_lib/src/types/music';
 
 /**
  * 搜索
@@ -10,7 +10,7 @@ export const search = (
   offset: number = 1,
   type: MusicSearchType = MusicSearchType.single
 ) => {
-  return preload.invoke<MusicList>('musicapi-search', { keywords, limit, offset, type });
+  return preload.invoke('musicapi-search', { keywords, limit, offset, type });
 };
 
 /**
@@ -18,8 +18,8 @@ export const search = (
  */
 export const song_url = (
   type: MusicType,
-  id: string | number,
-  level: SoundQualityType = SoundQualityType.exhigh
+  ids: (string | number)[],
+  level: SongQualityType = SongQualityType.exhigh
 ) => {
-  return preload.invoke<{ id: string; url: string }>('musicapi-songurl', { type, id, level });
+  return preload.invoke<{ [key: string]: string }>('musicapi-songurl', { type, ids, level });
 };

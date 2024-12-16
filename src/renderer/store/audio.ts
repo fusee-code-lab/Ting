@@ -1,4 +1,4 @@
-import { MusicType } from '@/types/music';
+import { MusicType } from 'ting_lib/src/types/music';
 import { AudioPlay } from '../common/audio';
 import { song_url } from '../common/musicapi';
 import { createStore } from 'solid-js/store';
@@ -32,9 +32,9 @@ export const audioOn = () => {
 };
 
 export const audioPlay = async (type: MusicType, id: string | number) => {
-  const res = await song_url(type, id);
-  if (res) {
-    audio.play(res.url);
+  const res = await song_url(type, [id]);
+  if (res && res[id]) {
+    audio.play(res[id]);
   }
 };
 

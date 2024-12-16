@@ -38,6 +38,9 @@ export const createWelcome = () => {
     height: 430,
     resizable: false
   });
+  if (typeof browserWindowOptions.titleBarOverlay === 'object') {
+    browserWindowOptions.titleBarOverlay.symbolColor = '#ffffff';
+  }
   windowInstance.new(customize, browserWindowOptions);
 };
 
@@ -49,7 +52,8 @@ export const createHome = () => {
   };
   let browserWindowOptions: BrowserWindowConstructorOptions = createOpts({
     width: 940,
-    height: 650
+    height: 650,
+    show: true
   });
   windowInstance.new(customize, browserWindowOptions);
 };

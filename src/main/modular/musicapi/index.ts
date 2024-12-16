@@ -1,9 +1,5 @@
-import { MusicSearchType, MusicType } from '@/types/music';
-import { SoundQualityType } from 'NeteaseCloudMusicApi';
 import { preload } from '@youliso/electronic/main';
-import * as Netease from './netease';
-import * as QQ from './qq';
-import { getSearchType } from './utils';
+import { MusicSearchType, MusicType, netease, qq, SongQualityType } from 'ting_lib';
 
 const search = async (
   keywords: string,
@@ -11,11 +7,9 @@ const search = async (
   offset: number,
   type: MusicSearchType = MusicSearchType.single
 ) => {
-  let func = [Netease.search(keywords, limit, offset, getSearchType(MusicType.Netease, type)!)];
-  const qqType = getSearchType(MusicType.QQ, type);
-  typeof qqType === 'number' && func.push(QQ.search(keywords, limit, offset, qqType));
+  let func = [netease.search(keywords, limit, offset, type), qq.search(keywords, limit, offset, type)];
   let data: any = {};
-  const res = await Promise.all(func);
+  const res = await Promise.all<any>(func);
   if (res[0]) {
     data['netease'] = res[0];
   }
@@ -27,14 +21,14 @@ const search = async (
 
 const song_url = (
   type: MusicType,
-  id: string | number,
-  level: SoundQualityType = SoundQualityType.exhigh
+  ids: (string | number)[],
+  level: SongQualityType = SongQualityType.exhigh
 ) => {
   switch (type) {
     case MusicType.Netease:
-      return Netease.song_url(id, level);
+      return netease.song_url(ids.map(id => Number(id)), level);
     case MusicType.QQ:
-      return QQ.song_url(id.toString());
+      return qq.song_url(ids.map(id => id.toString()), level);
   }
 };
 
@@ -45,5 +39,5 @@ export function musicApiOn() {
   preload.handle('musicapi-search', async (_, args) =>
     search(args.keywords, args.limit, args.offset, args.type)
   );
-  preload.handle('musicapi-songurl', async (_, args) => song_url(args.type, args.id, args.level));
+  preload.handle('musicapi-songurl', async (_, args) => song_url(args.type, args.ids, args.level));
 }

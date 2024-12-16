@@ -66,6 +66,7 @@ const mainStyle = css`
 
     > img {
       width: 20%;
+      /* filter: hue-rotate(130deg) saturate(1.3) brightness(1.3); */
     }
 
     > .title {
@@ -74,6 +75,7 @@ const mainStyle = css`
       line-height: 40px;
       font-size: var(--size-xxxl);
       letter-spacing: 1px;
+      color: var(--white-color);
     }
 
     > .but {

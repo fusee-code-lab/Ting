@@ -14,6 +14,8 @@ const style = css`
   }
   > .content {
     height: calc(100% - var(--head-height) - var(--audio-height));
+    overflow: hidden;
+    overflow-y: auto;
   }
 `;
 

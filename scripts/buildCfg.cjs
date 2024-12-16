@@ -16,6 +16,7 @@ const buildConfig = async (archPath, archTarget) => {
 
   /** env配置 **/
   envConfig['process.env.PORT'] = JSON.stringify(4891);
+  envConfig['process.env.SAVE_FILE'] = JSON.stringify("Ting Files");
 
   /**  config配置  **/
   config.appId = `org.fuseecodelab.music`;

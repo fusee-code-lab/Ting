@@ -19,6 +19,7 @@
     "@rspack/core": "^1.1.6",
     "@rspack/dev-server": "^1.0.10",
     "@solidjs/router": "^0.15.1",
+    "@types/better-sqlite3": "^7.6.12",
     "@types/node": "^22.10.1",
     "@youliso/electronic": "^5.4.3",
     "babel-loader": "^9.2.1",
@@ -31,7 +32,7 @@
     "solid-refresh": "^0.7.5"
   },
   "dependencies": {
-    "NeteaseCloudMusicApi": "^4.25.0",
-    "qq-music-api": "^1.1.2"
+    "better-sqlite3": "^11.7.0",
+    "ting_lib": "git+ssh://git@github.com:fusee-code-lab/ting_lib.git"
   }
 }
