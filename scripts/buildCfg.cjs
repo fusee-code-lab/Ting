@@ -24,6 +24,8 @@ const buildConfig = async (archPath, archTarget) => {
   config.productName = packageCfg.productName; // 名称
   config.npmRebuild = true; //是否Rebuild编译
   config.asar = true; //asar开关
+  config.asarUnpack = ['**/*.node'];
+
 
   /** win配置 **/
   config.nsis.language = '2052'; // 2052 cn 1033 en-US
@@ -52,6 +54,14 @@ const buildConfig = async (archPath, archTarget) => {
   }
 
   // 资源路径配置
+  config.extraFiles = [];
+  try {
+    fs.accessSync(path.resolve('./resources/root'));
+    config.extraFiles.push({
+      from: 'resources/root',
+      to: './'
+    });
+  } catch (error) {}
   config.extraResources = [
     {
       from: 'resources/extern',
@@ -66,9 +76,8 @@ const buildConfig = async (archPath, archTarget) => {
       to: archPath,
       filter: ['**/*']
     });
-  } catch (error) {
-    console.error(error);
-  }
+  } catch (error) {}
+
 
   //更新配置
   updateConfig.dirname = `${packageCfg.name.toLowerCase()}-updater`;
