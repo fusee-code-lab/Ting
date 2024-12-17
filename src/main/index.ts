@@ -1,5 +1,4 @@
 import {
-  type WindowDefaultCfg,
   machineOn,
   appAfterOn,
   appSingleInstanceLock,
@@ -9,32 +8,17 @@ import {
   windowInstance,
   preload
 } from '@youliso/electronic/main';
-import { join } from 'node:path';
 import { app } from 'electron';
 import { resourcesOn } from './modular/resources';
 import { defaultSessionInit, sessionOn } from './modular/session';
 import { themeOn, themeRefresh } from './modular/theme';
-import { musicApiOn } from './modular/musicapi';
-import { createHome, createWelcome } from './modular/windows';
+import { musicOn } from './modular/music';
+import { windowInit, windowOn } from './modular/windows';
+import { DBClose, DBInit, DBOn } from './modular/db';
 
 preload.initialize();
 
 themeRefresh();
-
-// 初始窗口组参数
-let windowDefaultCfg: WindowDefaultCfg = {
-  defaultLoadType: 'file',
-  defaultUrl: join(__dirname, 'index.html'),
-  defaultPreload: join(__dirname, 'preload.js')
-};
-
-// 调试模式
-if (!app.isPackaged) {
-  windowDefaultCfg.defaultLoadType = 'url';
-  windowDefaultCfg.defaultUrl = `http://localhost:${process.env.PORT}`;
-}
-
-windowInstance.setDefaultCfg(windowDefaultCfg);
 
 // 单例
 appSingleInstanceLock({
@@ -53,6 +37,10 @@ appProtocolRegister();
 // 关闭所有窗口退出
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
+});
+
+app.on('before-quit', () => {
+  DBClose();
 });
 
 app.whenReady().then(async () => {
@@ -90,7 +78,11 @@ app.whenReady().then(async () => {
   windowInstance.on();
   shortcutInstance.on();
 
-  musicApiOn();
+  DBOn();
+  windowOn();
+  musicOn();
 
-  createWelcome();
+  DBInit();
+
+  windowInit();
 });

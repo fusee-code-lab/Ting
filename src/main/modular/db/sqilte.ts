@@ -50,14 +50,14 @@ class DB {
       if (!iterationFunc) {
         throw new Error('Database version iteration failed');
       }
-      iterationFunc(this.dbs[key], key, legacy_key);
+      iterationFunc(this.dbs[key], key);
     } catch (error: any) {
       if (error === 'DB rekey failed') {
         // 重建数据库
         try {
           this.close(key);
           unlinkSync(filePath);
-          this.load(key, dbPath, legacy_key);
+          this.load(key, dbPath);
         } catch (error) {
           console.error(error);
           process.exit(1);

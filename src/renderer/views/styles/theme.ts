@@ -1,8 +1,8 @@
 import type { ThemeObj } from '@/types/theme';
 import { preload, getStore } from '@youliso/electronic/render';
 import { baseTheme, darkTheme, lightTheme } from '@/cfg/theme';
-import { css } from '@emotion/css';
 import { setCssVariant } from '@/renderer/common/utils';
+import { injectGlobal } from '@emotion/css';
 
 export let theme = await getStore<ThemeObj>('theme');
 
@@ -12,17 +12,20 @@ preload.on('theme-updated', async (themeSource) => {
   setCssVariant('--accent-color', theme.accentColor);
 });
 
-export const themeStyle = css`
+injectGlobal`
   html[theme='dark'] {
     :root {
       --basic-color-a1: ${darkTheme.basicColor + 'a1'};
       --basic-color-60: ${darkTheme.basicColor + '60'};
       --basic-color: ${darkTheme.basicColor};
       --symbol-color: ${darkTheme.symbolColor};
+
       --label-color: #ffffff;
-      --title-label-color: #3c3c4380;
-      --secondary-label-color: #3c3c4360;
-      --tertiary-label-color: #3c3c4330;
+      --title-label-color: #ffffff80;
+      --secondary-label-color: #ffffff60;
+      --tertiary-label-color: #ffffff30;
+
+      --menu-bg-color: #252525;
     }
   }
 

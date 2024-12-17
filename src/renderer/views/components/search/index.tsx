@@ -1,6 +1,6 @@
 import { css, cx } from '@emotion/css';
 import Input from '@/renderer/views/components/basis/input';
-import { search } from '@/renderer/common/musicapi';
+import { search } from '@/renderer/common/music';
 import { search_val, set_search_val, set_song_search_list } from '@/renderer/store/song';
 
 const style = css`

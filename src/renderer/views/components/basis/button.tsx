@@ -3,7 +3,6 @@ import { type JSX } from 'solid-js';
 import { nodragStyle } from '@/renderer/views/styles';
 
 const defaultStyle = css`
-  ${nodragStyle}
   outline: none;
   border: none;
   padding: 0 8px;
@@ -29,7 +28,7 @@ const Button = (props: {
   const typeCss = styles[props.type || 'default'];
   return (
     <button
-      class={cx(defaultStyle, typeCss, props.class)}
+      class={cx(nodragStyle, defaultStyle, typeCss, props.class)}
       disabled={props.disabled}
       onClick={props.onClick}
     >

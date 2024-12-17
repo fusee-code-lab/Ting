@@ -5,7 +5,7 @@ import Item from './item';
 import { MusicType } from 'ting_lib/src/types/music';
 
 const style = css`
-  --size-img: 145px;
+  --size-img: 135px;
   --title-height: 20px;
   --text-height: 17px;
   padding: 0 30px;

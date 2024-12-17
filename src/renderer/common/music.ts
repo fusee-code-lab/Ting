@@ -10,7 +10,7 @@ export const search = (
   offset: number = 1,
   type: MusicSearchType = MusicSearchType.single
 ) => {
-  return preload.invoke('musicapi-search', { keywords, limit, offset, type });
+  return preload.invoke('music-search', { keywords, limit, offset, type });
 };
 
 /**
@@ -21,5 +21,5 @@ export const song_url = (
   ids: (string | number)[],
   level: SongQualityType = SongQualityType.exhigh
 ) => {
-  return preload.invoke<{ [key: string]: string }>('musicapi-songurl', { type, ids, level });
+  return preload.invoke<{ [key: string]: string }>('music-songurl', { type, ids, level });
 };

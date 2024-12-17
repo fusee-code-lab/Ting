@@ -3,7 +3,6 @@ import { type JSX } from 'solid-js';
 import { nodragStyle } from '@/renderer/views/styles';
 
 const defaultStyle = css`
-  ${nodragStyle}
   outline: none;
   border: none;
   padding: 4px 8px;
@@ -48,7 +47,7 @@ const Input = (props: {
 }) => {
   return (
     <input
-      class={cx(defaultStyle, props.class)}
+      class={cx(nodragStyle, defaultStyle, props.class)}
       placeholder={props.placeholder}
       value={props.value ?? ''}
       onInput={props.onInput}

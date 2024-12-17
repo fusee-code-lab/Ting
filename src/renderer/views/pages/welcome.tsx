@@ -1,5 +1,5 @@
 import { RouteSectionProps } from '@solidjs/router';
-import { windowShow } from '@youliso/electronic/render';
+import { preload, windowShow } from '@youliso/electronic/render';
 import { onMount } from 'solid-js';
 import { dragStyle, nodragStyle } from '../styles';
 import { css, cx } from '@emotion/css';
@@ -48,7 +48,6 @@ const macStyle = css`
 `;
 
 const mainStyle = css`
-  ${OS === 'mac' ? macStyle : wlStyle}
   position: absolute;
   top: 0;
   bottom: 0;
@@ -98,18 +97,21 @@ const onCanvas = (el: HTMLCanvasElement) => {
 
 export default (props: RouteSectionProps) => {
   onMount(() => windowShow());
+  const toHome = () => preload.send('window-first');
 
   return (
-    <div class="container">
-      <canvas class={cx(nodragStyle, bgStyle, bgBlueColorStyle)} ref={onCanvas}></canvas>
-      <div class={cx(dragStyle, mainStyle)}>
+    <div class={cx('container', nodragStyle)}>
+      <canvas class={cx(bgStyle, bgBlueColorStyle)} ref={onCanvas}></canvas>
+      <div class={cx(dragStyle, mainStyle, OS === 'mac' ? macStyle : wlStyle)}>
         <div class="content">
           <img src={logo_img} />
           <div class="title">
             欢迎来到
             <span style="margin-left: 10px">Ting</span>
           </div>
-          <Button class="but">开始</Button>
+          <Button class="but" onClick={toHome}>
+            开始
+          </Button>
         </div>
       </div>
     </div>

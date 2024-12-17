@@ -3,6 +3,7 @@ import { windowShow } from '@youliso/electronic/render';
 import { onMount } from 'solid-js';
 import { css } from '@emotion/css';
 
+import Head from '../components/head';
 import Menu from '../components/menu';
 import Content from '../components/content';
 
@@ -17,9 +18,12 @@ export default (props: RouteSectionProps) => {
   onMount(() => windowShow());
 
   return (
-    <div class={style}>
-      <Menu />
-      <Content />
+    <div class="container">
+      <Head title={window.customize.title ?? ''} />
+      <div class={style}>
+        <Menu />
+        <Content />
+      </div>
     </div>
   );
 };

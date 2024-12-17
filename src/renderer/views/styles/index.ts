@@ -1,5 +1,5 @@
 import { css, injectGlobal } from '@emotion/css';
-import { themeStyle } from './theme';
+import './theme';
 
 export const dragStyle = css`
   -webkit-app-region: drag;
@@ -21,8 +21,6 @@ injectGlobal`
   *:before {
     box-sizing: border-box;
   }
-
-  ${themeStyle}
   
   html,
   body {
@@ -32,6 +30,7 @@ injectGlobal`
     margin: 0;
     background-color: transparent;
   }
+  
   .container {
     user-select: none;
     width: 100%;

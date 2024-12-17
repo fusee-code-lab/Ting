@@ -1,6 +1,6 @@
 import { MusicType } from 'ting_lib/src/types/music';
 import { AudioPlay } from '../common/audio';
-import { song_url } from '../common/musicapi';
+import { song_url } from '../common/music';
 import { createStore } from 'solid-js/store';
 
 export const [audio_status, set_audio_status] = createStore({

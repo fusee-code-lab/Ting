@@ -1,8 +1,25 @@
 import { type Customize } from '@youliso/electronic/types';
 import { app, type BrowserWindowConstructorOptions } from 'electron';
+import { join } from 'node:path';
 import { baseTheme } from '@/cfg/theme';
 import { theme } from './theme';
-import { windowInstance } from '@youliso/electronic/main';
+import { preload, type WindowDefaultCfg, windowInstance } from '@youliso/electronic/main';
+import { insert_basic_setting, select_basic_setting } from './db/modular/basic';
+
+// 初始窗口组参数
+let windowDefaultCfg: WindowDefaultCfg = {
+  defaultLoadType: 'file',
+  defaultUrl: join(__dirname, 'index.html'),
+  defaultPreload: join(__dirname, 'preload.js')
+};
+
+// 调试模式
+if (!app.isPackaged) {
+  windowDefaultCfg.defaultLoadType = 'url';
+  windowDefaultCfg.defaultUrl = `http://localhost:${process.env.PORT}`;
+}
+
+windowInstance.setDefaultCfg(windowDefaultCfg);
 
 // 初始窗口参数
 const createOpts = (browserWindowOptions: BrowserWindowConstructorOptions) => {
@@ -44,16 +61,31 @@ export const createWelcome = () => {
   windowInstance.new(customize, browserWindowOptions);
 };
 
-
-
 export const createHome = () => {
   let customize: Customize = {
     route: '/home'
   };
   let browserWindowOptions: BrowserWindowConstructorOptions = createOpts({
-    width: 940,
-    height: 650,
-    show: true
+    minWidth: 1000,
+    minHeight: 680,
+    width: 1000,
+    height: 680
   });
-  windowInstance.new(customize, browserWindowOptions);
+  return windowInstance.new(customize, browserWindowOptions);
 };
+
+
+export const windowInit = () => {
+  const is = select_basic_setting<number | undefined>('is_first');
+  is ? createHome() : createWelcome();
+}
+
+export const windowOn = () => {
+  preload.on('window-first', async (e) => {
+    const win = windowInstance.get(e.sender.id);
+    win?.hide();
+    insert_basic_setting([{ key: 'is_first', data: 1 }]);
+    await createHome();
+    win?.destroy();
+  })
+}

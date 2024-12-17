@@ -1,0 +1,1 @@
+export const basic_key = 'basic';

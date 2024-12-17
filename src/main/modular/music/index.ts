@@ -35,9 +35,9 @@ const song_url = (
 /**
  * 监听
  */
-export function musicApiOn() {
-  preload.handle('musicapi-search', async (_, args) =>
+export function musicOn() {
+  preload.handle('music-search', async (_, args) =>
     search(args.keywords, args.limit, args.offset, args.type)
   );
-  preload.handle('musicapi-songurl', async (_, args) => song_url(args.type, args.ids, args.level));
+  preload.handle('music-songurl', async (_, args) => song_url(args.type, args.ids, args.level));
 }
