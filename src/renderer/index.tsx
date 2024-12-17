@@ -8,6 +8,7 @@ import './views/styles';
 preload.initialize();
 
 windowLoad(async () => {
+  window.location.hash = `#${window.customize.route}`;
   document.documentElement.setAttribute('theme', await getThemeSource());
   render(() => <HashRouter>{routes}</HashRouter>, document.body);
 });
