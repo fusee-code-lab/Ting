@@ -17,9 +17,25 @@ const style = css`
   align-items: center;
 
   > div {
+    display: flex;
+    align-items: center;
     margin-right: 16px;
     &:last-child {
       margin-right: 0;
+    }
+  }
+
+  > .previous,
+  > .next {
+    > span {
+      font-size: 18px;
+    }
+  }
+
+  > .pause,
+  > .play {
+    > span {
+      font-size: 20px;
     }
   }
 `;
@@ -42,7 +58,9 @@ export const Control = () => {
           </div>
         </Match>
       </Switch>
-      <NextIcon />
+      <div class="next">
+        <NextIcon />
+      </div>
     </div>
   );
 };
