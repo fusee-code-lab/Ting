@@ -21,7 +21,7 @@
     "@solidjs/router": "^0.15.2",
     "@types/better-sqlite3": "^7.6.12",
     "@types/node": "^22.10.2",
-    "@youliso/electronic": "^5.4.3",
+    "@youliso/electronic": "^5.4.5",
     "babel-loader": "^9.2.1",
     "babel-preset-solid": "^1.9.3",
     "electron": "^33.2.1",
