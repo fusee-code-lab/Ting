@@ -35,8 +35,7 @@ const style = css`
 `;
 
 const onClick = (type: MusicType, data: SongItem) => {
-  console.log(data);
-  audioPlay(type, data.id);
+  audioPlay(type, data);
 };
 
 const NeteaseDom = (props: { data: SongItem }) => (

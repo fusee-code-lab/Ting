@@ -1,7 +1,10 @@
-import { MusicType } from 'ting_lib/src/types/music';
+import { MusicType, SongItem } from 'ting_lib/src/types/music';
 import { AudioPlay } from '../common/audio';
 import { song_url } from '../common/music';
 import { createStore } from 'solid-js/store';
+import { createSignal } from 'solid-js';
+
+export const [audio_play_data, set_audio_play_data] = createSignal<SongItem>();
 
 export const [audio_status, set_audio_status] = createStore({
   type: 0,
@@ -31,10 +34,11 @@ export const audioOn = () => {
   });
 };
 
-export const audioPlay = async (type: MusicType, id: string | number) => {
-  const res = await song_url(type, [id]);
-  if (res && res[id]) {
-    audio.play(res[id]);
+export const audioPlay = async (type: MusicType, data: SongItem) => {
+  const res = await song_url(type, [data.id]);
+  if (res && res[data.id]) {
+    set_audio_play_data(data);
+    audio.play(res[data.id]);
   }
 };
 
