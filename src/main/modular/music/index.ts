@@ -1,5 +1,5 @@
 import { preload } from '@youliso/electronic/main';
-import { MusicSearchType, MusicType, netease, qq, SongQualityType } from 'ting_lib';
+import { MusicSearchType, MusicType, netease, qq, SongQualityType } from 'ting-lib';
 
 const search = async (
   keywords: string,

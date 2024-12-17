@@ -74,11 +74,10 @@ export const createHome = () => {
   return windowInstance.new(customize, browserWindowOptions);
 };
 
-
 export const windowInit = () => {
   const is = select_basic_setting<number | undefined>('is_first');
-  is ? createHome() : createWelcome();
-}
+  is == 1 ? createHome() : createWelcome();
+};
 
 export const windowOn = () => {
   preload.on('window-first', async (e) => {
@@ -87,5 +86,5 @@ export const windowOn = () => {
     insert_basic_setting([{ key: 'is_first', data: 1 }]);
     await createHome();
     win?.destroy();
-  })
-}
+  });
+};

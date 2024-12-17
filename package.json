@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "better-sqlite3": "^11.7.0",
-    "ting_lib": "git+ssh://git@github.com:fusee-code-lab/ting_lib.git"
+    "ting-lib": "git+ssh://git@github.com:fusee-code-lab/ting-lib.git"
   }
 }

@@ -2,7 +2,7 @@ import { search_val, song_search_list } from '@/renderer/store/song';
 import { css } from '@emotion/css';
 import { For, Show } from 'solid-js';
 import Item from './item';
-import { MusicType } from 'ting_lib/src/types/music';
+import { MusicType } from 'ting-lib/src/types/music';
 
 const titleStyle = css`
   padding: 0 30px 10px;

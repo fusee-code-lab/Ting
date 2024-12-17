@@ -1,4 +1,4 @@
-import { MusicType, SongItem } from 'ting_lib/src/types/music';
+import { MusicType, SongItem } from 'ting-lib/src/types/music';
 import { AudioPlay } from '../common/audio';
 import { song_url } from '../common/music';
 import { createStore } from 'solid-js/store';

@@ -1,0 +1,27 @@
+@font-face {
+  font-family: 'ting-font';
+  src: url('@/assets/fonts/ting-font.ttf');
+}
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+}
+
+.container {
+  user-select: none;
+  width: 100%;
+  height: 100%;
+  background-color: var(--basic-color);
+  color: var(--symbol-color);
+}

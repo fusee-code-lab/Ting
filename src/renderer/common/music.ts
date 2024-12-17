@@ -1,5 +1,5 @@
 import { preload } from '@youliso/electronic/render';
-import { MusicSearchType, MusicType, SongQualityType } from 'ting_lib/src/types/music';
+import { MusicSearchType, MusicType, SongQualityType } from 'ting-lib/src/types/music';
 
 /**
  * 搜索

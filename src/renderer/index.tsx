@@ -4,6 +4,7 @@ import { HashRouter } from '@solidjs/router';
 import routes from './router';
 import { getThemeSource } from './common/theme';
 import './views/styles';
+import './views/styles/index.css';
 
 preload.initialize();
 

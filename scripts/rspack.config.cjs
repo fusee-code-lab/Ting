@@ -10,7 +10,6 @@ let alias = {
   '@': resolve('src')
 };
 
-
 let extensions = ['.mjs', '.ts', '.js', '.json', '.node'];
 let externals = { electron: 'electron' };
 builtinModules.forEach((e) => (externals[e] = e));
@@ -58,9 +57,11 @@ const mainConfig = (isDevelopment, envConfig) => ({
       }
     ]
   },
-  plugins: [new rspack.DefinePlugin({
-    ...envConfig
-  })],
+  plugins: [
+    new rspack.DefinePlugin({
+      ...envConfig
+    })
+  ],
   externalsType: 'commonjs',
   externals,
   devtool: isDevelopment ? 'eval-cheap-module-source-map' : false
@@ -112,6 +113,9 @@ const rendererConfig = (isDevelopment, envConfig) => ({
   },
   optimization: {
     minimize: !isDevelopment
+  },
+  experiments: {
+    css: true
   },
   module: {
     rules: [

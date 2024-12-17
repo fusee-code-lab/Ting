@@ -2,7 +2,7 @@ import { css, cx } from '@emotion/css';
 import { textEllipsis } from '../../styles';
 import { Match, Switch } from 'solid-js';
 import { audioPlay } from '@/renderer/store/audio';
-import { MusicType, SongItem } from 'ting_lib/src/types/music';
+import { MusicType, SongItem } from 'ting-lib/src/types/music';
 
 const style = css`
   display: flex;

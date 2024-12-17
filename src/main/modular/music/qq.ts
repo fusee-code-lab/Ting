@@ -1,1 +1,1 @@
-import { qq } from 'ting_lib';
+import { qq } from 'ting-lib';

@@ -1,1 +1,1 @@
-import { netease } from 'ting_lib';
+import { netease } from 'ting-lib';
