@@ -1,8 +1,17 @@
-import { song_search_list } from '@/renderer/store/song';
+import { search_val, song_search_list } from '@/renderer/store/song';
 import { css } from '@emotion/css';
 import { For, Show } from 'solid-js';
 import Item from './item';
 import { MusicType } from 'ting_lib/src/types/music';
+
+const titleStyle = css`
+  padding: 0 30px 10px;
+  font-size: var(--size-lg);
+  > .em {
+    font-weight: 600;
+    color: var(--blue-color);
+  }
+`;
 
 const style = css`
   --size-img: 135px;
@@ -19,19 +28,30 @@ const style = css`
   gap: 5px 10px;
 `;
 
+const ListTitle = () => (
+  <Show when={!!search_val()}>
+    <div class={titleStyle}>
+      <span class="em">“{search_val()}”</span> 的搜索结果
+    </div>
+  </Show>
+);
+
 export default () => {
   return (
-    <div class={style}>
-      <Show when={song_search_list()?.netease}>
-        <For each={song_search_list()?.netease?.songs}>
-          {(item) => <Item type={MusicType.Netease} data={item} />}
-        </For>
-      </Show>
-      <Show when={song_search_list()?.qq?.list}>
-        <For each={song_search_list()?.qq?.list}>
-          {(item) => <Item type={MusicType.QQ} data={item} />}
-        </For>
-      </Show>
-    </div>
+    <>
+      <ListTitle />
+      <div class={style}>
+        <Show when={song_search_list()?.netease}>
+          <For each={song_search_list()?.netease?.songs}>
+            {(item) => <Item type={MusicType.Netease} data={item} />}
+          </For>
+        </Show>
+        <Show when={song_search_list()?.qq?.list}>
+          <For each={song_search_list()?.qq?.list}>
+            {(item) => <Item type={MusicType.QQ} data={item} />}
+          </For>
+        </Show>
+      </div>
+    </>
   );
 };
