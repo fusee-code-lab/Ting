@@ -1,23 +1,37 @@
-import { css } from '@emotion/css';
-import { baseTheme } from '@/cfg/theme';
+import { css, cx } from '@emotion/css';
 import { dragStyle, nodragStyle } from '../styles';
-import { getOS } from '@/renderer/common/utils';
+import { BackIcon } from './basis/icons';
+import { back_content_route, content_router } from '@/renderer/store/content';
+import { Show } from 'solid-js';
 
 const style = css`
   position: fixed;
   z-index: 98;
   top: 0;
-  left: 0;
+  left: var(--menu-width);
   right: 0;
-  height: ${baseTheme.headHeight}px;
-  width: calc(100% - ${baseTheme.eventWidth}px);
-  padding: 0 10px;
+  height: var(--head-height);
+  width: calc(100% - var(--event-width) - var(--menu-width));
+  padding-left: 15px;
   display: flex;
-  justify-content: ${getOS() === 'mac' ? 'flex-end' : 'flex-start'};
   align-items: center;
-  color: var(--symbol-color);
+  > .back {
+    display: flex;
+    align-items: center;
+    > span {
+      font-size: var(--size-xxs);
+    }
+  }
 `;
 
-export default (props: { title?: string; noDrag?: boolean }) => (
-  <div class={css([style, props.noDrag ? nodragStyle : dragStyle])}>{props.title ?? ''}</div>
-);
+export default () => {
+  return (
+    <div class={cx(style, dragStyle)}>
+      <Show when={content_router.history.length > 1}>
+        <div class={cx('back', nodragStyle)} onClick={() => back_content_route()}>
+          <BackIcon />
+        </div>
+      </Show>
+    </div>
+  );
+};

@@ -1,4 +1,3 @@
-import { type RouteSectionProps } from '@solidjs/router';
 import { windowShow } from '@youliso/electronic/render';
 import { onMount } from 'solid-js';
 import { css } from '@emotion/css';
@@ -15,7 +14,7 @@ const style = css`
   height: 100%;
 `;
 
-export default (props: RouteSectionProps) => {
+export default () => {
   onMount(() => {
     audioOn();
     windowShow();
@@ -23,7 +22,7 @@ export default (props: RouteSectionProps) => {
 
   return (
     <div class="container">
-      <Head title={window.customize.title ?? ''} />
+      <Head />
       <div class={style}>
         <Menu />
         <Content />

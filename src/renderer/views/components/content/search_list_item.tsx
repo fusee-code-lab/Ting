@@ -3,7 +3,7 @@ import { textEllipsis } from '../../styles';
 import { Match, Switch } from 'solid-js';
 import { audioPlay, set_audio_play_list_details_data } from '@/renderer/store/audio';
 import type { MusicType, SongItem } from '@fuseecodelab/ting-lib';
-import { set_content_route_path } from '@/renderer/store/content';
+import { set_content_route } from '@/renderer/store/content';
 import { playlist_detail } from '@/renderer/common/music';
 
 const style = css`
@@ -62,7 +62,7 @@ const onClickPlaylist = async (type: MusicType, id: string) => {
   if (res) {
     set_audio_play_list_details_data('source_type', type);
     set_audio_play_list_details_data('data', res);
-    set_content_route_path('play_list_details');
+    set_content_route('play_list_details');
   }
 };
 export const PlaylistItem = (props: { class?: string; data: any }) => {

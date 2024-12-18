@@ -9,6 +9,16 @@ const style = css`
   color: var(--label-color);
 `;
 
+const back = css`
+  &::before {
+    content: '\\e61b';
+  }
+`;
+export const BackIcon = (props: { onClick?: (e: MouseEvent) => void }) => (
+  <span class={cx(style, back)} onClick={props.onClick}></span>
+);
+
+
 const next = css`
   &::before {
     content: '\\e614';
