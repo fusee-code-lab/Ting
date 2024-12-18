@@ -1,11 +1,11 @@
 import { windowShow } from '@youliso/electronic/render';
+import { audioOn } from '@/renderer/store/audio';
 import { onMount } from 'solid-js';
 import { css } from '@emotion/css';
 
 import Head from '../components/head';
 import Menu from '../components/menu';
 import Content from '../components/content';
-import { audioOn } from '@/renderer/store/audio';
 
 const style = css`
   position: relative;
