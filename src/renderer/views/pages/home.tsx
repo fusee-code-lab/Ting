@@ -6,6 +6,7 @@ import { css } from '@emotion/css';
 import Head from '../components/head';
 import Menu from '../components/menu';
 import Content from '../components/content';
+import { audioOn } from '@/renderer/store/audio';
 
 const style = css`
   position: relative;
@@ -15,7 +16,10 @@ const style = css`
 `;
 
 export default (props: RouteSectionProps) => {
-  onMount(() => windowShow());
+  onMount(() => {
+    audioOn();
+    windowShow();
+  });
 
   return (
     <div class="container">

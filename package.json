@@ -18,7 +18,6 @@
     "@emotion/css": "^11.13.5",
     "@rspack/core": "^1.1.6",
     "@rspack/dev-server": "^1.0.10",
-    "@solidjs/router": "^0.15.2",
     "@types/better-sqlite3": "^7.6.12",
     "@types/node": "^22.10.2",
     "@youliso/electronic": "^5.4.5",
@@ -32,7 +31,7 @@
     "solid-refresh": "^0.7.5"
   },
   "dependencies": {
-    "better-sqlite3": "^11.7.0",
-    "ting-lib": "git+ssh://git@github.com:fusee-code-lab/ting-lib.git"
+    "@fuseecodelab/ting-lib": "^0.0.1-9",
+    "better-sqlite3": "^11.7.0"
   }
 }

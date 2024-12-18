@@ -1,5 +1,5 @@
 import { preload } from '@youliso/electronic/render';
-import { MusicSearchType, MusicType, SongQualityType } from 'ting-lib/src/types/music';
+import type { MusicType, MusicSearchType, SongQualityType } from '@fuseecodelab/ting-lib';
 
 /**
  * 搜索
@@ -8,7 +8,7 @@ export const search = (
   keywords: string,
   limit: number = 5,
   offset: number = 1,
-  type: MusicSearchType = MusicSearchType.single
+  type: MusicSearchType = 'single'
 ) => {
   return preload.invoke('music-search', { keywords, limit, offset, type });
 };
@@ -19,7 +19,26 @@ export const search = (
 export const song_url = (
   type: MusicType,
   ids: (string | number)[],
-  level: SongQualityType = SongQualityType.exhigh
+  level: SongQualityType = 'exhigh'
 ) => {
   return preload.invoke<{ [key: string]: string }>('music-songurl', { type, ids, level });
+};
+
+/**
+ * 获取歌单详情
+ */
+export const playlist_detail = (
+  type: MusicType, id: string | number) => {
+  return preload.invoke('music-playlist-details', { type, id });
+};
+
+/**
+ * 获取歌单全部歌曲(netease)
+ */
+export const netease_playlist_song_list = (
+  id: string | number,
+  limit: number = 5,
+  offset: number = 1
+) => {
+  return preload.invoke('music-netease-playlist-song-list', { id, limit, offset });
 };

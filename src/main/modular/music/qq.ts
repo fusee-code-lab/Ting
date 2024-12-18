@@ -1,1 +1,1 @@
-import { qq } from 'ting-lib';
+import { qq } from '@fuseecodelab/ting-lib';

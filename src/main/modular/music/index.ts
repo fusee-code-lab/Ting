@@ -1,11 +1,13 @@
 import { preload } from '@youliso/electronic/main';
-import { MusicSearchType, MusicType, netease, qq, SongQualityType } from 'ting-lib';
+import type { MusicSearchType, MusicType, SongQualityType } from '@fuseecodelab/ting-lib';
+import { netease, qq } from '@fuseecodelab/ting-lib';
+import { neteaseOn } from './netease';
 
 const search = async (
   keywords: string,
   limit: number,
   offset: number,
-  type: MusicSearchType = MusicSearchType.single
+  type: MusicSearchType = 'single'
 ) => {
   let func = [netease.search(keywords, limit, offset, type), qq.search(keywords, limit, offset, type)];
   let data: any = {};
@@ -22,13 +24,26 @@ const search = async (
 const song_url = (
   type: MusicType,
   ids: (string | number)[],
-  level: SongQualityType = SongQualityType.exhigh
+  level: SongQualityType = 'exhigh'
 ) => {
   switch (type) {
-    case MusicType.Netease:
+    case 'netease':
       return netease.song_url(ids.map(id => Number(id)), level);
-    case MusicType.QQ:
+    case 'qq':
       return qq.song_url(ids.map(id => id.toString()), level);
+  }
+};
+
+
+const playlist_details = (
+  type: MusicType,
+  id: string
+) => {
+  switch (type) {
+    case 'netease':
+      return netease.playlist_detail(id);
+    case 'qq':
+      return qq.playlist_detail(id);
   }
 };
 
@@ -36,8 +51,10 @@ const song_url = (
  * 监听
  */
 export function musicOn() {
+  neteaseOn();
   preload.handle('music-search', async (_, args) =>
     search(args.keywords, args.limit, args.offset, args.type)
   );
   preload.handle('music-songurl', async (_, args) => song_url(args.type, args.ids, args.level));
+  preload.handle('music-playlist-details', async (_, args) => playlist_details(args.type, args.id));
 }

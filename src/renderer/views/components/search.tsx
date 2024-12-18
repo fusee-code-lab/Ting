@@ -3,6 +3,7 @@ import Input from '@/renderer/views/components/basis/input';
 import { search } from '@/renderer/common/music';
 import { set_search_val, set_song_search_list } from '@/renderer/store/song';
 import { createSignal } from 'solid-js';
+import { set_content_route_path } from '@/renderer/store/content';
 
 const style = css`
   > input {
@@ -15,12 +16,11 @@ const style = css`
 `;
 
 const onSearch = async (val: string) => {
-  const res = await search(val);
-  if (res) {
-    console.log(res);
-    set_search_val(val);
-    set_song_search_list(res);
-  }
+  const res = await Promise.all([search(val, 5, 1, 'single'), search(val, 5, 1, 'playlist')]);
+  set_search_val(val);
+  res[0] && set_song_search_list('single', res[0]);
+  res[1] && set_song_search_list('playlist', res[1]);
+  set_content_route_path('search_list');
 };
 
 export default (props: { class?: string }) => {

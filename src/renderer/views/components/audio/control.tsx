@@ -5,7 +5,7 @@ import {
   PlayIcon,
   PreviousIcon
 } from '@/renderer/views/components/basis/icons';
-import { audio_status } from '@/renderer/store/audio';
+import { audio_status, audioNext, set_audio_status } from '@/renderer/store/audio';
 import { Match, Switch } from 'solid-js';
 import { audio } from '@/renderer/store/audio';
 
@@ -13,7 +13,7 @@ const style = css`
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 
   > div {
@@ -43,7 +43,7 @@ const style = css`
 export const Control = () => {
   return (
     <div class={style}>
-      <div class="previous">
+      <div class="previous" onClick={() => audioNext(-1)}>
         <PreviousIcon />
       </div>
       <Switch>
@@ -53,12 +53,18 @@ export const Control = () => {
           </div>
         </Match>
         <Match when={audio_status.type === 1}>
-          <div class="play" onClick={() => audio.pause()}>
+          <div
+            class="play"
+            onClick={() => {
+              set_audio_status('type', 0);
+              audio.pause();
+            }}
+          >
             <PlayIcon />
           </div>
         </Match>
       </Switch>
-      <div class="next">
+      <div class="next" onClick={() => audioNext(1)}>
         <NextIcon />
       </div>
     </div>

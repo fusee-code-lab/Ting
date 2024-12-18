@@ -4,6 +4,10 @@ export const random = (low: number, high: number) => {
   return Math.random() * (high - low) + low;
 };
 
+export function randomInteger(start: number = 0, end: number = 1): number {
+  return (Math.random() * (end - start + 1) + start) | 0;
+}
+
 export const getWebFilePath = (file: File) => {
   return preload.bridge<string>('utils-file-path', file);
 };

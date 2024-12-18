@@ -1,7 +1,6 @@
 import { preload, windowLoad } from '@youliso/electronic/render';
 import { render } from 'solid-js/web';
-import { HashRouter } from '@solidjs/router';
-import routes from './router';
+import routes from './routes';
 import { getThemeSource } from './common/theme';
 import './views/styles';
 import './views/styles/index.css';
@@ -9,7 +8,7 @@ import './views/styles/index.css';
 preload.initialize();
 
 windowLoad(async () => {
-  window.location.hash = `#${window.customize.route}`;
   document.documentElement.setAttribute('theme', await getThemeSource());
-  render(() => <HashRouter>{routes}</HashRouter>, document.body);
+  const View = routes[window.customize.route!];
+  render(() => <View />, document.body);
 });
