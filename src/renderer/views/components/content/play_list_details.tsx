@@ -1,4 +1,5 @@
 import {
+  audio_play_ing_data,
   audio_play_list_add,
   audio_play_list_details_data,
   audioPlayList
@@ -259,6 +260,9 @@ const songListItemStyle = css`
   height: 40px;
   font-size: var(--size-xxxs);
   border-radius: var(--size-radius-xs);
+  &.ing {
+    color: var(--blue-color);
+  }
   > div {
     ${songListTableStyle}
   }
@@ -284,7 +288,7 @@ const songListItemStyle = css`
 
 const SongListItem = (props: { data: SongItem }) => {
   return (
-    <div class={songListItemStyle}>
+    <div class={cx(songListItemStyle, audio_play_ing_data()?.id === props.data.id && 'ing')}>
       <div class="mod song">
         <img class="img" src={props.data.song_img_url} />
         <div class="name">{props.data.song_name}</div>

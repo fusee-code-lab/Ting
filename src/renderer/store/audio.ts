@@ -35,6 +35,8 @@ export const [audio_status, set_audio_status] = createStore({
   volume: 100
 });
 
+export const audio_play_ing_data = () => audio_play_list_data[audio_play_index()] || null;
+
 export const audio_play_list_add = (data: SongItem[]) => {
   const old_data = audio_play_list_data.map((e) => `${e.source_type}-${e.id}`);
   const new_data = data.filter((e) => !old_data.includes(`${e.source_type}-${e.id}`));
