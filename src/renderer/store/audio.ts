@@ -1,7 +1,7 @@
 import type { MusicType, SongItem } from '@fuseecodelab/ting-lib';
 import { AudioPlay } from '../common/audio';
 import { song_url } from '../common/music';
-import { createStore } from 'solid-js/store';
+import { createStore, produce } from 'solid-js/store';
 import { createSignal } from 'solid-js';
 import { randomInteger } from '../common/utils';
 
@@ -52,10 +52,11 @@ export const audio_play_list_update = (
 ) => {
   const index = audio_play_list_data.findLastIndex((e) => e.id === id);
   if (index !== -1) {
-    set_audio_play_list_data((e) => {
-      e[index] = Object.assign(e[index], new_data);
-      return e;
-    });
+    set_audio_play_list_data(
+      produce((data) => {
+        data[index] = Object.assign(data[index], new_data);
+      })
+    );
   }
 };
 
