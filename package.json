@@ -28,7 +28,8 @@
     "gsap": "^3.12.5",
     "prettier": "^3.4.2",
     "solid-js": "^1.9.3",
-    "solid-refresh": "^0.7.5"
+    "solid-refresh": "^0.7.5",
+    "virtua": "^0.39.2"
   },
   "dependencies": {
     "@fuseecodelab/ting-lib": "^0.0.1-9",

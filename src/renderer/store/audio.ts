@@ -37,12 +37,12 @@ export const [audio_status, set_audio_status] = createStore({
 
 export const audio_play_ing_data = () => audio_play_list_data[audio_play_index()] || null;
 
-export const audio_play_list_add = (data: SongItem[]) => {
+export const audio_play_list_add = (data: SongItem[], reset: boolean = false) => {
   const old_data = audio_play_list_data.map((e) => `${e.source_type}-${e.id}`);
   const new_data = data.filter((e) => !old_data.includes(`${e.source_type}-${e.id}`));
   if (new_data.length > 0) {
     let old_len = audio_play_list_data.length;
-    set_audio_play_list_data((e) => [...e, ...new_data]);
+    set_audio_play_list_data((e) => reset ? new_data : [...e, ...new_data]);
     return old_len;
   }
   return;

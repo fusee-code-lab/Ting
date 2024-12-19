@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "strict": true,
