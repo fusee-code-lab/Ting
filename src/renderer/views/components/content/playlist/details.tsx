@@ -59,6 +59,8 @@ const style = css`
       height: calc(
         100% - var(--size-name) - var(--size-vice) - var(--size-creat) - var(--size-buts)
       );
+      overflow: hidden;
+      overflow-y: auto;
       > .text {
         font-size: var(--size-xxs);
         line-height: calc(var(--size-xxs) + 2px);
@@ -144,9 +146,15 @@ const NeteaseHead = (props: { desc_show: boolean; on_desc_show: () => void }) =>
         </div>
         <div class="desc">
           <div class={cx('text', props.desc_show ? 'show' : 'hide')}>
-            {audio_play_list_details_data.data?.description}
+            {audio_play_list_details_data.data?.description || '-'}
           </div>
-          <Show when={!props.desc_show}>
+          <Show
+            when={
+              !props.desc_show &&
+              !!audio_play_list_details_data.data?.description &&
+              audio_play_list_details_data.data?.description.length > 40
+            }
+          >
             <div class="more" onClick={props.on_desc_show}>
               更多
             </div>
@@ -176,7 +184,9 @@ const NeteaseHead = (props: { desc_show: boolean; on_desc_show: () => void }) =>
           >
             播放全部
           </Button>
-          <Button onClick={() => audio_play_list_add_list(audio_play_list_details_data.data?.tracks)}>
+          <Button
+            onClick={() => audio_play_list_add_list(audio_play_list_details_data.data?.tracks)}
+          >
             添加
           </Button>
         </div>
@@ -197,9 +207,15 @@ const QQHead = (props: { desc_show: boolean; on_desc_show: () => void }) => {
         </div>
         <div class="desc">
           <div class={cx('text', props.desc_show ? 'show' : 'hide')}>
-            {audio_play_list_details_data.data?.desc}
+            {audio_play_list_details_data.data?.desc || '-'}
           </div>
-          <Show when={!props.desc_show}>
+          <Show
+            when={
+              !props.desc_show &&
+              !!audio_play_list_details_data.data?.desc &&
+              audio_play_list_details_data.data?.desc.length > 40
+            }
+          >
             <div class="more" onClick={props.on_desc_show}>
               更多
             </div>
@@ -229,7 +245,9 @@ const QQHead = (props: { desc_show: boolean; on_desc_show: () => void }) => {
           >
             播放全部
           </Button>
-          <Button onClick={() => audio_play_list_add_list(audio_play_list_details_data.data?.songlist)}>
+          <Button
+            onClick={() => audio_play_list_add_list(audio_play_list_details_data.data?.songlist)}
+          >
             添加
           </Button>
         </div>

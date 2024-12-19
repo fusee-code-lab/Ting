@@ -6,7 +6,7 @@ import type { MusicSearchType } from '@fuseecodelab/ting-lib';
 
 const listTitleStyle = css`
   position: sticky;
-  top: 0;
+  top: -1px;
   padding: 0 30px 15px;
   font-size: var(--size-xs);
   background-color: var(--basic-color);
