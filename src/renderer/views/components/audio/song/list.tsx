@@ -7,14 +7,21 @@ import { SongListItem } from './item';
 
 const list_style = css`
   position: fixed;
+  left: var(--menu-width);
   right: 0;
-  width: 300px;
-  height: 60vh;
+  top: 0;
   bottom: var(--audio-height);
-  background-color: var(--menu-bg-color);
-  border-top-left-radius: var(--size-radius-xs);
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
   > .content {
-    padding: 6px;
+    width: 300px;
+    height: 60vh;
+    background-color: var(--menu-bg-color);
+    border-top-left-radius: var(--size-radius-xs);
+    > .v-list {
+      padding: 6px;
+    }
   }
 `;
 
@@ -52,10 +59,12 @@ export const SongList = () => {
   return (
     <>
       <Show when={show()}>
-        <div class={list_style}>
-          <VList ref={vHandler} class="content" data={audio_play_list_data}>
-            {(item) => <SongListItem data={item} />}
-          </VList>
+        <div class={list_style} onClick={() => set_show(false)}>
+          <div class="content">
+            <VList ref={vHandler} class="v-list" data={audio_play_list_data}>
+              {(item) => <SongListItem data={item} />}
+            </VList>
+          </div>
         </div>
       </Show>
       <div class={cx(icon_style, show() && 'show')} onClick={show_menu}>
