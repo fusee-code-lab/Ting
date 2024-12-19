@@ -60,7 +60,7 @@ export const SongList = () => {
     <>
       <Show when={show()}>
         <div class={list_style} onClick={() => set_show(false)}>
-          <div class="content">
+          <div class="content" onClick={(e) => e.stopPropagation()}>
             <VList ref={vHandler} class="v-list" data={audio_play_list_data}>
               {(item) => <SongListItem data={item} />}
             </VList>

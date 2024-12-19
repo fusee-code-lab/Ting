@@ -1,4 +1,4 @@
-import { audio_play_list_details_data, is_audio_play_ing_data } from '@/renderer/store/audio';
+import { audio_play_list_details_data, audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
 import { textEllipsis } from '@/renderer/views/styles';
 import { css, cx } from '@emotion/css';
 import { SongItem } from '@fuseecodelab/ting-lib';
@@ -59,6 +59,7 @@ const SongListItem = (props: { data: SongItem }) => {
         songListItemStyle,
         is_audio_play_ing_data(`${props.data.id}_${props.data.source_type}`) && 'ing'
       )}
+      onClick={() => audioPlay(props.data)}
     >
       <div class="mod song">
         <img class="img" src={props.data.song_img_url} />
@@ -94,6 +95,7 @@ const songListStyle = css`
     > div {
       > div:nth-child(odd) {
         background-color: var(--tertiary-label-color);
+        border-radius: var(--size-radius-xs);
       }
     }
   }
