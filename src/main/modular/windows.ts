@@ -5,6 +5,7 @@ import { baseTheme } from '@/cfg/theme';
 import { theme } from './theme';
 import { preload, type WindowDefaultCfg, windowInstance } from '@youliso/electronic/main';
 import { insert_basic_setting, select_basic_setting } from './db/modular/basic';
+import { createTray } from './tray';
 
 // 初始窗口组参数
 let windowDefaultCfg: WindowDefaultCfg = {
@@ -63,7 +64,8 @@ export const createWelcome = () => {
 
 export const createHome = () => {
   let customize: Customize = {
-    route: '/home'
+    route: '/home',
+    isMainWin: true
   };
   let browserWindowOptions: BrowserWindowConstructorOptions = createOpts({
     minWidth: 1000,
@@ -76,7 +78,12 @@ export const createHome = () => {
 
 export const windowInit = () => {
   const is = select_basic_setting<number | undefined>('is_first');
-  is == 1 ? createHome() : createWelcome();
+  if (is == 1) {
+    createHome();
+    createTray();
+  } else {
+    createWelcome();
+  }
 };
 
 export const windowOn = () => {

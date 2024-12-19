@@ -1,4 +1,4 @@
-import { windowShow } from '@youliso/electronic/render';
+import { windowHide, windowShow } from '@youliso/electronic/render';
 import { audioOn } from '@/renderer/store/audio';
 import { onMount } from 'solid-js';
 import { css } from '@emotion/css';
@@ -19,6 +19,12 @@ export default () => {
     audioOn();
     windowShow();
   });
+
+  // TODO 禁止点击就关闭 后续根据设置变化
+  window.onbeforeunload = (e) => {
+    windowHide();
+    e.returnValue = false;
+  };
 
   return (
     <div class="container">

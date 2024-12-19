@@ -18,5 +18,5 @@ export const createTray = () => {
       }
     ])
   );
-  tray.on('click', () => windowInstance.func('show'));
+  tray.on('click', () => windowInstance.getMain()?.show());
 };
