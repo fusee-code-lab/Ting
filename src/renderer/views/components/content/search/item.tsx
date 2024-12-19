@@ -2,8 +2,8 @@ import { css, cx } from '@emotion/css';
 import { textEllipsis } from '../../../styles';
 import { Match, Switch } from 'solid-js';
 import {
-  audio_play_ing_data,
   audioPlay,
+  is_audio_play_ing_data,
   set_audio_play_list_details_data
 } from '@/renderer/store/audio';
 import type { MusicType, SongItem } from '@fuseecodelab/ting-lib';
@@ -53,7 +53,7 @@ export const Item = (props: { class?: string; data: SongItem }) => {
   return (
     <div
       onClick={() => onClickItem(props.data)}
-      class={cx(style, props.class, audio_play_ing_data()?.id === props.data.id && 'ing')}
+      class={cx(style, props.class,  is_audio_play_ing_data(`${props.data.id}_${props.data.source_type}`) && 'ing')}
     >
       <Switch>
         <Match when={props.data.source_type === 'netease'}>

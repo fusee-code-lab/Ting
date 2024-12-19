@@ -37,15 +37,29 @@ export const [audio_status, set_audio_status] = createStore({
 
 export const audio_play_ing_data = () => audio_play_list_data[audio_play_index()] || null;
 
-export const audio_play_list_add = (data: SongItem[], reset: boolean = false) => {
+export const is_audio_play_ing_data = (key: string) => {
+  const data = audio_play_ing_data();
+  if (data && `${data.id}_${data.source_type}` === key) {
+    return true;
+  }
+  return false;
+};
+
+export const audio_play_list_add_list = (data: SongItem[], reset: boolean = false) => {
   const old_data = audio_play_list_data.map((e) => `${e.source_type}-${e.id}`);
   const new_data = data.filter((e) => !old_data.includes(`${e.source_type}-${e.id}`));
   if (new_data.length > 0) {
-    let old_len = audio_play_list_data.length;
     set_audio_play_list_data((e) => reset ? new_data : [...e, ...new_data]);
-    return old_len;
   }
-  return;
+};
+
+export const audio_play_list_add = (data: SongItem) => {
+  const index = audio_play_list_data.findLastIndex(e => `${e.source_type}-${e.id}` === `${data.source_type}-${data.id}`);
+  if (index === -1) {
+    set_audio_play_list_data(e => [...e, data]);
+    return audio_play_list_data.length - 1;
+  }
+  return index;
 };
 
 export const audio_play_list_update = (
@@ -63,7 +77,7 @@ export const audio_play_list_update = (
 };
 
 export const audioPlay = async (data?: SongItem) => {
-  let index = (data && audio_play_list_add([data])) || audio_play_index();
+  let index = (data && audio_play_list_add(data)) ?? audio_play_index();
   index === -1 && (index = 0);
   const song = audio_play_list_data[index];
   if (song['play_url']) {
@@ -80,7 +94,7 @@ export const audioPlay = async (data?: SongItem) => {
 };
 
 export const audioPlayList = async (songs: SongItem[]) => {
-  set_audio_play_list_data(songs);
+  audio_play_list_add_list(songs, true);
   set_audio_play_index(0);
   await audioPlay();
 };
@@ -111,6 +125,19 @@ export const audioNext = async (num: number) => {
       await audioPlay();
       break;
   }
+};
+
+export const audioSetVolume = (volume: number) => {
+  audio.setVolume(volume);
+  set_audio_status('volume', volume);
+};
+
+export const audioSetCurrentIngTime = (e: number) => {
+  audio.currentIngTime(e);
+};
+
+export const audioSetCurrentTime = (e: number) => {
+  audio.currentTime(e);
 };
 
 export const audioOn = () => {

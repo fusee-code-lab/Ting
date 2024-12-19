@@ -1,5 +1,5 @@
 import {
-  audio_play_list_add,
+  audio_play_list_add_list,
   audio_play_list_details_data,
   audioPlayList
 } from '@/renderer/store/audio';
@@ -176,7 +176,7 @@ const NeteaseHead = (props: { desc_show: boolean; on_desc_show: () => void }) =>
           >
             播放全部
           </Button>
-          <Button onClick={() => audio_play_list_add(audio_play_list_details_data.data?.tracks)}>
+          <Button onClick={() => audio_play_list_add_list(audio_play_list_details_data.data?.tracks)}>
             添加
           </Button>
         </div>
@@ -229,7 +229,7 @@ const QQHead = (props: { desc_show: boolean; on_desc_show: () => void }) => {
           >
             播放全部
           </Button>
-          <Button onClick={() => audio_play_list_add(audio_play_list_details_data.data?.songlist)}>
+          <Button onClick={() => audio_play_list_add_list(audio_play_list_details_data.data?.songlist)}>
             添加
           </Button>
         </div>

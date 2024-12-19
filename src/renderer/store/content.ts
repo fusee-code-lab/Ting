@@ -16,6 +16,7 @@ export const [content_router, set_content_router] = createStore<{
 });
 
 export const set_content_route = (key: ContentView) => {
+  if (content_router.path === key) return;
   set_content_router('path', key);
   set_content_router(
     'history',

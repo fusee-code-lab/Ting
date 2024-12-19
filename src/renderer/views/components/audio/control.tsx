@@ -3,11 +3,24 @@ import {
   NextIcon,
   PauseIcon,
   PlayIcon,
-  PreviousIcon
+  PreviousIcon,
+  RepeatIcon,
+  ShuffleIcon,
+  Volumes1Icon,
+  Volumes2Icon,
+  Volumes3Icon
 } from '@/renderer/views/components/basis/icons';
-import { audio_status, audioNext, set_audio_status } from '@/renderer/store/audio';
+import {
+  audio_play_type,
+  audio_status,
+  audioNext,
+  audioSetVolume,
+  set_audio_play_type,
+  set_audio_status
+} from '@/renderer/store/audio';
 import { Match, Switch } from 'solid-js';
 import { audio } from '@/renderer/store/audio';
+import Input from '../basis/input';
 
 const style = css`
   width: 100%;
@@ -38,9 +51,73 @@ const style = css`
       font-size: 20px;
     }
   }
+
+  > .volume {
+    width: 140px;
+    --size-icon: 25px;
+    > .volume-icon {
+      width: var(--size-icon);
+      height: var(--size-icon);
+      > span {
+        font-size: var(--size-icon);
+      }
+    }
+
+    > .volume-input {
+      background: var(--audio-volume);
+      width: calc(100% - var(--size-icon));
+      height: 4px;
+      margin: 0 0 0.67px;
+      padding: 0;
+      outline: 0;
+      border-radius: var(--size-radius-xs);
+      appearance: none !important;
+
+      &::-webkit-slider-thumb {
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        background-color: var(--blue-color);
+        appearance: none !important;
+      }
+
+      &::-webkit-slider-thumb:active {
+        border: 0;
+        background-color: var(--blue-color);
+      }
+    }
+  }
+
+  > .switch {
+    > span {
+      font-size: 22px;
+      margin-right: 5px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    &.single {
+      > .single {
+        color: var(--blue-color);
+      }
+    }
+    &.random {
+      > .random {
+        color: var(--blue-color);
+      }
+    }
+  }
 `;
 
 export const Control = () => {
+  const set_type_switch = (type: 'single' | 'random') => {
+    if (audio_play_type() === type) {
+      set_audio_play_type('list');
+      return;
+    }
+    set_audio_play_type(type);
+  };
   return (
     <div class={style}>
       <div class="previous" onClick={() => audioNext(-1)}>
@@ -66,6 +143,37 @@ export const Control = () => {
       </Switch>
       <div class="next" onClick={() => audioNext(1)}>
         <NextIcon />
+      </div>
+      <div class="volume">
+        <div class="volume-icon">
+          <Switch>
+            <Match when={audio_status.volume <= 30}>
+              <Volumes1Icon />
+            </Match>
+            <Match when={audio_status.volume > 30 && audio_status.volume <= 60}>
+              <Volumes2Icon />
+            </Match>
+            <Match when={audio_status.volume > 60 && audio_status.volume <= 100}>
+              <Volumes3Icon />
+            </Match>
+          </Switch>
+        </div>
+        <Input
+          style={{
+            '--audio-volume': `linear-gradient(to right, var(--blue-color) ${audio_status.volume}%, #F2F2F7 0%)`
+          }}
+          class="volume-input"
+          type="range"
+          max={100}
+          min={0}
+          step={1}
+          value={audio_status.volume}
+          onInput={(e) => audioSetVolume(Number((e.currentTarget as HTMLInputElement).value))}
+        />
+      </div>
+      <div class={`switch ${audio_play_type()}`}>
+        <ShuffleIcon class="random" onClick={() => set_type_switch('random')} />
+        <RepeatIcon class="single" onClick={() => set_type_switch('single')} />
       </div>
     </div>
   );

@@ -18,6 +18,14 @@ export const BackIcon = (props: { onClick?: (e: MouseEvent) => void }) => (
   <span class={cx(style, back)} onClick={props.onClick}></span>
 );
 
+const menu = css`
+  &::before {
+    content: '\\e60d';
+  }
+`;
+export const MenuIcon = (props: { onClick?: (e: MouseEvent) => void }) => (
+  <span class={cx(style, menu)} onClick={props.onClick}></span>
+);
 
 const next = css`
   &::before {
@@ -53,4 +61,52 @@ const pause = css`
 `;
 export const PauseIcon = (props: { onClick?: (e: MouseEvent) => void }) => (
   <span class={cx(style, pause)} onClick={props.onClick}></span>
+);
+
+const shuffle = css`
+  &::before {
+    content: '\\e61a';
+  }
+`;
+export const ShuffleIcon = (props: { class?: string; onClick?: (e: MouseEvent) => void }) => (
+  <span class={cx(props.class, style, shuffle)} onClick={props.onClick}></span>
+);
+
+const repeat = css`
+  &::before {
+    content: '\\e612';
+  }
+`;
+export const RepeatIcon = (props: { class?: string; onClick?: (e: MouseEvent) => void }) => (
+  <span class={cx(props.class, style, repeat)} onClick={props.onClick}></span>
+);
+
+const volumes = [
+  css`
+    &::before {
+      content: '\\e618';
+    }
+  `,
+  css`
+    &::before {
+      content: '\\e617';
+    }
+  `,
+  css`
+    &::before {
+      content: '\\e619';
+    }
+  `
+];
+
+export const Volumes1Icon = (props: { class?: string; onClick?: (e: MouseEvent) => void }) => (
+  <span class={cx(props.class, style, volumes[0])} onClick={props.onClick}></span>
+);
+
+export const Volumes2Icon = (props: { class?: string; onClick?: (e: MouseEvent) => void }) => (
+  <span class={cx(props.class, style, volumes[1])} onClick={props.onClick}></span>
+);
+
+export const Volumes3Icon = (props: { class?: string; onClick?: (e: MouseEvent) => void }) => (
+  <span class={cx(props.class, style, volumes[2])} onClick={props.onClick}></span>
 );

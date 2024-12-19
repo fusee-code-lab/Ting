@@ -13,8 +13,7 @@ preload.on('theme-updated', async (themeSource) => {
 });
 
 injectGlobal`
-  html[theme='dark'] {
-    :root {
+  :root[theme='dark'] {
       --basic-color-a1: ${darkTheme.basicColor + 'a1'};
       --basic-color-60: ${darkTheme.basicColor + '60'};
       --basic-color: ${darkTheme.basicColor};
@@ -26,11 +25,9 @@ injectGlobal`
       --tertiary-label-color: #ffffff30;
 
       --menu-bg-color: #252525;
-    }
   }
 
-  html[theme='light'] {
-    :root {
+  :root[theme='light'] {
       --basic-color-a1: ${lightTheme.basicColor + 'a1'};
       --basic-color-60: ${lightTheme.basicColor + '60'};
       --basic-color: ${lightTheme.basicColor};
@@ -41,7 +38,6 @@ injectGlobal`
       --tertiary-label-color: #3c3c4330;
 
       --menu-bg-color: #e3e3e8;
-    }
   }
 
   :root {

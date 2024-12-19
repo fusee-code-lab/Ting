@@ -1,4 +1,4 @@
-import { audio_play_ing_data, audio_play_list_details_data } from '@/renderer/store/audio';
+import { audio_play_list_details_data, is_audio_play_ing_data } from '@/renderer/store/audio';
 import { textEllipsis } from '@/renderer/views/styles';
 import { css, cx } from '@emotion/css';
 import { SongItem } from '@fuseecodelab/ting-lib';
@@ -54,7 +54,12 @@ const songListItemStyle = css`
 
 const SongListItem = (props: { data: SongItem }) => {
   return (
-    <div class={cx(songListItemStyle, audio_play_ing_data()?.id === props.data.id && 'ing')}>
+    <div
+      class={cx(
+        songListItemStyle,
+        is_audio_play_ing_data(`${props.data.id}_${props.data.source_type}`) && 'ing'
+      )}
+    >
       <div class="mod song">
         <img class="img" src={props.data.song_img_url} />
         <div class="name">{props.data.song_name}</div>
