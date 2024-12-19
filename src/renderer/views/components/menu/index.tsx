@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 import { Item, ItemTitle } from './inner/item';
-import Search from '@/renderer/views/components/search';
+import Search from './search';
 
 const style = css`
   width: var(--menu-width);

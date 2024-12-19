@@ -1,8 +1,8 @@
 import { css } from '@emotion/css';
-import Audio from './audio';
 import { Show } from 'solid-js';
 import { content_router, content_view } from '@/renderer/store/content';
 import { Dynamic } from 'solid-js/web';
+import Audio from '../audio';
 
 const style = css`
   position: relative;
