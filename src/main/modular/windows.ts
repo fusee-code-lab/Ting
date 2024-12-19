@@ -1,5 +1,5 @@
-import { type Customize } from '@youliso/electronic/types';
 import { app, type BrowserWindowConstructorOptions } from 'electron';
+import type { Customize } from '@youliso/electronic/types';
 import { join } from 'node:path';
 import { baseTheme } from '@/cfg/theme';
 import { theme } from './theme';

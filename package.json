@@ -20,7 +20,7 @@
     "@rspack/dev-server": "^1.0.10",
     "@types/better-sqlite3": "^7.6.12",
     "@types/node": "^22.10.2",
-    "@youliso/electronic": "^5.4.5",
+    "@youliso/electronic": "^5.4.6",
     "babel-loader": "^9.2.1",
     "babel-preset-solid": "^1.9.3",
     "electron": "^33.2.1",
