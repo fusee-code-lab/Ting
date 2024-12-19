@@ -4,10 +4,12 @@ import { For, Show } from 'solid-js';
 import { Item, PlaylistItem } from './item';
 import type { MusicSearchType } from '@fuseecodelab/ting-lib';
 
-
 const listTitleStyle = css`
+  position: sticky;
+  top: 0;
   padding: 0 30px 15px;
   font-size: var(--size-xs);
+  background-color: var(--basic-color);
 `;
 
 const style = css`
