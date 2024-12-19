@@ -134,10 +134,12 @@ export const audioSetVolume = (volume: number) => {
 
 export const audioSetCurrentIngTime = (e: number) => {
   audio.currentIngTime(e);
+  set_audio_status('ingTime', e);
 };
 
 export const audioSetCurrentTime = (e: number) => {
   audio.currentTime(e);
+  set_audio_status('ingTime', e);
 };
 
 export const audioOn = () => {
