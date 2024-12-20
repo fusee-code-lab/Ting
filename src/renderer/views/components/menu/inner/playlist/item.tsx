@@ -3,10 +3,8 @@ import play_list_icon from '@/assets/icons/play_list_icon.png';
 import play_list_icon2x from '@/assets/icons/play_list_icon@2x.png';
 import { textEllipsis } from '@/renderer/views/styles';
 import { Playlist } from '@/types/playlist';
-import { playlist_detail } from '@/renderer/common/music';
 import { MusicType } from '@fuseecodelab/ting-lib';
-import { playlist_list_data_load, set_playlist_details_data } from '@/renderer/store/playlist';
-import { set_content_route } from '@/renderer/store/content';
+import { playlist_list_data_load } from '@/renderer/store/playlist';
 
 const titleStyle = css`
   font-size: var(--size-xxxs);
