@@ -1,8 +1,12 @@
 import { css, cx } from '@emotion/css';
-
 import play_list_icon from '@/assets/icons/play_list_icon.png';
 import play_list_icon2x from '@/assets/icons/play_list_icon@2x.png';
 import { textEllipsis } from '@/renderer/views/styles';
+import { Playlist } from '@/types/playlist';
+import { playlist_detail } from '@/renderer/common/music';
+import { MusicType } from '@fuseecodelab/ting-lib';
+import { playlist_list_data_load, set_playlist_details_data } from '@/renderer/store/playlist';
+import { set_content_route } from '@/renderer/store/content';
 
 const titleStyle = css`
   font-size: var(--size-xxxs);
@@ -31,15 +35,20 @@ const itemStyle = css`
     line-height: var(--size-xxs);
   }
 `;
-export const Item = (props: { class?: string; title: string }) => {
+
+const toPlayList = async (data: Playlist) => {
+  const [type, id] = data.key.split('_') as [MusicType, string];
+  await playlist_list_data_load(type, id);
+};
+export const Item = (props: { class?: string; data: Playlist }) => {
   return (
-    <div class={cx(itemStyle, props.class)}>
+    <div class={cx(itemStyle, props.class)} onClick={() => toPlayList(props.data)}>
       <img
         class="icon"
         srcset={`${play_list_icon} 1x, ${play_list_icon2x} 2x`}
         src={play_list_icon2x}
       />
-      <div class="title">{props.title}</div>
+      <div class="title">{props.data.name}</div>
     </div>
   );
 };

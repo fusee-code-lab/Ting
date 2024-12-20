@@ -22,8 +22,8 @@ export default () => {
 
   // TODO 禁止点击就关闭 后续根据设置变化
   window.onbeforeunload = (e) => {
-    windowHide();
-    e.returnValue = false;
+    // windowHide();
+    // e.returnValue = false;
   };
 
   return (

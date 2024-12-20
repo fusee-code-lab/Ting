@@ -1,4 +1,4 @@
-import type { MusicType, SongItem } from '@fuseecodelab/ting-lib';
+import type { SongItem } from '@fuseecodelab/ting-lib';
 import { AudioPlay } from '../common/audio';
 import { song_url } from '../common/music';
 import { createStore, produce } from 'solid-js/store';
@@ -6,12 +6,6 @@ import { createSignal } from 'solid-js';
 import { randomInteger } from '../common/utils';
 
 export const audio = new AudioPlay();
-
-// 当前歌单
-export const [audio_play_list_details_data, set_audio_play_list_details_data] = createStore<{
-  source_type?: MusicType;
-  data?: { [key: string]: any };
-}>({});
 
 // 当前播放列表
 export const [audio_play_list_data, set_audio_play_list_data] = createStore<SongItem[]>([]);

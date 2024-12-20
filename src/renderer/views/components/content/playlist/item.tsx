@@ -1,4 +1,5 @@
-import { audio_play_list_details_data, audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
+import { audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
+import { playlist_details_data } from '@/renderer/store/playlist';
 import { textEllipsis } from '@/renderer/views/styles';
 import { css, cx } from '@emotion/css';
 import { SongItem } from '@fuseecodelab/ting-lib';
@@ -113,8 +114,8 @@ export const SongList = () => {
       <VList
         class="list"
         data={
-          audio_play_list_details_data.data![
-            audio_play_list_details_data.source_type === 'netease' ? 'tracks' : 'songlist'
+          playlist_details_data![
+            playlist_details_data.source_type === 'netease' ? 'tracks' : 'songlist'
           ]
         }
       >

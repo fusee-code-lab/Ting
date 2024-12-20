@@ -1,9 +1,10 @@
-import {
-  audio_play_list_add_list,
-  audio_play_list_details_data,
-  audioPlayList
-} from '@/renderer/store/audio';
+import { audioPlayList } from '@/renderer/store/audio';
 import { css, cx } from '@emotion/css';
+import {
+  playlist_details_data,
+  playlist_list_data_add,
+  playlist_list_data_has
+} from '@/renderer/store/playlist';
 import { createSignal, Match, Show, Switch } from 'solid-js';
 import { textEllipsis } from '../../../styles';
 
@@ -134,25 +135,23 @@ const style = css`
   }
 `;
 
-const NeteaseHead = (props: { desc_show: boolean; on_desc_show: () => void }) => {
+const NeteaseHead = (props: { desc_show: boolean; on_desc_show: () => void; data: any }) => {
   return (
     <>
-      <img class="img" src={audio_play_list_details_data.data?.coverImgUrl} />
+      <img class="img" src={props.data?.coverImgUrl} />
       <div class="info">
-        <div class={cx('name', textEllipsis)}>{audio_play_list_details_data.data?.name}</div>
+        <div class={cx('name', textEllipsis)}>{props.data?.name}</div>
         <div class="vice">
-          <span>{audio_play_list_details_data.data?.trackCount}首</span>
-          <span>{audio_play_list_details_data.data?.tags.join('/')}</span>
+          <span>{props.data?.trackCount}首</span>
+          <span>{props.data?.tags.join('/')}</span>
         </div>
         <div class="desc">
           <div class={cx('text', props.desc_show ? 'show' : 'hide')}>
-            {audio_play_list_details_data.data?.description || '-'}
+            {props.data?.description || '-'}
           </div>
           <Show
             when={
-              !props.desc_show &&
-              !!audio_play_list_details_data.data?.description &&
-              audio_play_list_details_data.data?.description.length > 40
+              !props.desc_show && !!props.data?.description && props.data?.description?.length > 40
             }
           >
             <div class="more" onClick={props.on_desc_show}>
@@ -169,25 +168,27 @@ const NeteaseHead = (props: { desc_show: boolean; on_desc_show: () => void }) =>
           <div
             class="name"
             onClick={() =>
-              openUrl(
-                `https://music.163.com/#/user/home?id=${audio_play_list_details_data.data?.creator?.userId}`
-              )
+              openUrl(`https://music.163.com/#/user/home?id=${props.data?.creator?.userId}`)
             }
           >
-            {audio_play_list_details_data.data?.creator?.nickname}
+            {props.data?.creator?.nickname}
           </div>
         </div>
         <div class="buts">
-          <Button
-            class="primary"
-            onClick={() => audioPlayList(audio_play_list_details_data.data?.tracks)}
-          >
+          <Button class="primary" onClick={() => audioPlayList(props.data?.tracks)}>
             播放全部
           </Button>
           <Button
-            onClick={() => audio_play_list_add_list(audio_play_list_details_data.data?.tracks)}
+            disabled={playlist_list_data_has('netease', props.data?.id)}
+            onClick={() =>
+              playlist_list_data_add({
+                key: `netease_${props.data?.id}`,
+                name: props.data?.name,
+                cover: props.data?.coverImgUrl
+              })
+            }
           >
-            添加
+            {playlist_list_data_has('netease', props.data?.id) ? '已添加' : '添加'}
           </Button>
         </div>
       </div>
@@ -195,27 +196,19 @@ const NeteaseHead = (props: { desc_show: boolean; on_desc_show: () => void }) =>
   );
 };
 
-const QQHead = (props: { desc_show: boolean; on_desc_show: () => void }) => {
+const QQHead = (props: { desc_show: boolean; on_desc_show: () => void; data: any }) => {
   return (
     <>
-      <img class="img" src={audio_play_list_details_data.data?.logo} />
+      <img class="img" src={props.data?.logo} />
       <div class="info">
-        <div class={cx('name', textEllipsis)}>{audio_play_list_details_data.data?.dissname}</div>
+        <div class={cx('name', textEllipsis)}>{props.data?.dissname}</div>
         <div class="vice">
-          <span>{audio_play_list_details_data.data?.songnum}首</span>
-          <span>{audio_play_list_details_data.data?.tags.map((e: any) => e.name).join('/')}</span>
+          <span>{props.data?.songnum}首</span>
+          <span>{props.data?.tags?.map((e: any) => e.name).join('/')}</span>
         </div>
         <div class="desc">
-          <div class={cx('text', props.desc_show ? 'show' : 'hide')}>
-            {audio_play_list_details_data.data?.desc || '-'}
-          </div>
-          <Show
-            when={
-              !props.desc_show &&
-              !!audio_play_list_details_data.data?.desc &&
-              audio_play_list_details_data.data?.desc.length > 40
-            }
-          >
+          <div class={cx('text', props.desc_show ? 'show' : 'hide')}>{props.data?.desc || '-'}</div>
+          <Show when={!props.desc_show && !!props.data?.desc && props.data?.desc?.length > 40}>
             <div class="more" onClick={props.on_desc_show}>
               更多
             </div>
@@ -230,25 +223,27 @@ const QQHead = (props: { desc_show: boolean; on_desc_show: () => void }) => {
           <div
             class="name"
             onClick={() =>
-              openUrl(
-                `https://y.qq.com/n/ryqq/profile/like/song?uin=${audio_play_list_details_data.data?.uin}`
-              )
+              openUrl(`https://y.qq.com/n/ryqq/profile/like/song?uin=${props.data?.uin}`)
             }
           >
-            {audio_play_list_details_data.data?.nickname}
+            {props.data?.nickname}
           </div>
         </div>
         <div class="buts">
-          <Button
-            class="primary"
-            onClick={() => audioPlayList(audio_play_list_details_data.data?.songlist)}
-          >
+          <Button class="primary" onClick={() => audioPlayList(props.data?.songlist)}>
             播放全部
           </Button>
           <Button
-            onClick={() => audio_play_list_add_list(audio_play_list_details_data.data?.songlist)}
+            disabled={playlist_list_data_has('qq', props.data?.disstid)}
+            onClick={() =>
+              playlist_list_data_add({
+                key: `qq_${props.data?.disstid}`,
+                name: props.data?.dissname,
+                cover: props.data?.logo
+              })
+            }
           >
-            添加
+            {playlist_list_data_has('qq', props.data?.disstid) ? '已添加' : '添加'}
           </Button>
         </div>
       </div>
@@ -259,17 +254,26 @@ const QQHead = (props: { desc_show: boolean; on_desc_show: () => void }) => {
 export const Details = () => {
   const [desc_show, set_desc_show] = createSignal(false);
   const on_desc_show = () => set_desc_show(!desc_show());
-
   return (
     <div class={style}>
-      <Switch>
-        <Match when={audio_play_list_details_data.source_type === 'netease'}>
-          <NeteaseHead desc_show={desc_show()} on_desc_show={on_desc_show} />
-        </Match>
-        <Match when={audio_play_list_details_data.source_type === 'qq'}>
-          <QQHead desc_show={desc_show()} on_desc_show={on_desc_show} />
-        </Match>
-      </Switch>
+      <Show when={!!playlist_details_data}>
+        <Switch>
+          <Match when={playlist_details_data.source_type === 'netease'}>
+            <NeteaseHead
+              desc_show={desc_show()}
+              on_desc_show={on_desc_show}
+              data={playlist_details_data}
+            />
+          </Match>
+          <Match when={playlist_details_data.source_type === 'qq'}>
+            <QQHead
+              desc_show={desc_show()}
+              on_desc_show={on_desc_show}
+              data={playlist_details_data}
+            />
+          </Match>
+        </Switch>
+      </Show>
     </div>
   );
 };

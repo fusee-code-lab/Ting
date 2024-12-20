@@ -73,7 +73,6 @@ export function update_basic_setting(key: string, data: string | number) {
     }
     update_basic_setting_prepare.run(data, key);
   } catch (error) {
-    console.error(error);
     throw error;
   }
 }
@@ -88,7 +87,6 @@ export function delete_basic_setting(key: string) {
     }
     delete_basic_setting_prepare.run(key);
   } catch (error) {
-    console.error(error);
     throw error;
   }
 }
@@ -97,7 +95,7 @@ export function delete_basic_setting(key: string) {
  * 初始化
  */
 export function basic_init() {
-  DBInstance.load(basic_key, ['AllUsers']);
+  DBInstance.load(basic_key, []);
   // 设置
   DBInstance.dbs[basic_key].exec(basic_setting_table);
 }

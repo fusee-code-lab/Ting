@@ -1,14 +1,9 @@
 import { css, cx } from '@emotion/css';
 import { textEllipsis } from '../../../styles';
 import { Match, Switch } from 'solid-js';
-import {
-  audioPlay,
-  is_audio_play_ing_data,
-  set_audio_play_list_details_data
-} from '@/renderer/store/audio';
-import type { MusicType, SongItem } from '@fuseecodelab/ting-lib';
-import { set_content_route } from '@/renderer/store/content';
-import { playlist_detail } from '@/renderer/common/music';
+import { audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
+import type { SongItem } from '@fuseecodelab/ting-lib';
+import { playlist_list_data_load } from '@/renderer/store/playlist';
 
 const style = css`
   display: flex;
@@ -53,7 +48,11 @@ export const Item = (props: { class?: string; data: SongItem }) => {
   return (
     <div
       onClick={() => onClickItem(props.data)}
-      class={cx(style, props.class,  is_audio_play_ing_data(`${props.data.id}_${props.data.source_type}`) && 'ing')}
+      class={cx(
+        style,
+        props.class,
+        is_audio_play_ing_data(`${props.data.id}_${props.data.source_type}`) && 'ing'
+      )}
     >
       <Switch>
         <Match when={props.data.source_type === 'netease'}>
@@ -68,20 +67,14 @@ export const Item = (props: { class?: string; data: SongItem }) => {
     </div>
   );
 };
-
-const onClickPlaylist = async (type: MusicType, id: string) => {
-  const res = await playlist_detail(type, id);
-  if (res) {
-    set_audio_play_list_details_data('source_type', type);
-    set_audio_play_list_details_data('data', res);
-    set_content_route('play_list_details');
-  }
-};
 export const PlaylistItem = (props: { class?: string; data: any }) => {
   return (
     <div
       onClick={() =>
-        onClickPlaylist(props.data.dissid ? 'qq' : 'netease', props.data.dissid || props.data.id)
+        playlist_list_data_load(
+          props.data.dissid ? 'qq' : 'netease',
+          props.data.dissid || props.data.id
+        )
       }
       class={cx(style, props.class)}
     >

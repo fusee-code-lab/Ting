@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
-import { Item, ItemTitle } from './inner/item';
 import Search from './search';
+import { Playlist } from './inner/playlist';
 
 const style = css`
   width: var(--menu-width);
@@ -31,10 +31,7 @@ export default () => {
       <div class="head">Ting</div>
       <div class="content">
         <Search class="search" />
-        <div class="items">
-          <ItemTitle title="常听" />
-          <Item class="item" title="送你一首歌，来年多喜乐！" />
-        </div>
+        <Playlist />
       </div>
     </div>
   );
