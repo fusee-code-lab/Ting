@@ -1,4 +1,3 @@
-import { RouteSectionProps } from '@solidjs/router';
 import { preload, windowShow } from '@youliso/electronic/render';
 import { onMount } from 'solid-js';
 import { dragStyle, nodragStyle } from '../styles';
@@ -95,7 +94,7 @@ const onCanvas = (el: HTMLCanvasElement) => {
   el && new Visual(el, 'blue');
 };
 
-export default (props: RouteSectionProps) => {
+export default () => {
   onMount(() => windowShow());
   const toHome = () => preload.send('window-first');
 
