@@ -23,7 +23,10 @@ const buildConfig = async (archPath, archTarget) => {
   config.copyright = `Copyright © 2024 fuseecodelab`; //版权
   config.productName = packageCfg.productName; // 名称
   config.npmRebuild = true; //是否Rebuild编译
-  config.asar = true; //asar开关
+  config.asar = {
+    smartUnpack: false
+  };
+  //asar开关
   config.asarUnpack = ['**/*.node'];
 
 
@@ -69,7 +72,7 @@ const buildConfig = async (archPath, archTarget) => {
       to: './',
       filter: ['**/*']
     });
-  } catch (error) {}
+  } catch (error) { }
   try {
     fs.accessSync(path.resolve('./resources/' + archPath));
     config.extraFiles.push({
@@ -77,7 +80,7 @@ const buildConfig = async (archPath, archTarget) => {
       to: archPath,
       filter: ['**/*']
     });
-  } catch (error) {}
+  } catch (error) { }
 
 
   //更新配置
