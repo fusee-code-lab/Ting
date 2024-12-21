@@ -12,6 +12,7 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
     "@babel/preset-typescript": "^7.26.0",
     "@electron/fuses": "^1.8.0",
     "@emotion/babel-plugin": "^11.13.5",

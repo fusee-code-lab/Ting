@@ -6,6 +6,7 @@
 /.swc/
 electron-template.kdev4
 package-lock.json
+yarn.lock
 scripts/.build.json
 scripts/.env.json
 scripts/.update.yml
