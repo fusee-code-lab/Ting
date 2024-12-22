@@ -23,11 +23,13 @@ const bgStyle = css`
   height: 100%;
 `;
 
+const horizontalPadding = "4em";
+
 const wlStyle = css`
   right: 0;
   > .content {
     align-items: flex-end;
-    padding-right: 30px;
+    padding-right: ${horizontalPadding};
 
     > .title {
       text-align: right;
@@ -39,7 +41,7 @@ const macStyle = css`
   left: 0;
   > .content {
     align-items: flex-start;
-    padding-left: 30px;
+    padding-left: ${horizontalPadding};
 
     > .title {
       text-align: left;
@@ -51,7 +53,6 @@ const mainStyle = css`
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 270px;
   /* background-color: var(--basic-color-a1); */
   backdrop-filter: blur(5px);
   display: flex;
@@ -64,32 +65,22 @@ const mainStyle = css`
     justify-content: center;
 
     > img {
-      width: 20%;
+      width: 54px;
       /* filter: hue-rotate(130deg) saturate(1.3) brightness(1.3); */
     }
 
     > .title {
-      margin-top: 20px;
-      height: 40px;
-      line-height: 40px;
+      margin-top: 0.4em;
       font-size: var(--size-xxxl);
       letter-spacing: 1px;
       color: var(--white-color);
     }
-
-    > .but {
-      margin-top: 30px;
-      width: 80px;
-      height: 25px;
-      line-height: 25px;
-      background-color: var(--blue-color);
-      color: var(--white-color);
-      font-size: var(--size-xxs);
-      font-weight: 500;
-      letter-spacing: 1px;
-    }
   }
 `;
+
+const welcomeButtonClass = css`
+  margin-top: 1.3em;
+`
 
 const onCanvas = (el: HTMLCanvasElement) => {
   el && new Visual(el, 'blue');
@@ -109,7 +100,7 @@ export default (props: RouteSectionProps) => {
             欢迎来到
             <span style="margin-left: 10px">Ting</span>
           </div>
-          <Button class="but" onClick={toHome}>
+          <Button class={welcomeButtonClass} onClick={toHome} type='primary' size='large'>
             开始
           </Button>
         </div>

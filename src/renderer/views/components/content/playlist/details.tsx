@@ -117,20 +117,7 @@ const style = css`
       display: flex;
       align-items: flex-end;
       height: var(--size-buts);
-      > button {
-        margin-right: 15px;
-        height: 26px;
-        line-height: 26px;
-        font-size: var(--size-xxxs);
-        min-width: 85px;
-        &:last-child {
-          margin-right: 0;
-        }
-      }
-      > .primary {
-        background-color: var(--blue-color);
-        color: #fff;
-      }
+      gap: 15px;
     }
   }
 `;
@@ -175,7 +162,7 @@ const NeteaseHead = (props: { desc_show: boolean; on_desc_show: () => void; data
           </div>
         </div>
         <div class="buts">
-          <Button class="primary" onClick={() => audioPlayList(props.data?.tracks)}>
+          <Button type='primary' onClick={() => audioPlayList(props.data?.tracks)}>
             播放全部
           </Button>
           <Button
@@ -230,7 +217,7 @@ const QQHead = (props: { desc_show: boolean; on_desc_show: () => void; data: any
           </div>
         </div>
         <div class="buts">
-          <Button class="primary" onClick={() => audioPlayList(props.data?.songlist)}>
+          <Button type='primary' onClick={() => audioPlayList(props.data?.songlist)}>
             播放全部
           </Button>
           <Button

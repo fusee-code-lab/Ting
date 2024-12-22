@@ -62,5 +62,7 @@ injectGlobal`
 
     --size-radius-xs: 3px;
     --size-radius-sm: 6px;
+    --size-radius-md: 8px;
+    --size-radius-lg: 9px;
   }
 `;
