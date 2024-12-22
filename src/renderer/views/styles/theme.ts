@@ -3,8 +3,10 @@ import { preload, getStore } from '@youliso/electronic/render';
 import { baseTheme, darkTheme, lightTheme } from '@/cfg/theme';
 import { setCssVariant } from '@/renderer/common/utils';
 import { injectGlobal } from '@emotion/css';
+import { OS } from '@/renderer/store';
 
 export let theme = await getStore<ThemeObj>('theme');
+const genericHeadHeight = OS !== 'mac' ? baseTheme.headHeight : 40;
 
 preload.on('theme-updated', async (themeSource) => {
   document.documentElement.setAttribute('theme', themeSource);
@@ -42,7 +44,7 @@ injectGlobal`
 
   :root {
     --event-width: ${baseTheme.eventWidth}px;
-    --head-height: ${baseTheme.headHeight}px;
+    --head-height: ${genericHeadHeight}px;
     --menu-width: ${baseTheme.menuWidth}px;
     --audio-height: ${baseTheme.audioHeight}px;
 
