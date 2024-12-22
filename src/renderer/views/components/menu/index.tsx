@@ -1,23 +1,12 @@
-import { css } from '@emotion/css';
+import { css, cx } from '@emotion/css';
 import Search from './search';
 import { Playlist } from './inner/playlist';
 import { OS } from '@/renderer/store';
+import { dragStyle } from '@/renderer/views/styles';
 
 const style = css`
   width: var(--menu-width);
   background-color: var(--menu-bg-color);
-    
-  > .head {
-    height: var(--head-height);
-    line-height: var(--head-height);
-    padding: 0 10px;
-    font-size: var(--size-xxxs);
-  }
-    
-  > .mac-head {
-      // 在 macos 下隐藏左上角的标题，否则和红绿灯按钮冲突
-      visibility: hidden;
-  }
     
   > .content {
     height: calc(100% - var(--head-height));
@@ -33,12 +22,22 @@ const style = css`
   }
 `;
 
+const menuHeadStyle = css`
+    height: var(--head-height);
+    line-height: var(--head-height);
+    padding: 0 10px;
+    font-size: var(--size-xxxs);
+    width: 100%;
+`
+
 export default () => {
   const isMac = OS === 'mac';
 
   return (
     <div class={style}>
-      <div class="head" classList={{ "mac-head": isMac }}>Ting</div>
+      <div class={cx(menuHeadStyle, dragStyle)}>
+        {!isMac && "Ting"}
+      </div>
       <div class="content">
         <Search class="search" />
         <Playlist />
