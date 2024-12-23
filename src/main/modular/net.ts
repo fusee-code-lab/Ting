@@ -1,18 +1,35 @@
-import { createReadStream, stat, type Stats } from 'node:fs';
-import { basename, extname } from 'node:path';
+import { openAsBlob } from 'node:fs';
+import { basename } from 'node:path';
+import { WritableStream } from 'node:stream/web';
 
-const stats = (path: string) => {
-  return new Promise<Stats | null>((resolve) => {
-    stat(path, (err, stats) => {
-      if (err) {
-        console.error(err);
-        resolve(null);
-        return;
-      }
-      resolve(stats);
-    });
-  });
-};
+type DATA_TYPE = 'TEXT' | 'JSON' | 'BUFFER';
+
+/**
+ * 数据处理
+ */
+export const responseData = async (type: DATA_TYPE, response: Response) => {
+  let data;
+  switch (type) {
+    case 'JSON':
+      data = await response.json().catch((error) => {
+        throw error;
+      });
+      break;
+    case 'TEXT':
+      data = await response.text().catch((error) => {
+        throw error;
+      });
+      break;
+    case 'BUFFER':
+    default:
+      data = await response.arrayBuffer().catch((error) => {
+        throw error;
+      });
+      data = Buffer.from(data);
+      break;
+  }
+  return { data, headers: response.headers };
+}
 
 /**
  * 对象转参数
@@ -39,11 +56,10 @@ export const queryParams = (data: any): string => {
 };
 
 export interface RequestOpt extends RequestInit {
-  isStringify?: boolean;
   controller?: AbortController;
   data?: any;
   timeout?: number;
-  type?: 'TEXT' | 'JSON' | 'BUFFER';
+  type?: DATA_TYPE;
 }
 
 export interface RequestDownloadOpt extends RequestOpt {
@@ -52,8 +68,9 @@ export interface RequestDownloadOpt extends RequestOpt {
 
 export interface RequestUploadOpt extends RequestOpt {
   filePath: string;
+  fileKey?: string;
   fileName?: string;
-  onUploadProgress?: (status: 'open' | 'ing' | 'end', size?: number, fullSize?: number) => void;
+  onUploadProgress?: (progress: number) => void;
 }
 
 /**
@@ -77,30 +94,7 @@ export const request = <T>(
   return fetch(url, { ...params, signal: controller.signal })
     .then(async (response) => {
       clearTimeout(id);
-      let data;
-      switch (params.type) {
-        case 'BUFFER':
-          data = await response.arrayBuffer().catch((error) => {
-            throw error;
-          });
-          break;
-        case 'JSON':
-          data = await response.json().catch((error) => {
-            throw error;
-          });
-          break;
-        case 'TEXT':
-          data = await response.text().catch((error) => {
-            throw error;
-          });
-          break;
-        default:
-          data = await response.arrayBuffer().catch((error) => {
-            throw error;
-          });
-          break;
-      }
-      return { data, headers: response.headers };
+      return await responseData(params.type!, response);
     })
     .catch((error) => {
       clearTimeout(id);
@@ -165,34 +159,28 @@ export const upload = async (
   error?: Error;
 }> => {
   params.method ??= 'POST';
+  params.type ??= 'JSON';
   params.timeout ??= 1000 * 60;
   if (params.data && params.method === 'GET') url += `?${queryParams(params.data)}`;
   const controller = params.controller ?? new AbortController();
   const id = setTimeout(() => controller.abort(), params.timeout);
   try {
-    const fileInfo = await stats(params.filePath);
-    if (!fileInfo) {
-      throw new Error('file not exists');
-    }
+    let sendChunkLength = 0;
     const isProgress = !!params.onUploadProgress;
-    const readStream = createReadStream(params.filePath, {
-      autoClose: true
-    });
-    readStream.on('open', () => {
-      isProgress && params.onUploadProgress!('open');
-    });
-    readStream.on('data', () => {
-      isProgress && params.onUploadProgress!('ing', readStream.bytesRead, fileInfo.size);
-    });
-    readStream.on('end', () => {
-      isProgress && params.onUploadProgress!('end');
-    });
     const form = new FormData();
+    const blob = await openAsBlob(params.filePath);
+    blob.stream().pipeTo(
+      new WritableStream({
+        write(chunk) {
+          sendChunkLength += chunk.length;
+          isProgress && params.onUploadProgress!(sendChunkLength / blob.size);
+        }
+      })
+    );
     form.append(
-      'file',
-      // @ts-ignore
-      readStream,
-      params.fileName ?? basename(params.filePath, extname(params.filePath))
+      params.fileKey || 'file',
+      blob,
+      params.fileName ?? basename(params.filePath)
     );
     const response = await fetch(url, {
       ...params,
@@ -202,30 +190,7 @@ export const upload = async (
       throw error;
     });
     clearTimeout(id);
-    let data;
-    switch (params.type) {
-      case 'BUFFER':
-        data = await response.arrayBuffer().catch((error) => {
-          throw error;
-        });
-        break;
-      case 'JSON':
-        data = await response.json().catch((error) => {
-          throw error;
-        });
-        break;
-      case 'TEXT':
-        data = await response.text().catch((error) => {
-          throw error;
-        });
-        break;
-      default:
-        data = await response.arrayBuffer().catch((error) => {
-          throw error;
-        });
-        break;
-    }
-    return { data, headers: response.headers };
+    return await responseData(params.type!, response);
   } catch (error) {
     clearTimeout(id);
     return { error: error as Error };
