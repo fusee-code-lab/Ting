@@ -8,9 +8,9 @@ import { set_content_route } from '@/renderer/store/content';
 const style = css`
   > input {
     width: 100%;
-    font-size: var(--size-xxxs);
+    font-size: var(--size-xxs);
     &::-webkit-input-placeholder {
-      font-size: var(--size-xxxs);
+      font-size: var(--size-xxs);
     }
   }
 `;

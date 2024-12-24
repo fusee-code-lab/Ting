@@ -56,6 +56,15 @@ export const audio_play_list_add = (data: SongItem) => {
   return index;
 };
 
+export const audio_play_list_remove = (id: string | number) => {
+  const index = audio_play_list_data.findLastIndex((e) => e.id === id);
+  if (index !== -1) {
+    const isIng = index === audio_play_index();
+    set_audio_play_list_data(produce((data) => data.splice(index, 1)));
+    isIng && audioPlay();
+  }
+};
+
 export const audio_play_list_update = (
   id: string | number,
   new_data: { [key: string]: string | number }

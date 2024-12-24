@@ -6,8 +6,9 @@ import { Playlist } from '@/types/playlist';
 import { playlist_list_data_load } from '@/renderer/store/playlist';
 
 const titleStyle = css`
-  font-size: var(--size-xxxs);
+  font-size: var(--size-xxs);
   color: var(--title-label-color);
+  padding-bottom: 4px;
 `;
 
 export const ItemTitle = (props: { class?: string; title: string }) => {
@@ -17,7 +18,7 @@ export const ItemTitle = (props: { class?: string; title: string }) => {
 const itemStyle = css`
   display: flex;
   align-items: center;
-  height: 20px;
+  height: 23px;
   --icon-size: 14 px;
   > .icon {
     width: var(--icon-size);
@@ -28,7 +29,7 @@ const itemStyle = css`
     ${textEllipsis}
     width: calc(100% - var(--icon-size));
     padding-left: 6px;
-    font-size: var(--size-xxxs);
+    font-size: var(--size-xxs);
     line-height: var(--size-xxs);
   }
 `;

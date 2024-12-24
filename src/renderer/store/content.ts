@@ -1,9 +1,10 @@
-import { Component, createSignal, lazy } from 'solid-js';
+import { Component, lazy } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 
-type ContentView = 'search_list' | 'play_list_details';
+type ContentView = 'setting' | 'search_list' | 'play_list_details';
 
 const content_routes: { [key in ContentView]: Component } = {
+  setting: lazy(() => import('@/renderer/views/components/content/setting')),
   search_list: lazy(() => import('@/renderer/views/components/content/search')),
   play_list_details: lazy(() => import('@/renderer/views/components/content/playlist'))
 };
@@ -38,6 +39,9 @@ export const back_content_route = (num: number = 1) => {
         index !== -1 && history.splice(0, index);
       })
     );
+  } else {
+    set_content_router('path', undefined);
+    set_content_router('history', []);
   }
 };
 

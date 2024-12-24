@@ -62,6 +62,7 @@ injectGlobal`
     --size-xxl: 21px;
     --size-xxxl: 30px;
 
+    --size-radius-xxs: 2px;
     --size-radius-xs: 3px;
     --size-radius-sm: 6px;
     --size-radius-md: 8px;

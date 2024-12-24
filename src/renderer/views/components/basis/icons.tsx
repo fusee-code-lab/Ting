@@ -9,6 +9,15 @@ const style = css`
   color: var(--label-color);
 `;
 
+const close = css`
+  &::before {
+    content: '\\e613';
+  }
+`;
+export const CloseIcon = (props: { onClick?: (e: MouseEvent) => void }) => (
+  <span class={cx(style, close)} onClick={props.onClick}></span>
+);
+
 const back = css`
   &::before {
     content: '\\e61b';

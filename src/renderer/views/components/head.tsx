@@ -27,7 +27,7 @@ const style = css`
 export default () => {
   return (
     <div class={cx(style, dragStyle)}>
-      <Show when={content_router.history.length > 1}>
+      <Show when={content_router.history.length}>
         <div class={cx('back', nodragStyle)} onClick={() => back_content_route()}>
           <BackIcon />
         </div>
