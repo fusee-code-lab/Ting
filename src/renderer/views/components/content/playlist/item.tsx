@@ -4,6 +4,7 @@ import { textEllipsis } from '@/renderer/views/styles';
 import { css, cx } from '@emotion/css';
 import { SongItem } from '@/types/music';
 import { VList } from 'virtua/solid';
+import { formatTime } from '@/renderer/common/utils';
 
 const songListTableStyle = css`
   &:nth-child(1) {
@@ -68,7 +69,7 @@ const SongListItem = (props: { data: SongItem }) => {
       </div>
       <div class="mod artists">{props.data.artists.map((e) => e.name).join(',')}</div>
       <div class="mod album">{props.data.album.name || '-'}</div>
-      <div class="mod">{props.data.song_time}</div>
+      <div class="mod">{formatTime(props.data.song_time)}</div>
     </div>
   );
 };

@@ -8,6 +8,12 @@ export function randomInteger(start: number = 0, end: number = 1): number {
   return (Math.random() * (end - start + 1) + start) | 0;
 }
 
+export function formatTime(time: number): string {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60); // 使用 Math.floor 取整
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
 export const getWebFilePath = (file: File) => {
   return preload.bridge<string>('utils-file-path', file);
 };
