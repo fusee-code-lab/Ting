@@ -1,3 +1,13 @@
+export async function getSpeakerList(): Promise<MediaDeviceInfo[]> {
+  try {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    return devices.filter(device => device.kind === 'audiooutput');
+  } catch (error) {
+    console.error('Error accessing media devices.', error);
+    return [];
+  }
+}
+
 export class AudioHelper {
   mediaStream: MediaStream;
   audioctx: AudioContext;
@@ -132,6 +142,21 @@ export class AudioPlay {
     this.sourceAudio.connect(this.gainNode); //链接音量控制节点
     this.gainNode.connect(this.AudioContext.destination); //链接音乐通道
     this.onAudio();
+  }
+
+  async switchOutputDevice(deviceId: string) {
+    try {
+      // 确保音频元素已经连接到音频上下文
+      if (this.currentAudio && this.sourceAudio) {
+        // 切换输出设备
+        await this.currentAudio.setSinkId(deviceId);
+        console.log(`Output device switched to ${deviceId}`);
+      } else {
+        console.error('Audio element or source node is not initialized.');
+      }
+    } catch (error) {
+      console.error('Error switching output device:', error);
+    }
   }
 
   onAudio() {
