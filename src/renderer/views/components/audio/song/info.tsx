@@ -1,6 +1,6 @@
 import { textEllipsis } from "@/renderer/views/styles";
 import { css, cx } from "@emotion/css";
-import { SongItem } from "@fuseecodelab/ting-lib";
+import { SongItem } from "@/types/music";
 
 
 const audio_info_style = css`

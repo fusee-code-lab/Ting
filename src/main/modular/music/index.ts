@@ -1,50 +1,31 @@
 import { preload } from '@youliso/electronic/main';
-import type { MusicSearchType, MusicType, SongQualityType } from '@fuseecodelab/ting-lib';
-import { netease, qq } from '@fuseecodelab/ting-lib';
 import { neteaseOn } from './netease';
+import { MusicSearchType, SongQualityType } from '@/types/music';
+import { search } from './netease/module/search';
+import { song_url } from './netease/module/song';
+import { playlist_detail, playlist_song_list } from './netease/module/playlist';
 
-const search = async (
+const search_song = async (
   keywords: string,
   limit: number,
   offset: number,
   type: MusicSearchType = 'single'
 ) => {
-  let func = [netease.search(keywords, limit, offset, type), qq.search(keywords, limit, offset, type)];
-  let data: any = {};
-  const res = await Promise.all<any>(func);
-  if (res[0]) {
-    data['netease'] = res[0];
-  }
-  if (res[1]) {
-    data['qq'] = res[1];
-  }
-  return data;
+  const res = await search(keywords, limit, offset, type);
+  return res;
 };
 
-const song_url = (
-  type: MusicType,
+const get_song_url = (
   ids: (string | number)[],
   level: SongQualityType = 'exhigh'
 ) => {
-  switch (type) {
-    case 'netease':
-      return netease.song_url(ids.map(id => Number(id)), level);
-    case 'qq':
-      return qq.song_url(ids.map(id => id.toString()), level);
-  }
+  return song_url(ids.map(id => Number(id)), level);
 };
 
-
-const playlist_details = (
-  type: MusicType,
+const get_playlist_details = (
   id: string
 ) => {
-  switch (type) {
-    case 'netease':
-      return netease.playlist_detail(id);
-    case 'qq':
-      return qq.playlist_detail(id);
-  }
+  return playlist_detail(id);
 };
 
 /**
@@ -53,8 +34,9 @@ const playlist_details = (
 export function musicOn() {
   neteaseOn();
   preload.handle('music-search', async (_, args) =>
-    search(args.keywords, args.limit, args.offset, args.type)
+    search_song(args.keywords, args.limit, args.offset, args.type)
   );
-  preload.handle('music-songurl', async (_, args) => song_url(args.type, args.ids, args.level));
-  preload.handle('music-playlist-details', async (_, args) => playlist_details(args.type, args.id));
+  preload.handle('music-songurl', async (_, args) => get_song_url(args.ids, args.level));
+  preload.handle('music-playlist-details', async (_, args) => get_playlist_details(args.id));
+  preload.handle('music-playlist-song-list', async (_, args) => playlist_song_list(args.id, args.offset, args.limit));
 }

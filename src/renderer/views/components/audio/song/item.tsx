@@ -1,7 +1,7 @@
 import { audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
 import { textEllipsis } from '@/renderer/views/styles';
 import { css, cx } from '@emotion/css';
-import { SongItem } from '@fuseecodelab/ting-lib';
+import { SongItem } from '@/types/music';
 
 const style = css`
   --size: 30px;

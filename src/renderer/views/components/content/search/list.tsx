@@ -2,7 +2,7 @@ import { search_val, song_search_list } from '@/renderer/store/song';
 import { css } from '@emotion/css';
 import { For, Show } from 'solid-js';
 import { Item, PlaylistItem } from './item';
-import type { MusicSearchType } from '@fuseecodelab/ting-lib';
+import type { MusicSearchType } from '@/types/music';
 
 const listTitleStyle = css`
   position: sticky;
@@ -40,14 +40,7 @@ export const ListData = (props: { key: MusicSearchType }) => {
         <div>
           <ListTitle title="单曲" />
           <div class={style}>
-            <For
-              each={[
-                ...(song_search_list[props.key]?.netease?.songs || []),
-                ...(song_search_list[props.key]?.qq?.list || [])
-              ]}
-            >
-              {(item) => <Item data={item} />}
-            </For>
+            <For each={song_search_list[props.key]?.songs}>{(item) => <Item data={item} />}</For>
           </div>
         </div>
       );
@@ -57,12 +50,7 @@ export const ListData = (props: { key: MusicSearchType }) => {
         <div style="margin-top: 15px">
           <ListTitle title="歌单" />
           <div class={style}>
-            <For
-              each={[
-                ...(song_search_list[props.key]?.netease?.playlists || []),
-                ...(song_search_list[props.key]?.qq?.list || [])
-              ]}
-            >
+            <For each={song_search_list[props.key]?.playlists}>
               {(item) => <PlaylistItem data={item} />}
             </For>
           </div>

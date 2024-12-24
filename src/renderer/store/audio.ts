@@ -1,4 +1,4 @@
-import type { SongItem } from '@fuseecodelab/ting-lib';
+import type { SongItem } from '@/types/music';
 import { AudioPlay } from '../common/audio';
 import { song_url } from '../common/music';
 import { createStore, produce } from 'solid-js/store';
@@ -78,7 +78,7 @@ export const audioPlay = async (data?: SongItem) => {
     audio.play(song['play_url']);
     set_audio_play_index(index);
   } else {
-    const res = await song_url(song.source_type, [song.id]);
+    const res = await song_url([song.id]);
     if (res && res[song.id]) {
       audio_play_list_update(song.id, { play_url: res[song.id] });
       audio.play(res[song.id]);

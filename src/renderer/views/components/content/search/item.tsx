@@ -1,8 +1,8 @@
 import { css, cx } from '@emotion/css';
 import { textEllipsis } from '../../../styles';
-import { Match, Switch } from 'solid-js';
+import { Match, Show, Switch } from 'solid-js';
 import { audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
-import type { SongItem } from '@fuseecodelab/ting-lib';
+import type { SongItem } from '@/types/music';
 import { playlist_list_data_load } from '@/renderer/store/playlist';
 
 const style = css`
@@ -58,9 +58,6 @@ export const Item = (props: { class?: string; data: SongItem }) => {
         <Match when={props.data.source_type === 'netease'}>
           <img class="img" src={`${props.data.song_img_url}?param=120y120`} />
         </Match>
-        <Match when={props.data.source_type === 'qq'}>
-          <img class="img" src={`${props.data.song_img_url}?max_age=2592000`} />
-        </Match>
       </Switch>
       <div class="title">{props.data.song_name}</div>
       <div class="text">{props.data.song_desc}</div>
@@ -69,27 +66,12 @@ export const Item = (props: { class?: string; data: SongItem }) => {
 };
 export const PlaylistItem = (props: { class?: string; data: any }) => {
   return (
-    <div
-      onClick={() =>
-        playlist_list_data_load(
-          props.data.dissid ? 'qq' : 'netease',
-          props.data.dissid || props.data.id
-        )
-      }
-      class={cx(style, props.class)}
-    >
-      <Switch>
-        <Match when={!!props.data.id}>
-          <img class="img" src={`${props.data.coverImgUrl}?max_age=2592000`} />
-          <div class="title">{props.data.name}</div>
-          <div class="text">{props.data.description}</div>
-        </Match>
-        <Match when={!!props.data.dissid}>
-          <img class="img" src={`${props.data.imgurl}?max_age=2592000`} />
-          <div class="title">{props.data.dissname}</div>
-          <div class="text">{props.data.introduction}</div>
-        </Match>
-      </Switch>
+    <div onClick={() => playlist_list_data_load(props.data.id)} class={cx(style, props.class)}>
+      <Show when={!!props.data.id}>
+        <img class="img" src={`${props.data.coverImgUrl}?max_age=2592000`} />
+        <div class="title">{props.data.name}</div>
+        <div class="text">{props.data.description}</div>
+      </Show>
     </div>
   );
 };

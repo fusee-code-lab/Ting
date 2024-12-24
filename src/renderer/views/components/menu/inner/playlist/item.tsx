@@ -3,7 +3,6 @@ import play_list_icon from '@/assets/icons/play_list_icon.png';
 import play_list_icon2x from '@/assets/icons/play_list_icon@2x.png';
 import { textEllipsis } from '@/renderer/views/styles';
 import { Playlist } from '@/types/playlist';
-import { MusicType } from '@fuseecodelab/ting-lib';
 import { playlist_list_data_load } from '@/renderer/store/playlist';
 
 const titleStyle = css`
@@ -35,8 +34,8 @@ const itemStyle = css`
 `;
 
 const toPlayList = async (data: Playlist) => {
-  const [type, id] = data.key.split('_') as [MusicType, string];
-  await playlist_list_data_load(type, id);
+  const [, id] = data.key.split('_') as [string, string];
+  await playlist_list_data_load(id);
 };
 export const Item = (props: { class?: string; data: Playlist }) => {
   return (
