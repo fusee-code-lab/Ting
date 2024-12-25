@@ -4,12 +4,13 @@ import { preload, storeInstance, windowInstance } from '@youliso/electronic/main
 import { nativeTheme, systemPreferences } from 'electron';
 import { debounce } from './tools';
 
-export const getThemeSource = () =>
-  nativeTheme.themeSource === 'system'
-    ? nativeTheme.shouldUseDarkColors
-      ? 'dark'
-      : 'light'
-    : nativeTheme.themeSource;
+// TODO 暗黑模式待完善，先支持完正常样式
+export const getThemeSource = () => 'light' as 'light';
+// nativeTheme.themeSource === 'system'
+//   ? nativeTheme.shouldUseDarkColors
+//     ? 'dark'
+//     : 'light'
+//   : nativeTheme.themeSource;
 
 export const theme = () => storeInstance.get<ThemeObj>('theme')!;
 export const themeRefresh = () => {

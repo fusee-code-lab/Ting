@@ -9,29 +9,29 @@ const defaultStyle = css`
   letter-spacing: 1px;
   font-weight: 500;
   line-height: 1.5;
-  transition: background-color .2s;
+  transition: background-color 0.2s;
 `;
 
 // TODO: global palette
 const styles = {
   default: css`
-    background-color: #F5F5F5;
+    background-color: #f5f5f5;
     color: var(--label-color);
     &:hover {
-      background-color: #EDEDED;
+      background-color: #ededed;
     }
     &:active {
-      background-color: #E0E0E0;
+      background-color: #e0e0e0;
     }
   `,
   primary: css`
     background-color: var(--blue-color);
     color: var(--white-color);
     &:hover {
-      background-color: #4E8CED;
+      background-color: #4e8ced;
     }
     &:active {
-      background-color: #0F6CBD;
+      background-color: #0f6cbd;
     }
   `
 };
@@ -51,7 +51,7 @@ const sizeStyles = {
     padding: 2px 12px;
     font-size: var(--size-xxs);
     border-radius: var(--size-radius-xs);
-  `,
+  `
 } as const;
 
 type ButtonSize = keyof typeof sizeStyles;
@@ -64,11 +64,15 @@ const Button = (props: {
   onClick?: () => void;
   children?: JSX.Element;
 }) => {
-  const sizeCss = sizeStyles[props.size || 'normal'];
-  const typeCss = styles[props.type || 'default'];
   return (
     <button
-      class={cx(nodragStyle, defaultStyle, typeCss, sizeCss, props.class)}
+      class={cx(
+        nodragStyle,
+        defaultStyle,
+        styles[props.type || 'default'],
+        sizeStyles[props.size || 'normal'],
+        props.class
+      )}
       disabled={props.disabled}
       onClick={props.onClick}
     >

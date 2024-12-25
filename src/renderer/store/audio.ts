@@ -1,4 +1,4 @@
-import type { SongItem } from '@/types/music';
+import type { SongItem, SongQualityType } from '@/types/music';
 import { AudioPlay } from '../common/audio';
 import { song_url } from '../common/music';
 import { createStore, produce } from 'solid-js/store';
@@ -14,6 +14,9 @@ export const [audio_play_list_data, set_audio_play_list_data] = createStore<Song
 export const [audio_play_type, set_audio_play_type] = createSignal<'single' | 'list' | 'random'>(
   'list'
 );
+
+// 播放质量
+export const [audio_play_quality, set_audio_play_quality] = createSignal<SongQualityType>('exhigh');
 
 // 上一曲为负 下一曲为正
 export const [audio_play_next_type, set_audio_play_next_type] = createSignal<number>(0);
@@ -43,14 +46,16 @@ export const audio_play_list_add_list = (data: SongItem[], reset: boolean = fals
   const old_data = audio_play_list_data.map((e) => `${e.source_type}-${e.id}`);
   const new_data = data.filter((e) => !old_data.includes(`${e.source_type}-${e.id}`));
   if (new_data.length > 0) {
-    set_audio_play_list_data((e) => reset ? new_data : [...e, ...new_data]);
+    set_audio_play_list_data((e) => (reset ? new_data : [...e, ...new_data]));
   }
 };
 
 export const audio_play_list_add = (data: SongItem) => {
-  const index = audio_play_list_data.findLastIndex(e => `${e.source_type}-${e.id}` === `${data.source_type}-${data.id}`);
+  const index = audio_play_list_data.findLastIndex(
+    (e) => `${e.source_type}-${e.id}` === `${data.source_type}-${data.id}`
+  );
   if (index === -1) {
-    set_audio_play_list_data(e => [...e, data]);
+    set_audio_play_list_data((e) => [...e, data]);
     return audio_play_list_data.length - 1;
   }
   return index;
@@ -87,7 +92,7 @@ export const audioPlay = async (data?: SongItem) => {
     audio.play(song['play_url']);
     set_audio_play_index(index);
   } else {
-    const res = await song_url([song.id]);
+    const res = await song_url([song.id], audio_play_quality());
     if (res && res[song.id]) {
       audio_play_list_update(song.id, { play_url: res[song.id] });
       audio.play(res[song.id]);
