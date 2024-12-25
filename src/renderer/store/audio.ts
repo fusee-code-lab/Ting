@@ -4,6 +4,7 @@ import { song_url } from '../common/music';
 import { createStore, produce } from 'solid-js/store';
 import { createSignal } from 'solid-js';
 import { randomInteger } from '../common/utils';
+import { settingInsert, settingKey, settingUpdate } from '../common/db/basic';
 
 export const audio = new AudioPlay();
 
@@ -16,7 +17,7 @@ export const [audio_play_type, set_audio_play_type] = createSignal<'single' | 'l
 );
 
 // 播放质量
-export const [audio_play_quality, set_audio_play_quality] = createSignal<SongQualityType>('exhigh');
+export const [audio_play_quality, set_audio_play_quality] = createSignal<SongQualityType>();
 
 // 上一曲为负 下一曲为正
 export const [audio_play_next_type, set_audio_play_next_type] = createSignal<number>(0);
@@ -32,8 +33,10 @@ export const [audio_status, set_audio_status] = createStore({
   volume: 100
 });
 
+// 当前播放歌曲
 export const audio_play_ing_data = () => audio_play_list_data[audio_play_index()] || null;
 
+// 判断是否是当前歌曲
 export const is_audio_play_ing_data = (key: string) => {
   const data = audio_play_ing_data();
   if (data && `${data.id}_${data.source_type}` === key) {
@@ -41,6 +44,16 @@ export const is_audio_play_ing_data = (key: string) => {
   }
   return false;
 };
+
+// 设置播放质量
+export const audio_play_quality_set = async (type: SongQualityType) => {
+  if (audio_play_quality()) {
+    await settingUpdate('audio_play_quality', type);
+  } else {
+    await settingInsert([{ key: 'audio_play_quality', data: type }]);
+  }
+  set_audio_play_quality(type);
+}
 
 export const audio_play_list_add_list = (data: SongItem[], reset: boolean = false) => {
   const old_data = audio_play_list_data.map((e) => `${e.source_type}-${e.id}`);
@@ -83,6 +96,19 @@ export const audio_play_list_update = (
     );
   }
 };
+
+
+// 初始化加载
+export const audio_init = async () => {
+  const res = await Promise.all([settingKey('audio_play_quality')]);
+  if (res[0]) {
+    res[0] && set_audio_play_quality(res[0] as SongQualityType);
+  } else {
+    await settingInsert([{ key: 'audio_play_quality', data: "exhigh" }]);
+    set_audio_play_quality("exhigh");
+  }
+}
+
 
 export const audioPlay = async (data?: SongItem) => {
   let index = (data && audio_play_list_add(data)) ?? audio_play_index();

@@ -1,6 +1,9 @@
 import { css, cx } from '@emotion/css';
 import Button from '../../basis/button';
-import { audio_play_quality, set_audio_play_quality } from '@/renderer/store/audio';
+import {
+  audio_play_quality,
+  audio_play_quality_set
+} from '@/renderer/store/audio';
 import { SongQualityType } from '@/types/music';
 import { appInfo, download_path, download_path_set } from '@/renderer/store';
 import { openUrl } from '@youliso/electronic/render';
@@ -137,7 +140,7 @@ const QualityItem = (props: { type: SongQualityType; text: string }) => (
   <Button
     class="but"
     type={audio_play_quality() === props.type ? 'primary' : undefined}
-    onClick={() => set_audio_play_quality(props.type)}
+    onClick={() => audio_play_quality_set(props.type)}
   >
     {props.text}
   </Button>
