@@ -1,9 +1,12 @@
-import { css } from '@emotion/css';
+import { css, cx } from '@emotion/css';
 import Button from '../../basis/button';
 import { audio_play_quality, set_audio_play_quality } from '@/renderer/store/audio';
 import { SongQualityType } from '@/types/music';
-import { appInfo } from '@/renderer/store';
+import { appInfo, download_path, download_path_set } from '@/renderer/store';
 import { openUrl } from '@youliso/electronic/render';
+import { textEllipsis } from '@/renderer/views/styles';
+import { playlist_save_path, playlist_save_path_set } from '@/renderer/store/playlist';
+import { showOpenDialog } from '@/renderer/common/dialog';
 
 const titleStyle = css`
   padding: 0 30px 30px;
@@ -28,6 +31,81 @@ const modStyle = css`
     padding-top: 12px;
   }
 `;
+
+const downloadStype = css`
+  display: flex;
+  align-items: center;
+  > .path {
+    background: rgba(0, 0, 0, 0.05);
+    width: 255px;
+    height: 24px;
+    font-size: var(--size-xxs);
+    line-height: 24px;
+    padding: 0 15px;
+    border-top-left-radius: var(--size-radius-xs);
+    border-bottom-left-radius: var(--size-radius-xs);
+  }
+  > .but {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: var(--size-radius-xs);
+    border-bottom-right-radius: var(--size-radius-xs);
+    font-size: var(--size-xxxs);
+    line-height: var(--size-xxxs);
+    width: 50px;
+    height: 24px;
+    padding: 0;
+  }
+`;
+const DownloadPath = () => (
+  <div class={modStyle}>
+    <div class="title">下载路径</div>
+    <div class={cx('value', downloadStype)}>
+      <div class={cx('path', textEllipsis)}>{download_path() || '-'}</div>
+      <Button
+        class="but"
+        type="primary"
+        onClick={() => {
+          showOpenDialog({
+            title: '选择下载路径',
+            properties: ['openDirectory'],
+            defaultPath: download_path()
+          }).then((res) => {
+            if (res.canceled) return;
+            download_path_set(res.filePaths[0]);
+          });
+        }}
+      >
+        选择
+      </Button>
+    </div>
+  </div>
+);
+
+const PlaylistPath = () => (
+  <div class={modStyle}>
+    <div class="title">默认歌单路径</div>
+    <div class={cx('value', downloadStype)}>
+      <div class={cx('path', textEllipsis)}>{playlist_save_path() || '-'}</div>
+      <Button
+        class="but"
+        type="primary"
+        onClick={() => {
+          showOpenDialog({
+            title: '选择默认歌单路径',
+            properties: ['openDirectory'],
+            defaultPath: playlist_save_path()
+          }).then((res) => {
+            if (res.canceled) return;
+            playlist_save_path_set(res.filePaths[0]);
+          });
+        }}
+      >
+        选择
+      </Button>
+    </div>
+  </div>
+);
 
 const qualityStyle = css`
   border-radius: var(--size-radius-xs);
@@ -132,6 +210,8 @@ export default () => {
     <>
       <Title />
       <div class={style}>
+        <DownloadPath />
+        <PlaylistPath />
         <Quality />
         <About />
       </div>

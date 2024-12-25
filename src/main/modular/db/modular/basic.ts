@@ -117,7 +117,7 @@ export function basic_close() {
  */
 export function basic_on() {
   preload.handle('basic-setting-list', () => select_basic_setting_list());
-  preload.handle('basic-setting', (_, key) => select_basic_setting(key));
+  preload.handle('basic-setting-key', (_, key) => select_basic_setting(key));
   preload.handle('basic-setting-insert', (_, data) => insert_basic_setting(data));
   preload.handle('basic-setting-update', (_, { key, data }) => update_basic_setting(key, data));
   preload.handle('basic-setting-delete', (_, key) => delete_basic_setting(key));

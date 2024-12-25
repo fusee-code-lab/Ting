@@ -15,6 +15,7 @@ import { themeOn, themeRefresh } from './modular/theme';
 import { musicOn } from './modular/music';
 import { windowInit, windowOn } from './modular/windows';
 import { DBClose, DBInit, DBOn } from './modular/db';
+import { dialogOn } from './modular/dialog';
 
 preload.initialize();
 
@@ -80,6 +81,7 @@ app.whenReady().then(async () => {
 
   DBOn();
   windowOn();
+  dialogOn();
   musicOn();
 
   DBInit();
