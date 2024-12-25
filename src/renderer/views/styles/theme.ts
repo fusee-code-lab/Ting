@@ -52,6 +52,7 @@ injectGlobal`
     --white-color: #ffffff;
     --blue-color: #3b78d6;
     --pink-color: #dd4e7c;
+    --gray-color: #f2f2f2;
 
     --size-xxxs: 12px;
     --size-xxs: 14px;

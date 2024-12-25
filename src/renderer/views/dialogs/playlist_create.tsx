@@ -41,7 +41,7 @@ const style = css`
 
       > .input {
         height: 32px;
-        background-color: var(--tertiary-label-color);
+        background-color: var(--gray-color);
       }
     }
 
