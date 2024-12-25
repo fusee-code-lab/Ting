@@ -6,6 +6,7 @@ import { css } from '@emotion/css';
 import Head from '../components/head';
 import Menu from '../components/menu';
 import Content from '../components/content';
+import { isProduction } from '@/renderer/store';
 
 const style = css`
   position: relative;
@@ -20,15 +21,17 @@ export default () => {
     windowShow();
   });
 
-  // TODO 禁止点击就关闭 后续根据设置变化
-  window.onbeforeunload = (e) => {
-    // windowHide();
-    // e.returnValue = false;
-  };
+  if (isProduction) {
+    // 禁止点击就关闭
+    window.onbeforeunload = (e) => {
+      windowHide();
+      e.returnValue = false;
+    };
+  }
 
   return (
     <div class="container">
-      <Head />
+      <Head back={true} />
       <div class={style}>
         <Menu />
         <Content />

@@ -15,6 +15,11 @@ const style = css`
   padding-left: 15px;
   display: flex;
   align-items: center;
+  &.width-all {
+    left: 0;
+    width: 100%;
+  }
+
   > .back {
     display: flex;
     align-items: center;
@@ -24,10 +29,10 @@ const style = css`
   }
 `;
 
-export default () => {
+export default (props: { back?: boolean; widthAll?: boolean }) => {
   return (
-    <div class={cx(style, dragStyle)}>
-      <Show when={content_router.history.length}>
+    <div class={cx(style, dragStyle, props.widthAll && 'width-all')}>
+      <Show when={props.back && content_router.history.length}>
         <div class={cx('back', nodragStyle)} onClick={() => back_content_route()}>
           <BackIcon />
         </div>

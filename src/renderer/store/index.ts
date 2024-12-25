@@ -7,6 +7,8 @@ import { audio_init } from './audio';
 
 export const OS = getOS();
 export const appInfo = await getAppInfo();
+export const isProduction = process.env.NODE_ENV === 'production';
+
 
 // 默认下载存储路径
 export const [download_path, set_download_path] = createSignal<string>();

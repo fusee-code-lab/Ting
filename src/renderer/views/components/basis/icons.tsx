@@ -18,6 +18,15 @@ export const CloseIcon = (props: { onClick?: (e: MouseEvent) => void }) => (
   <span class={cx(style, close)} onClick={props.onClick}></span>
 );
 
+const plus = css`
+  &::before {
+    content: '\\e60e';
+  }
+`;
+export const PlusIcon = (props: { onClick?: (e: MouseEvent) => void }) => (
+  <span class={cx(style, plus)} onClick={props.onClick}></span>
+);
+
 const back = css`
   &::before {
     content: '\\e61b';

@@ -76,6 +76,24 @@ export const createHome = () => {
   return windowInstance.new(customize, browserWindowOptions);
 };
 
+
+
+
+export const createDialog = (route: string) => {
+  let customize: Customize = {
+    route,
+    isOneWindow: true
+  };
+  let browserWindowOptions: BrowserWindowConstructorOptions = createOpts({
+    minWidth: 345,
+    minHeight: 200,
+    width: 345,
+    height: 200
+  });
+  browserWindowOptions.titleBarOverlay = false;
+  return windowInstance.new(customize, browserWindowOptions);
+};
+
 export const windowInit = () => {
   const is = select_basic_setting<number | undefined>('is_first');
   if (is == 1) {
@@ -94,4 +112,6 @@ export const windowOn = () => {
     await createHome();
     win?.destroy();
   });
+
+  preload.on('window-dialog', (_, route) => { createDialog(route) })
 };

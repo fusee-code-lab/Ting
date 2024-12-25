@@ -8,3 +8,6 @@ export const showOpenDialog = (
 export const showSaveDialog = (
   options: SaveDialogOptions, winId?: number
 ) => preload.invoke<SaveDialogReturnValue>('save-directory-dialog', { options, winId });
+
+
+export const createDialogWindow = (route: string) => preload.invoke<void>('window-dialog', route);
