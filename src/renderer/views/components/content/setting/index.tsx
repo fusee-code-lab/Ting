@@ -1,6 +1,8 @@
 import { css, cx } from '@emotion/css';
 import Button from '../../basis/button';
 import {
+  audio_play_device,
+  audio_play_device_set,
   audio_play_quality,
   audio_play_quality_set
 } from '@/renderer/store/audio';
@@ -10,6 +12,9 @@ import { openUrl } from '@youliso/electronic/render';
 import { textEllipsis } from '@/renderer/views/styles';
 import { playlist_save_path, playlist_save_path_set } from '@/renderer/store/playlist';
 import { showOpenDialog } from '@/renderer/common/dialog';
+import { Index } from 'solid-js';
+import { getSpeakerList } from '@/renderer/common/audio';
+import { Select, SelectItem } from '../../basis/select';
 
 const titleStyle = css`
   padding: 0 30px 30px;
@@ -161,6 +166,35 @@ const Quality = () => (
   </div>
 );
 
+const speakerStyle = css`
+  background: rgba(0, 0, 0, 0.05);
+  height: 28px;
+  max-width: 360px;
+`;
+
+const speakerList = await getSpeakerList();
+const Speaker = () => (
+  <div class={modStyle}>
+    <div class="title">
+      播放设备 <span style="color: var(--blue-color);font-size:var(--size-xxxs);">实验性</span>
+    </div>
+    <div class="value">
+      <Select
+        class={cx(speakerStyle, textEllipsis)}
+        value={audio_play_device()}
+        onChange={async (e) => {
+          await audio_play_device_set(e.currentTarget.value);
+          e.currentTarget.value = audio_play_device();
+        }}
+      >
+        <Index each={speakerList}>
+          {(item) => <SelectItem value={item().deviceId}>{item().label}</SelectItem>}
+        </Index>
+      </Select>
+    </div>
+  </div>
+);
+
 const aboutStyle = css`
   position: relative;
   > .txt {
@@ -216,6 +250,7 @@ export default () => {
         <DownloadPath />
         <PlaylistPath />
         <Quality />
+        <Speaker />
         <About />
       </div>
     </>

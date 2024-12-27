@@ -16,6 +16,3 @@ windowLoad(async () => {
   const View = routes[window.customize.route!];
   render(() => <View />, document.body);
 });
-
-
-console.log(process.env.NODE_ENV);

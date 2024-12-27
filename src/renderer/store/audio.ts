@@ -1,12 +1,34 @@
 import type { SongItem, SongQualityType } from '@/types/music';
-import { AudioPlay } from '../common/audio';
+import { AudioPlay, getSpeakerList } from '../common/audio';
 import { song_url } from '../common/music';
 import { createStore, produce } from 'solid-js/store';
 import { createSignal } from 'solid-js';
 import { randomInteger } from '../common/utils';
-import { settingInsert, settingKey, settingUpdate } from '../common/db/basic';
+import { settingKey, settingSet } from '../common/db/basic';
+
+// 播放设备
+export const [audio_play_device, set_audio_play_device] =
+  createSignal<MediaDeviceInfo['deviceId']>('default');
 
 export const audio = new AudioPlay();
+
+// 设置播放设备
+export const audio_play_device_set = async (deviceId: MediaDeviceInfo['deviceId']) => {
+  const speakerList = await getSpeakerList();
+  const old_id = audio_play_device();
+  const id = speakerList.find((e) => e.deviceId === deviceId)?.deviceId || 'default';
+  const is_up = old_id == id;
+  if (is_up) return;
+  try {
+    await audio.switchOutputDevice(id).catch((error) => {
+      throw error;
+    });
+    await settingSet('audio_play_device', id);
+    set_audio_play_device(id);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 // 当前播放列表
 export const [audio_play_list_data, set_audio_play_list_data] = createStore<SongItem[]>([]);
@@ -47,13 +69,9 @@ export const is_audio_play_ing_data = (key: string) => {
 
 // 设置播放质量
 export const audio_play_quality_set = async (type: SongQualityType) => {
-  if (audio_play_quality()) {
-    await settingUpdate('audio_play_quality', type);
-  } else {
-    await settingInsert([{ key: 'audio_play_quality', data: type }]);
-  }
+  await settingSet('audio_play_quality', type);
   set_audio_play_quality(type);
-}
+};
 
 export const audio_play_list_add_list = (data: SongItem[], reset: boolean = false) => {
   const old_data = audio_play_list_data.map((e) => `${e.source_type}-${e.id}`);
@@ -97,18 +115,25 @@ export const audio_play_list_update = (
   }
 };
 
-
 // 初始化加载
 export const audio_init = async () => {
-  const res = await Promise.all([settingKey('audio_play_quality')]);
-  if (res[0]) {
-    res[0] && set_audio_play_quality(res[0] as SongQualityType);
-  } else {
-    await settingInsert([{ key: 'audio_play_quality', data: "exhigh" }]);
-    set_audio_play_quality("exhigh");
+  const res = await Promise.all([
+    settingKey('audio_play_quality'),
+    settingKey('audio_play_device')
+  ]);
+  res[0] && set_audio_play_quality(res[0] as SongQualityType);
+  // 初始化播放设备
+  if (res[1]) {
+    try {
+      await audio.switchOutputDevice(res[1]).catch((error) => {
+        throw error;
+      });
+      set_audio_play_device(res[1]);
+    } catch (error) {
+      console.error(error);
+    }
   }
-}
-
+};
 
 export const audioPlay = async (data?: SongItem) => {
   let index = (data && audio_play_list_add(data)) ?? audio_play_index();
