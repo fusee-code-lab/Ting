@@ -1,6 +1,6 @@
 import { audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
 import { playlist_details_data } from '@/renderer/store/playlist';
-import { textEllipsis } from '@/renderer/views/styles';
+import { scrollYStyle, textEllipsis } from '@/renderer/views/styles';
 import { css, cx } from '@emotion/css';
 import { SongItem } from '@/types/music';
 import { VList } from 'virtua/solid';
@@ -112,7 +112,7 @@ export const SongList = () => {
         <div class="mod">专辑</div>
         <div class="mod">时长</div>
       </div>
-      <VList class="list" data={playlist_details_data!.tracks}>
+      <VList class={cx('list', scrollYStyle)} data={playlist_details_data!.tracks}>
         {(item: SongItem) => <SongListItem data={item} />}
       </VList>
     </div>

@@ -68,9 +68,9 @@ export const createHome = () => {
     isMainWin: true
   };
   let browserWindowOptions: BrowserWindowConstructorOptions = createOpts({
-    minWidth: 1000,
+    minWidth: 1004,
     minHeight: 680,
-    width: 1000,
+    width: 1004,
     height: 680
   });
   return windowInstance.new(customize, browserWindowOptions);

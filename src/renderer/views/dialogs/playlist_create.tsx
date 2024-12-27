@@ -21,7 +21,7 @@ const style = css`
     width: 100%;
     height: 100%;
     position: relative;
-    padding: 20px;
+    padding: 15px;
 
     > .head {
       height: 24px;
@@ -36,11 +36,12 @@ const style = css`
 
       > .title {
         font-size: var(--size-xs);
-        padding-bottom: 6px;
+        padding-bottom: 10px;
       }
 
       > .input {
-        height: 32px;
+        font-size: var(--size-xs);
+        height: 36px;
         background-color: var(--gray-color);
       }
     }

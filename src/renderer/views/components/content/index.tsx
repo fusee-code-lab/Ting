@@ -1,4 +1,4 @@
-import { css } from '@emotion/css';
+import { css, cx } from '@emotion/css';
 import { Show } from 'solid-js';
 import { content_router, content_view } from '@/renderer/store/content';
 import { Dynamic } from 'solid-js/web';
@@ -18,8 +18,6 @@ const style = css`
   }
   > .content {
     height: calc(100% - var(--head-height) - var(--audio-height));
-    overflow: hidden;
-    overflow-y: auto;
     > .null {
       width: 100%;
       height: 100%;

@@ -4,6 +4,7 @@ import { createSignal, Show } from 'solid-js';
 import { VirtualizerHandle, VList } from 'virtua/solid';
 import { MenuIcon } from '../../basis/icons';
 import { SongListItem } from './item';
+import { scrollYStyle } from '@/renderer/views/styles';
 
 const list_style = css`
   position: fixed;
@@ -61,7 +62,7 @@ export const SongList = () => {
       <Show when={show()}>
         <div class={list_style} onClick={() => set_show(false)}>
           <div class="content" onClick={(e) => e.stopPropagation()}>
-            <VList ref={vHandler} class="v-list" data={audio_play_list_data}>
+            <VList ref={vHandler} class={cx('v-list', scrollYStyle)} data={audio_play_list_data}>
               {(item) => <SongListItem data={item} />}
             </VList>
           </div>

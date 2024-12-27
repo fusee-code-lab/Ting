@@ -1,7 +1,8 @@
-import { css } from '@emotion/css';
+import { css, cx } from '@emotion/css';
 import { ListData } from './list';
 import { Show } from 'solid-js';
 import { search_val } from '@/renderer/store/song';
+import { scrollYStyle } from '@/renderer/views/styles';
 
 const searchTitleStyle = css`
   padding: 0 30px 15px;
@@ -20,12 +21,17 @@ const SearchTitle = () => (
   </Show>
 );
 
+const style = css`
+  position: relative;
+  height: 100%;
+`;
+
 export default () => {
   return (
-    <>
+    <div class={cx(style, scrollYStyle)}>
       <SearchTitle />
       <ListData key="single" />
       <ListData key="playlist" />
-    </>
+    </div>
   );
 };
