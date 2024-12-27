@@ -1,7 +1,8 @@
 import type { Statement } from 'better-sqlite3';
-import { basic_key } from "../keys";
-import { DBInstance } from "../sqilte";
+import { basic_key } from '../keys';
+import { DBInstance } from '../sqilte';
 import { preload } from '@youliso/electronic/main';
+import { defDownloadPath, defPlaylistPath } from '@/main/default_path';
 
 const basic_setting_key = 'settings';
 const basic_setting_table = `
@@ -91,6 +92,14 @@ export function delete_basic_setting(key: string) {
   }
 }
 
+export function set_basic_setting(key: string, data: string | number, no_update?: boolean) {
+  if (select_basic_setting(key)) {
+    !no_update && update_basic_setting(key, data);
+  } else {
+    insert_basic_setting([{ key, data }]);
+  }
+}
+
 /**
  * 初始化
  */
@@ -98,6 +107,10 @@ export function basic_init() {
   DBInstance.load(basic_key, []);
   // 设置
   DBInstance.dbs[basic_key].exec(basic_setting_table);
+
+  // 初始化参数设置
+  set_basic_setting('playlist_save_path', defPlaylistPath);
+  set_basic_setting('download_path', defDownloadPath);
 }
 
 /**
@@ -118,7 +131,6 @@ export function basic_close() {
 export function basic_on() {
   preload.handle('basic-setting-list', () => select_basic_setting_list());
   preload.handle('basic-setting-key', (_, key) => select_basic_setting(key));
-  preload.handle('basic-setting-insert', (_, data) => insert_basic_setting(data));
-  preload.handle('basic-setting-update', (_, { key, data }) => update_basic_setting(key, data));
+  preload.handle('basic-setting-set', (_, { key, data }) => set_basic_setting(key, data));
   preload.handle('basic-setting-delete', (_, key) => delete_basic_setting(key));
 }

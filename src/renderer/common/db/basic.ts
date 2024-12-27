@@ -12,9 +12,7 @@ export const settingList = () =>
 export const settingKey = (key: string) =>
   preload.invoke<string | undefined>('basic-setting-key', key);
 
-export const settingDelete = (key: string) => preload.invoke('basic-setting-delete', key);
+export const settingSet = (key: string, data: string | number) =>
+  preload.invoke<string | undefined>('basic-setting-set', { key, data });
 
-export const settingSet = async (key: string, data: string | number) => {
-  const value = await settingKey(key);
-  value ? await settingUpdate(key, data) : await settingInsert([{ key, data }]);
-};
+export const settingDelete = (key: string) => preload.invoke('basic-setting-delete', key);

@@ -1,9 +1,9 @@
 import type { Database } from 'better-sqlite3';
 import BetterSqlite3 from 'better-sqlite3';
 import { app } from 'electron';
-import { statSync, mkdirSync, unlinkSync } from 'node:fs';
+import { unlinkSync } from 'node:fs';
 import { join } from 'node:path';
-import { appDefPath } from '../device';
+import { defFilePath, exitsFolder } from '@/main/default_path';
 import { getDbVersion, iterationMap } from './iteration';
 
 class DB {
@@ -18,27 +18,17 @@ class DB {
     return DB.instance;
   }
 
-  constructor() { }
-
-  exitsFolder(path: string) {
-    try {
-      statSync(path);
-    } catch (error) {
-      mkdirSync(path);
-    }
-  }
+  constructor() {}
 
   // 加载/创建数据库
   load(key: string, dbPath: string[]) {
-
     if (this.dbs[key]) return;
-    let path = appDefPath;
-    this.exitsFolder(path);
+    let path = defFilePath;
     dbPath.forEach((item) => {
       path = join(path, item);
-      this.exitsFolder(path);
+      exitsFolder(path);
     });
-    this.exitsFolder(path);
+    exitsFolder(path);
     const filePath = join(path, key);
     try {
       this.dbs[key] = new BetterSqlite3(filePath, {
