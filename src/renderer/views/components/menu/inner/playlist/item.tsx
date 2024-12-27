@@ -26,7 +26,6 @@ const itemStyle = css`
     object-fit: contain;
   }
   > .title {
-    ${textEllipsis}
     width: calc(100% - var(--icon-size));
     padding-left: 6px;
     font-size: var(--size-xxs);
@@ -46,7 +45,7 @@ export const Item = (props: { class?: string; data: Playlist }) => {
         srcset={`${play_list_icon} 1x, ${play_list_icon2x} 2x`}
         src={play_list_icon2x}
       />
-      <div class="title">{props.data.name}</div>
+      <div class={cx('title', textEllipsis)}>{props.data.name}</div>
     </div>
   );
 };

@@ -7,18 +7,20 @@ import { VList } from 'virtua/solid';
 import { formatTime } from '@/renderer/common/utils';
 
 const songListTableStyle = css`
-  &:nth-child(1) {
-    padding-left: 20px;
-    width: 35%;
-  }
-  &:nth-child(2),
-  &:nth-child(3) {
-    padding-left: 20px;
-    width: 25%;
-  }
-  &:nth-child(4) {
-    width: 15%;
-    text-align: center;
+  > div {
+    &:nth-child(1) {
+      padding-left: 20px;
+      width: 35%;
+    }
+    &:nth-child(2),
+    &:nth-child(3) {
+      padding-left: 20px;
+      width: 25%;
+    }
+    &:nth-child(4) {
+      width: 15%;
+      text-align: center;
+    }
   }
 `;
 
@@ -31,9 +33,6 @@ const songListItemStyle = css`
   &.ing {
     color: var(--blue-color);
   }
-  > div {
-    ${songListTableStyle}
-  }
   > .song {
     display: flex;
     align-items: center;
@@ -43,14 +42,9 @@ const songListItemStyle = css`
       height: var(--size-img);
     }
     > .name {
-      ${textEllipsis}
       padding-left: 10px;
       width: calc(100% - var(--size-img));
     }
-  }
-  > .artists,
-  > .album {
-    ${textEllipsis}
   }
 `;
 
@@ -59,16 +53,19 @@ const SongListItem = (props: { data: SongItem }) => {
     <div
       class={cx(
         songListItemStyle,
+        songListTableStyle,
         is_audio_play_ing_data(`${props.data.id}_${props.data.source_type}`) && 'ing'
       )}
       onClick={() => audioPlay(props.data)}
     >
       <div class="mod song">
         <img class="img" src={props.data.song_img_url} />
-        <div class="name">{props.data.song_name}</div>
+        <div class={cx('name', textEllipsis)}>{props.data.song_name}</div>
       </div>
-      <div class="mod artists">{props.data.artists.map((e) => e.name).join(',')}</div>
-      <div class="mod album">{props.data.album.name || '-'}</div>
+      <div class={cx('mod artists', textEllipsis)}>
+        {props.data.artists.map((e) => e.name).join(',')}
+      </div>
+      <div class={cx('mod album', textEllipsis)}>{props.data.album.name || '-'}</div>
       <div class="mod">{formatTime(props.data.song_time)}</div>
     </div>
   );
@@ -87,9 +84,6 @@ const songListStyle = css`
     font-size: var(--size-xxxs);
     color: var(--secondary-label-color);
     height: 26px;
-    > div {
-      ${songListTableStyle}
-    }
   }
   > .list {
     height: calc(100% - var(--size-title)) !important;
@@ -106,7 +100,7 @@ const songListStyle = css`
 export const SongList = () => {
   return (
     <div class={songListStyle}>
-      <div class="title">
+      <div class={cx('title', songListTableStyle)}>
         <div class="mod">歌曲</div>
         <div class="mod">艺人</div>
         <div class="mod">专辑</div>

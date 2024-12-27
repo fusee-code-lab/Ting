@@ -24,14 +24,12 @@ const style = css`
   }
 
   > .title {
-    ${textEllipsis}
     width: 100%;
     font-size: var(--size-xxs);
     line-height: var(--title-height);
     height: var(--title-height);
   }
   > .text {
-    ${textEllipsis}
     width: 100%;
     font-size: var(--size-xxxs);
     color: var(--secondary-label-color);
@@ -59,8 +57,8 @@ export const Item = (props: { class?: string; data: SongItem }) => {
           <img class="img" src={`${props.data.song_img_url}?param=120y120`} />
         </Match>
       </Switch>
-      <div class="title">{props.data.song_name}</div>
-      <div class="text">{props.data.song_desc}</div>
+      <div class={cx('title', textEllipsis)}>{props.data.song_name}</div>
+      <div class={cx('text', textEllipsis)}>{props.data.song_desc}</div>
     </div>
   );
 };
@@ -69,8 +67,8 @@ export const PlaylistItem = (props: { class?: string; data: any }) => {
     <div onClick={() => playlist_list_data_load(props.data.id)} class={cx(style, props.class)}>
       <Show when={!!props.data.id}>
         <img class="img" src={`${props.data.coverImgUrl}?max_age=2592000`} />
-        <div class="title">{props.data.name}</div>
-        <div class="text">{props.data.description}</div>
+        <div class={cx('title', textEllipsis)}>{props.data.name}</div>
+        <div class={cx('text', textEllipsis)}>{props.data.description}</div>
       </Show>
     </div>
   );
