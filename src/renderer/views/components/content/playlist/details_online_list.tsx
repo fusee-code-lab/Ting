@@ -24,7 +24,7 @@ const style = css`
   background-color: rgba(0, 0, 0, 0.3);
   > .content {
     width: 345px;
-    height: 200px;
+    max-height: 50vh;
     background-color: var(--basic-color);
     border-radius: var(--size-radius-xs);
     padding: 15px 0;
