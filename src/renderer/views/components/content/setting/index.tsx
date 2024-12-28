@@ -183,8 +183,12 @@ const Speaker = () => (
         class={cx(speakerStyle, textEllipsis)}
         value={audio_play_device()}
         onChange={async (e) => {
-          await audio_play_device_set(e.currentTarget.value);
-          e.currentTarget.value = audio_play_device();
+          try {
+            await audio_play_device_set(e.target.value);
+            e.target.value = audio_play_device();
+          } catch (error) {
+            console.error(error);
+          }
         }}
       >
         <Index each={speakerList}>
