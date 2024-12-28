@@ -18,7 +18,7 @@ const style = css`
 const onSearch = async (val: string) => {
   const res = await Promise.all([search(val, 10, 1, 'single'), search(val, 10, 1, 'playlist')]);
   console.log(res);
-  
+
   set_search_val(val);
   res[0] && set_song_search_list('single', res[0]);
   res[1] && set_song_search_list('playlist', res[1]);
@@ -38,7 +38,7 @@ export default (props: { class?: string }) => {
       <Input
         placeholder="搜索"
         value={val()}
-        onInput={(e) => set_val((e.currentTarget as HTMLInputElement).value)}
+        onInput={(e) => set_val(e.currentTarget.value)}
         onKeyDown={onKeyDown}
       />
     </div>

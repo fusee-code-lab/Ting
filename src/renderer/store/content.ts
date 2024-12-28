@@ -1,12 +1,17 @@
 import { Component, lazy } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 
-type ContentView = 'setting' | 'search_list' | 'play_list_details';
+type ContentView = 'setting' | 'search_list' | 'playlist_details_online' | 'playlist_details';
 
 const content_routes: { [key in ContentView]: Component } = {
   setting: lazy(() => import('@/renderer/views/components/content/setting')),
   search_list: lazy(() => import('@/renderer/views/components/content/search')),
-  play_list_details: lazy(() => import('@/renderer/views/components/content/playlist'))
+  playlist_details: lazy(
+    () => import('@/renderer/views/components/content/playlist/details')
+  ),
+  playlist_details_online: lazy(
+    () => import('@/renderer/views/components/content/playlist/details_online')
+  )
 };
 
 export const [content_router, set_content_router] = createStore<{

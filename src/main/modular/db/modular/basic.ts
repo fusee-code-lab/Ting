@@ -103,8 +103,8 @@ export function set_basic_setting(key: string, data: string | number, no_update?
 /**
  * 初始化
  */
-export function basic_init() {
-  DBInstance.load(basic_key, []);
+export async function basic_init() {
+  await DBInstance.load(basic_key, []);
   // 设置
   DBInstance.dbs[basic_key].exec(basic_setting_table);
 

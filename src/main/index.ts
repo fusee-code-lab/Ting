@@ -84,7 +84,7 @@ app.whenReady().then(async () => {
   dialogOn();
   musicOn();
 
-  DBInit();
+  await DBInit();
 
   windowInit();
 });

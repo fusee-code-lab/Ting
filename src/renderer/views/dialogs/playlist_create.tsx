@@ -4,12 +4,13 @@ import {
   windowShow,
   windowSingleDataOn
 } from '@youliso/electronic/render';
-import { onMount } from 'solid-js';
+import { createSignal, onMount } from 'solid-js';
 import { css, cx } from '@emotion/css';
-import { isProduction } from '@/renderer/store';
+import { isProduction, OS } from '@/renderer/store';
 import { dragStyle } from '../styles';
 import Input from '../components/basis/input';
 import Button from '../components/basis/button';
+import { playlist_list_data_insert } from '@/renderer/store/playlist';
 
 const style = css`
   position: relative;
@@ -76,6 +77,13 @@ export default () => {
     };
   }
 
+  const [val, set_val] = createSignal('');
+  const createSheet = async () => {
+    const name = val().trim();
+    const is = await playlist_list_data_insert(name);
+    if (is) windowClose();
+  };
+
   return (
     <div class={cx('container', dragStyle)}>
       <div class={style}>
@@ -83,11 +91,18 @@ export default () => {
           <div class="head">创建歌单</div>
           <div class="content">
             <div class="title">起个响亮的名字</div>
-            <Input class="input" placeholder="歌单名称" />
+            <Input
+              class="input"
+              placeholder="歌单名称"
+              value={val()}
+              onInput={(e) => set_val(e.currentTarget.value)}
+            />
           </div>
           <div class="buts">
             <Button onClick={() => windowClose()}>取消</Button>
-            <Button type="primary">确定</Button>
+            <Button type="primary" disabled={!val().trim()} onClick={createSheet}>
+              确定
+            </Button>
           </div>
         </div>
       </div>

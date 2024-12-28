@@ -8,11 +8,14 @@ const style = css`
   --size: 30px;
   height: 45px;
   padding: 0 10px;
+  margin-bottom: 6px;
   position: relative;
   display: flex;
   align-items: center;
   border-radius: var(--size-radius-xs);
+
   &:hover {
+    background-color: var(--basic-color-a1);
     > .close {
       display: flex;
     }

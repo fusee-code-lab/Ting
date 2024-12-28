@@ -3,7 +3,7 @@ import { textEllipsis } from '../../../styles';
 import { Match, Show, Switch } from 'solid-js';
 import { audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
 import type { SongItem } from '@/types/music';
-import { playlist_list_data_load } from '@/renderer/store/playlist';
+import { playlist_list_online_data_load } from '@/renderer/store/playlist';
 
 const style = css`
   display: flex;
@@ -64,7 +64,7 @@ export const Item = (props: { class?: string; data: SongItem }) => {
 };
 export const PlaylistItem = (props: { class?: string; data: any }) => {
   return (
-    <div onClick={() => playlist_list_data_load(props.data.id)} class={cx(style, props.class)}>
+    <div onClick={() => playlist_list_online_data_load(props.data.id)} class={cx(style, props.class)}>
       <Show when={!!props.data.id}>
         <img class="img" src={`${props.data.coverImgUrl}?max_age=2592000`} />
         <div class={cx('title', textEllipsis)}>{props.data.name}</div>

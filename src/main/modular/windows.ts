@@ -76,13 +76,12 @@ export const createHome = () => {
   return windowInstance.new(customize, browserWindowOptions);
 };
 
-
-
-
-export const createDialog = (route: string) => {
+export const createDialog = (route: string, winId?: number) => {
   let customize: Customize = {
     route,
-    isOneWindow: true
+    isOneWindow: true,
+    parentId: winId,
+    position: 'center'
   };
   let browserWindowOptions: BrowserWindowConstructorOptions = createOpts({
     minWidth: 345,
@@ -113,5 +112,7 @@ export const windowOn = () => {
     win?.destroy();
   });
 
-  preload.on('window-dialog', (_, route) => { createDialog(route) })
+  preload.on('window-dialog', (_, { route, winId }) => {
+    createDialog(route, winId);
+  });
 };

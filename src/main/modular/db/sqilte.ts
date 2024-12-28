@@ -21,14 +21,13 @@ class DB {
   constructor() {}
 
   // 加载/创建数据库
-  load(key: string, dbPath: string[]) {
+  async load(key: string, dbPath: string[]) {
     if (this.dbs[key]) return;
     let path = defFilePath;
-    dbPath.forEach((item) => {
-      path = join(path, item);
-      exitsFolder(path);
-    });
-    exitsFolder(path);
+    for (let index = 0; index < dbPath.length; index++) {
+      await exitsFolder(join(path, dbPath[index]));
+    }
+    await exitsFolder(path);
     const filePath = join(path, key);
     try {
       this.dbs[key] = new BetterSqlite3(filePath, {

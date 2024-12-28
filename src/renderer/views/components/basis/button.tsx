@@ -10,6 +10,9 @@ const defaultStyle = css`
   font-weight: 500;
   line-height: 1.5;
   transition: background-color 0.2s;
+  &:disabled {
+    opacity: 0.5;
+  }
 `;
 
 // TODO: global palette
@@ -17,21 +20,26 @@ const styles = {
   default: css`
     background-color: #f5f5f5;
     color: var(--label-color);
-    &:hover {
-      background-color: #ededed;
-    }
-    &:active {
-      background-color: #e0e0e0;
+
+    &:not(:disabled) {
+      &:hover {
+        background-color: #ededed;
+      }
+      &:active {
+        background-color: #e0e0e0;
+      }
     }
   `,
   primary: css`
     background-color: var(--blue-color);
     color: var(--white-color);
-    &:hover {
-      background-color: #4e8ced;
-    }
-    &:active {
-      background-color: #0f6cbd;
+    &:not(:disabled) {
+      &:hover {
+        background-color: #4e8ced;
+      }
+      &:active {
+        background-color: #0f6cbd;
+      }
     }
   `
 };

@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+
 /**
  * 防抖
  * @param fn
@@ -19,3 +21,8 @@ export function debounce(fn: (...args: any) => void, delay: number): (...args: a
     }, delay);
   };
 }
+
+// 生成id
+export const getUUID = () => {
+  return randomUUID().replace(/-/g, '');
+};

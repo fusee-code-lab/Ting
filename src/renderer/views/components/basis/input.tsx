@@ -44,7 +44,12 @@ const Input = (props: {
     | 'tel'
     | 'url';
   value?: string | number;
-  onInput?: (e: InputEvent) => void;
+  onInput?: (
+    e: InputEvent & {
+      currentTarget: HTMLInputElement;
+      target: HTMLInputElement;
+    }
+  ) => void;
   onKeyDown?: (e: KeyboardEvent) => void;
   onMouseUp?: (e: MouseEvent) => void;
   onMouseDown?: (e: MouseEvent) => void;

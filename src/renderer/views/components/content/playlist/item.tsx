@@ -1,10 +1,10 @@
 import { audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
-import { playlist_details_data } from '@/renderer/store/playlist';
 import { scrollYStyle, textEllipsis } from '@/renderer/views/styles';
 import { css, cx } from '@emotion/css';
 import { SongItem } from '@/types/music';
 import { VList } from 'virtua/solid';
 import { formatTime } from '@/renderer/common/utils';
+import { Show } from 'solid-js';
 
 const songListTableStyle = css`
   > div {
@@ -48,7 +48,7 @@ const songListItemStyle = css`
   }
 `;
 
-const SongListItem = (props: { data: SongItem }) => {
+const SongListItem = (props: { online?: boolean; data: SongItem }) => {
   return (
     <div
       class={cx(
@@ -95,20 +95,28 @@ const songListStyle = css`
       }
     }
   }
+  > .null {
+    padding-top: 15px;
+    font-size: var(--size-xxs);
+    color: var(--secondary-label-color);
+    text-align: center;
+  }
 `;
 
-export const SongList = () => {
+export const SongList = (props: { class?: string; online?: boolean; songs: SongItem[] }) => {
   return (
-    <div class={songListStyle}>
+    <div class={cx(songListStyle, props.class)}>
       <div class={cx('title', songListTableStyle)}>
         <div class="mod">歌曲</div>
         <div class="mod">艺人</div>
         <div class="mod">专辑</div>
         <div class="mod">时长</div>
       </div>
-      <VList class={cx('list', scrollYStyle)} data={playlist_details_data!.tracks}>
-        {(item: SongItem) => <SongListItem data={item} />}
-      </VList>
+      <Show when={props.songs.length} fallback={<div class="null">暂无歌曲</div>}>
+        <VList class={cx('list', scrollYStyle)} data={props.songs}>
+          {(item) => <SongListItem online={props.online} data={item} />}
+        </VList>
+      </Show>
     </div>
   );
 };

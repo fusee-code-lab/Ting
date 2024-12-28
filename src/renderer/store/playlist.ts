@@ -1,13 +1,19 @@
 import { Playlist } from '@/types/playlist';
-import { createStore } from 'solid-js/store';
-import { playlistInsert, playlistList } from '../common/db/playlist';
+import { createStore, unwrap } from 'solid-js/store';
+import { playlistInsert, playlistList, playlistUpdate } from '../common/db/playlist';
 import { playlist_detail } from '../common/music';
 import { set_content_route } from './content';
 import { createSignal } from 'solid-js';
 import { settingKey, settingSet } from '../common/db/basic';
+import { showOpenDialog } from '../common/dialog';
+import { OS } from '.';
+import { SongItem } from '@/types/music';
 
-// 当前歌单
-export const [playlist_details_data, set_playlist_details_data] = createStore<{
+// 当前歌单(本地歌单)
+export const [playlist_details_data, set_playlist_details_data] = createSignal<Playlist>();
+
+// 当前歌单(在线歌单)
+export const [playlist_details_online_data, set_playlist_details_online_data] = createStore<{
   [key: string]: any;
 }>();
 
@@ -28,22 +34,62 @@ export const playlist_list_data_has = (id: string) => {
   return playlist_list_data.some((e) => e.key == `netease_${id}`);
 };
 
-// 添加歌单
-export const playlist_list_data_add = async (data: Playlist) => {
-  data.timestamp = Date.now();
-  data.config = {};
-  await playlistInsert(data);
-  set_playlist_list_data((e) => [data, ...e]);
+// 新建歌单
+export const playlist_list_data_insert = async (name: string) => {
+  const res = await showOpenDialog({
+    title: '选择歌单路径',
+    properties: ['openDirectory'],
+    defaultPath: playlist_save_path()
+  });
+  if (res.canceled) return false;
+  const playlist_path = res.filePaths[0] + (OS === 'win' ? '\\' : '/') + name;
+  try {
+    await playlistInsert({
+      name,
+      cover: '',
+      playlist_path,
+      songs: []
+    });
+    return true;
+  } catch (error) {
+    alert(error);
+    return false;
+  }
 };
 
-// 加载歌单
-export const playlist_list_data_load = async (id: string) => {
-  if (playlist_details_data?.id === id) return;
+// 添加歌曲到歌单
+export const playlist_list_data_add = async (key: string, data: SongItem[]) => {
+  let playlist = playlist_list_data.find((item) => item.key === key);
+  if (playlist) {
+    playlist = unwrap(playlist);
+    const keys = playlist.songs.map((item) => `${item.song_id}_${item.source_type}`);
+    const new_songs = data
+      .filter((item) => !keys.includes(`${item.song_id}_${item.source_type}`))
+      .map((e) => ({ ...e, file_path: `./${e.song_name}` }));
+    playlist.songs.push(...new_songs);
+    await playlistUpdate(
+      {
+        songs: playlist.songs
+      },
+      playlist.key
+    );
+  }
+};
+
+// 加载在线歌单
+export const playlist_list_online_data_load = async (id: string) => {
+  if (playlist_details_online_data?.id === id) return;
   const res = await playlist_detail(id);
   if (res) {
-    set_playlist_details_data(res);
-    set_content_route('play_list_details');
+    set_playlist_details_online_data(res);
+    set_content_route('playlist_details_online');
   }
+};
+
+// 加载本地歌单
+export const playlist_list_data_load = (data: Playlist) => {
+  set_playlist_details_data(data);
+  set_content_route('playlist_details');
 };
 
 // 初始化加载

@@ -21,7 +21,7 @@ const list_style = css`
     background-color: var(--menu-bg-color);
     border-top-left-radius: var(--size-radius-xs);
     > .v-list {
-      padding: 6px;
+      padding: 6px 6px 0;
     }
   }
 `;

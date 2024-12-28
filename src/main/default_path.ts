@@ -1,12 +1,12 @@
 import { app } from 'electron';
-import { mkdirSync, statSync } from 'node:fs';
+import { mkdir, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 
-export const exitsFolder = (path: string) => {
+export const exitsFolder = async (path: string) => {
   try {
-    statSync(path);
+    await stat(path);
   } catch (error) {
-    mkdirSync(path);
+    await mkdir(path);
   }
 };
 
@@ -19,5 +19,4 @@ export const defPlaylistPath = join(app.getPath('music'), 'Ting Sheet');
 // 默认下载路径
 export const defDownloadPath = join(app.getPath('downloads'));
 
-exitsFolder(defFilePath);
-exitsFolder(defPlaylistPath);
+await Promise.all([exitsFolder(defFilePath), exitsFolder(defPlaylistPath)]);
