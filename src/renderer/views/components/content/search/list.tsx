@@ -1,8 +1,9 @@
 import { search_val, song_search_list } from '@/renderer/store/song';
 import { css } from '@emotion/css';
-import { For, Show } from 'solid-js';
+import { createSignal, For, Show } from 'solid-js';
 import { Item, PlaylistItem } from './item';
-import type { MusicSearchType } from '@/types/music';
+import type { MusicSearchType, SongItem } from '@/types/music';
+import { SheetAdd } from '../../playlist/sheet_add';
 
 const listTitleStyle = css`
   position: sticky;
@@ -34,14 +35,27 @@ const ListTitle = (props: { title: string }) => (
 );
 
 export const ListData = (props: { key: MusicSearchType }) => {
+  const [show, set_show] = createSignal(false);
+  const [songs, set_songs] = createSignal<SongItem[]>([]);
   switch (props.key) {
     case 'single': {
       return (
         <div>
           <ListTitle title="单曲" />
           <div class={style}>
-            <For each={song_search_list[props.key]?.songs}>{(item) => <Item data={item} />}</For>
+            <For each={song_search_list[props.key]?.songs}>
+              {(item) => (
+                <Item
+                  onAddClick={(song) => {
+                    set_songs([song]);
+                    set_show(true);
+                  }}
+                  data={item}
+                />
+              )}
+            </For>
           </div>
+          <SheetAdd onClick={() => set_show(false)} visible={show()} songs={songs()} />
         </div>
       );
     }

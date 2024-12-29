@@ -1,5 +1,5 @@
 import { Playlist } from '@/types/playlist';
-import { createStore, unwrap } from 'solid-js/store';
+import { createStore, unwrap, produce } from 'solid-js/store';
 import { playlistInsert, playlistList, playlistUpdate } from '../common/db/playlist';
 import { playlist_detail } from '../common/music';
 import { set_content_route } from './content';
@@ -8,6 +8,7 @@ import { settingKey, settingSet } from '../common/db/basic';
 import { showOpenDialog } from '../common/dialog';
 import { OS } from '.';
 import { SongItem } from '@/types/music';
+import { windowMessageOn } from '@youliso/electronic/render';
 
 // 当前歌单(本地歌单)
 export const [playlist_details_data, set_playlist_details_data] = createSignal<Playlist>();
@@ -59,19 +60,23 @@ export const playlist_list_data_insert = async (name: string) => {
 
 // 添加歌曲到歌单
 export const playlist_list_data_add = async (key: string, data: SongItem[]) => {
-  let playlist = playlist_list_data.find((item) => item.key === key);
-  if (playlist) {
-    playlist = unwrap(playlist);
-    const keys = playlist.songs.map((item) => `${item.song_id}_${item.source_type}`);
-    const new_songs = data
+  let playlistIndex = playlist_list_data.findIndex((item) => item.key === key);
+  if (playlistIndex != -1) {
+    const old_songs = playlist_list_data[playlistIndex].songs;
+    const keys = old_songs.map((item) => `${item.song_id}_${item.source_type}`);
+    const add_songs = data
       .filter((item) => !keys.includes(`${item.song_id}_${item.source_type}`))
       .map((e) => ({ ...e, file_path: `./${e.song_name}` }));
-    playlist.songs.push(...new_songs);
+    const new_songs = [...add_songs, ...unwrap(old_songs)] as Playlist['songs'];
     await playlistUpdate(
       {
-        songs: playlist.songs
+        songs: new_songs
       },
-      playlist.key
+      key
+    );
+    set_playlist_list_data(
+      playlistIndex,
+      produce((data) => (data.songs = new_songs))
     );
   }
 };
@@ -86,6 +91,14 @@ export const playlist_list_online_data_load = async (id: string) => {
   }
 };
 
+// 监听更新
+windowMessageOn('playlist-sheet-update', ({ name }) => {
+  console.log('playlist-sheet-update', name);
+  playlistList().then((list) => {
+    list && set_playlist_list_data(list);
+  });
+});
+
 // 加载本地歌单
 export const playlist_list_data_load = (data: Playlist) => {
   set_playlist_details_data(data);
@@ -95,6 +108,8 @@ export const playlist_list_data_load = (data: Playlist) => {
 // 初始化加载
 export const playlist_list_data_init = async () => {
   const res = await Promise.all([playlistList(), settingKey('playlist_save_path')]);
+  console.log(res[0]);
+
   res[0] && set_playlist_list_data(res[0]);
   res[1] && set_playlist_save_path(res[1]);
 };

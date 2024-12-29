@@ -8,7 +8,7 @@ import play_list_icon from '@/assets/icons/play_list_icon.png';
 import play_list_icon2x from '@/assets/icons/play_list_icon@2x.png';
 import { scrollYStyle, textEllipsis } from '@/renderer/views/styles';
 import { unwrap } from 'solid-js/store';
-import { PlusIcon } from '../../basis/icons';
+import { PlusIcon } from '@/renderer/views/components/basis/icons';
 import { createDialogWindow } from '@/renderer/common/dialog';
 
 const style = css`
@@ -58,6 +58,7 @@ const playListItemStyle = css`
   border-radius: var(--size-radius-xs);
   --size-icon: 21px;
   padding: 0 15px;
+  margin-bottom: 5px;
   > .icon {
     width: var(--size-icon);
     height: var(--size-icon);
@@ -99,7 +100,7 @@ const PlaylistList = (props: { onClick?: (e: MouseEvent) => void; songs: SongIte
   );
 };
 
-export const SongAddList = (props: {
+export const SheetAdd = (props: {
   onClick?: (e: MouseEvent) => void;
   visible?: boolean;
   songs: SongItem[];

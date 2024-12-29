@@ -8,7 +8,7 @@ import Button from '../../basis/button';
 import netease_music_icon from '@/assets/icons/netease_music.png';
 import netease_music_icon2x from '@/assets/icons/netease_music@2x.png';
 import { SongList } from './item';
-import { SongAddList } from './details_online_list';
+import { SheetAdd } from '../../playlist/sheet_add';
 
 const headStyle = css`
   display: flex;
@@ -164,7 +164,7 @@ const NeteaseHead = (props: { desc_show: boolean; on_desc_show: () => void; data
           <Button onClick={() => set_show(true)}>添加</Button>
         </div>
       </div>
-      <SongAddList
+      <SheetAdd
         onClick={() => set_show(false)}
         visible={show()}
         songs={playlist_details_online_data?.tracks || []}

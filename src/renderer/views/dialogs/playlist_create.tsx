@@ -1,6 +1,7 @@
 import {
   windowClose,
   windowHide,
+  windowMessageSend,
   windowShow,
   windowSingleDataOn
 } from '@youliso/electronic/render';
@@ -81,7 +82,15 @@ export default () => {
   const createSheet = async () => {
     const name = val().trim();
     const is = await playlist_list_data_insert(name);
-    if (is) windowClose();
+    if (is) {
+      await windowMessageSend(
+        'playlist-sheet-update',
+        { name },
+        [window.customize.parentId!],
+        false
+      );
+      windowClose();
+    }
   };
 
   return (
