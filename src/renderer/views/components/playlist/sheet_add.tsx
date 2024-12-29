@@ -6,7 +6,7 @@ import { For, Show } from 'solid-js';
 
 import play_list_icon from '@/assets/icons/play_list_icon.png';
 import play_list_icon2x from '@/assets/icons/play_list_icon@2x.png';
-import { scrollYStyle, textEllipsis } from '@/renderer/views/styles';
+import { nodragStyle, scrollYStyle, textEllipsis } from '@/renderer/views/styles';
 import { unwrap } from 'solid-js/store';
 import { PlusIcon } from '@/renderer/views/components/basis/icons';
 import { createDialogWindow } from '@/renderer/common/dialog';
@@ -27,7 +27,7 @@ const style = css`
     max-height: 50vh;
     background-color: var(--basic-color);
     border-radius: var(--size-radius-xs);
-    padding: 15px 0;
+    padding: 15px 0 5px; 
     > .title {
       padding: 0 15px;
       height: 24px;
@@ -126,5 +126,28 @@ export const SheetAdd = (props: {
         </div>
       </div>
     </Show>
+  );
+};
+
+const addStyle = css`
+  --size: 16px;
+  width: var(--size);
+  height: var(--size);
+  background-color: var(--basic-color);
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--size-radius-xs);
+  > span {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--symbol-color);
+  }
+`;
+
+export const SheetAddIcon = (props: { class?: string; onClick?: (e: MouseEvent) => void }) => {
+  return (
+    <div class={cx(addStyle, nodragStyle, props.class)} onClick={props.onClick}>
+      <PlusIcon />
+    </div>
   );
 };

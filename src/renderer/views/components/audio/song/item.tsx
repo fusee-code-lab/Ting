@@ -15,7 +15,7 @@ const style = css`
   border-radius: var(--size-radius-xs);
 
   &:hover {
-    background-color: var(--basic-color-a1);
+    background-color: var(--basic-color);
     > .close {
       display: flex;
     }

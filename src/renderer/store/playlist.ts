@@ -38,12 +38,12 @@ export const playlist_list_data_has = (id: string) => {
 // 新建歌单
 export const playlist_list_data_insert = async (name: string) => {
   const res = await showOpenDialog({
-    title: '选择歌单路径',
+    title: '选择歌单歌曲存储路径',
     properties: ['openDirectory'],
     defaultPath: playlist_save_path()
   });
   if (res.canceled) return false;
-  const playlist_path = res.filePaths[0] + (OS === 'win' ? '\\' : '/') + name;
+  const playlist_path = res.filePaths[0];
   try {
     await playlistInsert({
       name,

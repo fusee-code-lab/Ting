@@ -6,6 +6,7 @@ import type { SongItem } from '@/types/music';
 import { playlist_list_online_data_load } from '@/renderer/store/playlist';
 import { PlusIcon } from '../../basis/icons';
 import { unwrap } from 'solid-js/store';
+import { SheetAddIcon } from '../../playlist/sheet_add';
 
 const style = css`
   position: relative;
@@ -47,22 +48,10 @@ const style = css`
   }
 
   > .add {
-    --size: 16px;
-    width: var(--size);
-    height: var(--size);
     position: absolute;
     right: 5px;
     bottom: calc(var(--text-height) + var(--title-height) + 5px);
-    background-color: var(--basic-color);
     display: none;
-    justify-content: center;
-    align-items: center;
-    border-radius: var(--size-radius-xs);
-    > span {
-      font-size: 9px;
-      font-weight: 600;
-      color: var(--symbol-color);
-    }
   }
 `;
 
@@ -91,15 +80,13 @@ export const Item = (props: {
       </Switch>
       <div class={cx('title', textEllipsis)}>{props.data.song_name}</div>
       <div class={cx('text', textEllipsis)}>{props.data.song_desc}</div>
-      <div
+      <SheetAddIcon
         class="add"
         onClick={(e) => {
           e.stopPropagation();
           props.onAddClick && props.onAddClick(unwrap(props.data));
         }}
-      >
-        <PlusIcon />
-      </div>
+      />
     </div>
   );
 };
