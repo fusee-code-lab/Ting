@@ -6,6 +6,7 @@ import type { PlayListItem, SongItem } from '@/types/music';
 import { playlist_online_load } from '@/renderer/store/playlist';
 import { unwrap } from 'solid-js/store';
 import { SheetAddIcon } from '../../playlist/sheet_add';
+import { MusicIcon } from '../../basis/music_icon';
 
 const style = css`
   position: relative;
@@ -44,6 +45,11 @@ const style = css`
     color: var(--secondary-label-color);
     line-height: var(--text-height);
     height: var(--text-height);
+    > .icon {
+      width: var(--size-xxxs);
+      height: var(--size-xxxs);
+      margin-right: 5px;
+    }
   }
 
   > .add {
@@ -81,7 +87,10 @@ export const Item = (props: {
         </Match>
       </Switch>
       <div class={cx('title', textEllipsis)}>{props.data.song_name}</div>
-      <div class={cx('text', textEllipsis)}>{props.data.song_desc}</div>
+      <div class={cx('text', textEllipsis)}>
+        <MusicIcon class="icon" type={props.data.source_type} />
+        {props.data.song_desc}
+      </div>
       <SheetAddIcon
         class="add"
         onClick={(e) => {
@@ -102,12 +111,18 @@ export const PlaylistItem = (props: { class?: string; data: PlayListItem }) => {
         <Match when={props.data.source_type === 'netease'}>
           <img class="img" src={`${props.data.coverImgUrl}?param=2592000`} />
           <div class={cx('title', textEllipsis)}>{props.data.name}</div>
-          <div class={cx('text', textEllipsis)}>{props.data.description}</div>
+          <div class={cx('text', textEllipsis)}>
+            <MusicIcon class="icon" type="netease" />
+            {props.data.description}
+          </div>
         </Match>
         <Match when={props.data.source_type === 'qq'}>
           <img class="img" src={`${props.data.imgurl}?max_age=120y120`} />
           <div class={cx('title', textEllipsis)}>{props.data.dissname}</div>
-          <div class={cx('text', textEllipsis)}>{props.data.introduction}</div>
+          <div class={cx('text', textEllipsis)}>
+            <MusicIcon class="icon" type="qq" />
+            {props.data.introduction}
+          </div>
         </Match>
       </Switch>
     </div>

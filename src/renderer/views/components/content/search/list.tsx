@@ -25,7 +25,7 @@ const style = css`
     calc(var(--size-img) + var(--title-height) + var(--text-height))
   );
   justify-content: center;
-  gap: 5px 10px;
+  gap: 8px 10px;
 `;
 
 const ListTitle = (props: { title: string }) => (

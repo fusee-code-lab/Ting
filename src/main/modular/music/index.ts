@@ -2,6 +2,7 @@ import { preload } from '@youliso/electronic/main';
 import { neteaseOn, netease } from './netease';
 import { qqOn, qq } from './qq';
 import { MusicSearchType, MusicType, SongQualityType } from '@/types/music';
+import { mergeAndShuffleArrays } from './tools';
 
 const search_song = async (
   keywords: string,
@@ -26,6 +27,7 @@ const search_song = async (
     data.count += res[1]['count'] || 0;
     data.list = [...data.list, ...(res[1]['list'] || [])];
   }
+  data.list = mergeAndShuffleArrays(data.list);
   return data;
 };
 

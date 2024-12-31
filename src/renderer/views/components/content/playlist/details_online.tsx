@@ -1,18 +1,14 @@
 import { audioPlayList } from '@/renderer/store/audio';
+import { PlayList } from '@/types/music';
 import { openUrl } from '@youliso/electronic/render';
 import { css, cx } from '@emotion/css';
 import { playlist_details_online_data } from '@/renderer/store/playlist';
 import { createSignal, Match, Show, Switch } from 'solid-js';
 import { textEllipsis } from '../../../styles';
-import Button from '../../basis/button';
 import { SongList } from './item';
 import { SheetAdd } from '../../playlist/sheet_add';
-
-import netease_music_icon from '@/assets/icons/netease_music.png';
-import netease_music_icon2x from '@/assets/icons/netease_music@2x.png';
-import qq_music_icon from '@/assets/icons/qq_music.png';
-import qq_music_icon2x from '@/assets/icons/qq_music@2x.png';
-import { PlayList } from '@/types/music';
+import { MusicIcon } from '../../basis/music_icon';
+import Button from '../../basis/button';
 
 const headStyle = css`
   display: flex;
@@ -150,11 +146,7 @@ const NeteaseHead = (props: {
           </Show>
         </div>
         <div class="creat">
-          <img
-            class="icon"
-            srcset={`${netease_music_icon} 1x, ${netease_music_icon2x} 2x`}
-            src={netease_music_icon2x}
-          />
+          <MusicIcon class="icon" type="netease" />
           <div
             class="name"
             onClick={() =>
@@ -199,11 +191,7 @@ const QQHead = (props: {
           </Show>
         </div>
         <div class="creat">
-          <img
-            class="icon"
-            srcset={`${qq_music_icon} 1x, ${qq_music_icon2x} 2x`}
-            src={qq_music_icon2x}
-          />
+          <MusicIcon class="icon" type="qq" />
           <div
             class="name"
             onClick={() =>

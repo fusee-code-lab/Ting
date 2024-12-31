@@ -1,7 +1,7 @@
-import { textEllipsis } from "@/renderer/views/styles";
-import { css, cx } from "@emotion/css";
-import { SongItem } from "@/types/music";
-
+import { textEllipsis } from '@/renderer/views/styles';
+import { css, cx } from '@emotion/css';
+import { SongItem } from '@/types/music';
+import { MusicIcon } from '../../basis/music_icon';
 
 const audio_info_style = css`
   height: 100%;
@@ -23,6 +23,11 @@ const audio_info_style = css`
     > .artists {
       font-size: var(--size-xxxs);
       color: var(--secondary-label-color);
+      > .icon {
+        width: var(--size-xxxs);
+        height: var(--size-xxxs);
+        margin-right: 5px;
+      }
     }
   }
 `;
@@ -34,6 +39,7 @@ export const SongInfo = (props: { data: SongItem }) => {
       <div class="info">
         <div class={cx('name', textEllipsis)}>{props.data.song_name}</div>
         <div class={cx('artists', textEllipsis)}>
+          <MusicIcon class="icon" type={props.data.source_type} />
           {props.data.artists.map((e) => e.name).join(',')}
         </div>
       </div>
