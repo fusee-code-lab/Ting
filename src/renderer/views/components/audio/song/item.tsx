@@ -3,6 +3,7 @@ import { textEllipsis } from '@/renderer/views/styles';
 import { css, cx } from '@emotion/css';
 import { SongItem } from '@/types/music';
 import { CloseIcon } from '../../basis/icons';
+import { MusicIcon } from '../../basis/music_icon';
 
 const style = css`
   --size: 30px;
@@ -44,6 +45,11 @@ const style = css`
     > .artists {
       font-size: var(--size-xxxs);
       color: var(--secondary-label-color);
+      > .icon {
+        width: var(--size-xxxs);
+        height: var(--size-xxxs);
+        margin-right: 4px;
+      }
     }
   }
 
@@ -77,6 +83,7 @@ export const SongListItem = (props: { data: SongItem }) => {
       <div class="info">
         <div class={cx('name', textEllipsis)}>{props.data.song_name}</div>
         <div class={cx('artists', textEllipsis)}>
+          <MusicIcon class="icon" type={props.data.source_type} />
           {props.data.artists.map((e) => e.name).join(',')}
         </div>
       </div>

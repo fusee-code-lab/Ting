@@ -26,7 +26,7 @@ const audio_info_style = css`
       > .icon {
         width: var(--size-xxxs);
         height: var(--size-xxxs);
-        margin-right: 5px;
+        margin-right: 4px;
       }
     }
   }
