@@ -16,6 +16,7 @@ import { musicOn } from './modular/music';
 import { windowInit, windowOn } from './modular/windows';
 import { DBClose, DBInit, DBOn } from './modular/db';
 import { dialogOn } from './modular/dialog';
+import { menuOn } from './modular/menu';
 
 preload.initialize();
 
@@ -80,6 +81,7 @@ app.whenReady().then(async () => {
   shortcutInstance.on();
 
   DBOn();
+  menuOn();
   windowOn();
   dialogOn();
   musicOn();

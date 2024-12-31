@@ -59,7 +59,7 @@ export const createWelcome = () => {
   if (typeof browserWindowOptions.titleBarOverlay === 'object') {
     browserWindowOptions.titleBarOverlay.symbolColor = '#ffffff';
   }
-  windowInstance.new(customize, browserWindowOptions);
+  return windowInstance.new(customize, browserWindowOptions);
 };
 
 export const createHome = () => {
@@ -93,13 +93,13 @@ export const createDialog = (route: string, winId?: number) => {
   return windowInstance.new(customize, browserWindowOptions);
 };
 
-export const windowInit = () => {
+export const windowInit = async () => {
   const is = select_basic_setting<number | undefined>('is_first');
   if (is == 1) {
-    createHome();
+    const win = await createHome();
     createTray();
   } else {
-    createWelcome();
+    await createWelcome();
   }
 };
 

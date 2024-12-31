@@ -7,6 +7,7 @@ import { formatTime } from '@/renderer/common/utils';
 import { createSignal, Show } from 'solid-js';
 import { SheetAdd, SheetAddIcon } from '../../playlist/sheet_add';
 import { unwrap } from 'solid-js/store';
+import { menuSong } from '@/renderer/common/menu/song';
 
 const songListTableStyle = css`
   > div {
@@ -74,6 +75,9 @@ const SongListItem = (props: {
         is_audio_play_ing_data(`${props.data.id}_${props.data.source_type}`) && 'ing'
       )}
       onClick={() => audioPlay(props.data)}
+      onContextMenu={() => {
+        menuSong();
+      }}
     >
       <div class="mod song">
         <img class="img" src={props.data.song_img_url} />
