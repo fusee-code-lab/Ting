@@ -1,24 +1,32 @@
 import { preload } from '@youliso/electronic/main';
 import { BrowserWindow, Menu, MenuItemConstructorOptions } from 'electron';
 
-const songItem = (window: BrowserWindow) => {
-  const template: MenuItemConstructorOptions[] = [
-    {
-      label: '添加到',
+const songItem = (window: BrowserWindow, data?: any) => {
+  let template: MenuItemConstructorOptions[] = [];
+  if (data.key && data.song) {
+    template.push({
+      label: '删除',
       click: () => {
-        preload.send('context-menu-command', 'menu-item-1', [window.id]);
+        preload.send(
+          'menu-song-command',
+          {
+            type: 'del',
+            data
+          },
+          [window.id]
+        );
       }
-    },
-    { type: 'separator' },
-    { label: 'Menu Item 2' }
-  ];
-  const menu = Menu.buildFromTemplate(template);
-  menu.popup({ window });
+    });
+  }
+  if (template.length) {
+    const menu = Menu.buildFromTemplate(template);
+    menu.popup({ window });
+  }
 };
 
 export const songOn = () => {
-  preload.on('menu-song', (e) => {
+  preload.on('menu-song', (e, data) => {
     const win = BrowserWindow.fromWebContents(e.sender);
-    win && songItem(win);
+    win && songItem(win, data);
   });
 };

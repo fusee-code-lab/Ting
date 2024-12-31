@@ -7,7 +7,7 @@ import { createSignal } from 'solid-js';
 import { settingKey, settingSet } from '../common/db/basic';
 import { showOpenDialog } from '../common/dialog';
 import { MusicType, PlayList, SongItem } from '@/types/music';
-import { windowMessageOn } from '@youliso/electronic/render';
+import { preload, windowMessageOn } from '@youliso/electronic/render';
 
 // 当前歌单(在线歌单)
 export const [playlist_details_online_data, set_playlist_details_online_data] =
@@ -29,8 +29,8 @@ export const playlist_online_load = async (type: MusicType, id: string) => {
   }
 };
 
-// 当前歌单(本地歌单)
-export const [playlist_details_data, set_playlist_details_data] = createSignal<Playlist>();
+// 当前歌单下标(本地歌单)
+export const [playlist_local_index, set_playlist_local_index] = createSignal<number>(0);
 
 // 本地歌单
 export const [playlist_local_data, set_playlist_local_data] = createStore<Playlist[]>([]);
@@ -98,17 +98,44 @@ windowMessageOn('playlist-sheet-update', ({ name }) => {
   });
 });
 
+// 监听本地歌单歌曲变化
+preload.on('menu-song-command', async ({ type, data }) => {
+  console.log('menu-song-command', type, data);
+  switch (type) {
+    case 'del':
+      let playlistIndex = playlist_local_data.findIndex((item) => item.key === data.key);
+      if (playlistIndex != -1) {
+        set_playlist_local_data(
+          playlistIndex,
+          produce((e) => {
+            const songIndex = e.songs.findIndex(
+              (song) => song.id === data.song.id && song.source_type === data.song.source_type
+            );
+            if (songIndex != -1) {
+              e.songs.splice(songIndex, 1);
+            }
+          })
+        );
+        await playlistUpdate(
+          {
+            songs: unwrap(playlist_local_data[playlistIndex].songs)
+          },
+          data.key
+        );
+      }
+      break;
+  }
+});
+
 // 加载本地歌单
-export const playlist_local_load = (data: Playlist) => {
-  set_playlist_details_data(data);
+export const playlist_local_load = (index: number) => {
+  set_playlist_local_index(index);
   set_content_route('playlist_details');
 };
 
 // 初始化加载
 export const playlist_local_init = async () => {
   const res = await Promise.all([playlistList(), settingKey('playlist_save_path')]);
-  console.log(res[0]);
-
   res[0] && set_playlist_local_data(res[0]);
   res[1] && set_playlist_save_path(res[1]);
 };

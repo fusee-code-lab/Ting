@@ -1,7 +1,6 @@
 import { css, cx } from '@emotion/css';
 import { textEllipsis } from '@/renderer/views/styles';
 import { Playlist } from '@/types/playlist';
-import { playlist_local_load } from '@/renderer/store/playlist';
 
 import play_list_icon from '@/assets/icons/play_list_icon.png';
 import play_list_icon2x from '@/assets/icons/play_list_icon@2x.png';
@@ -34,9 +33,9 @@ const itemStyle = css`
   }
 `;
 
-export const Item = (props: { class?: string; data: Playlist }) => {
+export const Item = (props: { onClick?: () => void; class?: string; data: Playlist }) => {
   return (
-    <div class={cx(itemStyle, props.class)} onClick={() => playlist_local_load(props.data)}>
+    <div class={cx(itemStyle, props.class)} onClick={props.onClick}>
       <img
         class="icon"
         srcset={`${play_list_icon} 1x, ${play_list_icon2x} 2x`}

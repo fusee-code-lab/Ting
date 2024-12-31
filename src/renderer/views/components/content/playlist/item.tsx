@@ -77,6 +77,7 @@ const songListItemStyle = css`
 `;
 
 const SongListItem = (props: {
+  onContextMenu?: (song: SongItem) => void;
   onAddClick?: (song: SongItem) => void;
   online?: boolean;
   data: SongItem;
@@ -89,9 +90,7 @@ const SongListItem = (props: {
         is_audio_play_ing_data(`${props.data.id}_${props.data.source_type}`) && 'ing'
       )}
       onClick={() => audioPlay(props.data)}
-      onContextMenu={() => {
-        menuSong();
-      }}
+      onContextMenu={() => props.onContextMenu && props.onContextMenu(props.data)}
     >
       <div class="mod song">
         <img class="icon" src={props.data.song_img_url} />
@@ -102,13 +101,15 @@ const SongListItem = (props: {
             {props.data.artists.map((e) => e.name).join(',')}
           </div>
         </div>
-        <SheetAddIcon
-          class="add"
-          onClick={(e) => {
-            e.stopPropagation();
-            props.onAddClick && props.onAddClick(unwrap(props.data));
-          }}
-        />
+        <Show when={props.online}>
+          <SheetAddIcon
+            class="add"
+            onClick={(e) => {
+              e.stopPropagation();
+              props.onAddClick && props.onAddClick(unwrap(props.data));
+            }}
+          />
+        </Show>
       </div>
       <div class={cx('mod album', textEllipsis)}>{props.data.album.name || '-'}</div>
       <div class="mod">{formatTime(props.data.song_time)}</div>
@@ -148,7 +149,12 @@ const songListStyle = css`
   }
 `;
 
-export const SongList = (props: { class?: string; online?: boolean; songs: SongItem[] }) => {
+export const SongList = (props: {
+  class?: string;
+  online?: boolean;
+  key?: string;
+  songs: SongItem[];
+}) => {
   const [show, set_show] = createSignal(false);
   const [songs, set_songs] = createSignal<SongItem[]>([]);
   return (
@@ -167,6 +173,9 @@ export const SongList = (props: { class?: string; online?: boolean; songs: SongI
               onAddClick={(song) => {
                 set_songs([song]);
                 set_show(true);
+              }}
+              onContextMenu={(song) => {
+                menuSong(unwrap(song), props.key);
               }}
             />
           )}

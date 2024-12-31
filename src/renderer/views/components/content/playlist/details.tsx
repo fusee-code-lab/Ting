@@ -1,9 +1,9 @@
-import { playlist_details_data } from '@/renderer/store/playlist';
 import { css, cx } from '@emotion/css';
 import { SongList } from './item';
 import { textEllipsis } from '@/renderer/views/styles';
 import Button from '../../basis/button';
 import { audioPlayList } from '@/renderer/store/audio';
+import { playlist_local_data, playlist_local_index } from '@/renderer/store/playlist';
 
 const style = css`
   height: 100%;
@@ -35,10 +35,13 @@ const headStyle = css`
 
 const Details = () => (
   <div class={headStyle}>
-    <div class={cx('name', textEllipsis)}>{playlist_details_data()?.name}</div>
+    <div class={cx('name', textEllipsis)}>{playlist_local_data[playlist_local_index()]?.name}</div>
     <div class="content"></div>
     <div class="buts">
-      <Button type="primary" onClick={() => audioPlayList(playlist_details_data()?.songs || [])}>
+      <Button
+        type="primary"
+        onClick={() => audioPlayList(playlist_local_data[playlist_local_index()]?.songs || [])}
+      >
         播放全部
       </Button>
     </div>
@@ -48,6 +51,10 @@ const Details = () => (
 export default () => (
   <div class={style}>
     <Details />
-    <SongList class="song-list" songs={playlist_details_data()?.songs || []} />
+    <SongList
+      class="song-list"
+      key={playlist_local_data[playlist_local_index()]?.key}
+      songs={playlist_local_data[playlist_local_index()]?.songs || []}
+    />
   </div>
 );
