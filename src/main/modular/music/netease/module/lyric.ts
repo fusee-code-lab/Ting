@@ -1,5 +1,5 @@
 import { lyric as lyricApi } from 'NeteaseCloudMusicApi'
-import { lyric_decode } from '../tools';
+import { lyric_decode } from '../../tools';
 export const lyric = async (
   id: string
 ) => {

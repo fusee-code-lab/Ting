@@ -2,13 +2,17 @@ import { audioPlayList } from '@/renderer/store/audio';
 import { openUrl } from '@youliso/electronic/render';
 import { css, cx } from '@emotion/css';
 import { playlist_details_online_data } from '@/renderer/store/playlist';
-import { createSignal, Show } from 'solid-js';
+import { createSignal, Match, Show, Switch } from 'solid-js';
 import { textEllipsis } from '../../../styles';
 import Button from '../../basis/button';
-import netease_music_icon from '@/assets/icons/netease_music.png';
-import netease_music_icon2x from '@/assets/icons/netease_music@2x.png';
 import { SongList } from './item';
 import { SheetAdd } from '../../playlist/sheet_add';
+
+import netease_music_icon from '@/assets/icons/netease_music.png';
+import netease_music_icon2x from '@/assets/icons/netease_music@2x.png';
+import qq_music_icon from '@/assets/icons/qq_music.png';
+import qq_music_icon2x from '@/assets/icons/qq_music@2x.png';
+import { PlayList } from '@/types/music';
 
 const headStyle = css`
   display: flex;
@@ -116,9 +120,12 @@ const headStyle = css`
   }
 `;
 
-const NeteaseHead = (props: { desc_show: boolean; on_desc_show: () => void; data: any }) => {
-  const [show, set_show] = createSignal(false);
-
+const NeteaseHead = (props: {
+  desc_show: boolean;
+  on_desc_show: () => void;
+  set_show: () => void;
+  data: PlayList;
+}) => {
   return (
     <>
       <img class="img" src={props.data?.coverImgUrl} />
@@ -158,33 +165,103 @@ const NeteaseHead = (props: { desc_show: boolean; on_desc_show: () => void; data
           </div>
         </div>
         <div class="buts">
-          <Button type="primary" onClick={() => audioPlayList(props.data?.tracks)}>
+          <Button type="primary" onClick={() => audioPlayList(props.data?.playlist_songs)}>
             播放全部
           </Button>
-          <Button onClick={() => set_show(true)}>添加</Button>
+          <Button onClick={() => props.set_show()}>添加</Button>
         </div>
       </div>
-      <SheetAdd
-        onClick={() => set_show(false)}
-        visible={show()}
-        songs={playlist_details_online_data?.tracks || []}
-      />
+    </>
+  );
+};
+
+const QQHead = (props: {
+  desc_show: boolean;
+  on_desc_show: () => void;
+  set_show: () => void;
+  data: PlayList;
+}) => {
+  return (
+    <>
+      <img class="img" src={props.data?.logo} />
+      <div class="info">
+        <div class={cx('name', textEllipsis)}>{props.data?.dissname}</div>
+        <div class="vice">
+          <span>{props.data?.songnum}首</span>
+          <span>{props.data?.tags?.map((e: any) => e.name).join('/')}</span>
+        </div>
+        <div class="desc">
+          <div class={cx('text', props.desc_show ? 'show' : 'hide')}>{props.data?.desc || '-'}</div>
+          <Show when={!props.desc_show && !!props.data?.desc && props.data?.desc?.length > 40}>
+            <div class="more" onClick={props.on_desc_show}>
+              更多
+            </div>
+          </Show>
+        </div>
+        <div class="creat">
+          <img
+            class="icon"
+            srcset={`${qq_music_icon} 1x, ${qq_music_icon2x} 2x`}
+            src={qq_music_icon2x}
+          />
+          <div
+            class="name"
+            onClick={() =>
+              openUrl(`https://y.qq.com/n/ryqq/profile/like/song?uin=${props.data?.uin}`)
+            }
+          >
+            {props.data?.nickname}
+          </div>
+        </div>
+        <div class="buts">
+          <Button type="primary" onClick={() => audioPlayList(props.data?.playlist_songs)}>
+            播放全部
+          </Button>
+          <Button onClick={() => props.set_show()}>添加</Button>
+        </div>
+      </div>
     </>
   );
 };
 
 const Details = () => {
+  const [sheet_show, set_sheet_show] = createSignal(false);
   const [desc_show, set_desc_show] = createSignal(false);
   const on_desc_show = () => set_desc_show(!desc_show());
   return (
     <div class={headStyle}>
-      <Show when={!!playlist_details_online_data}>
-        <NeteaseHead
-          desc_show={desc_show()}
-          on_desc_show={on_desc_show}
-          data={playlist_details_online_data}
-        />
-      </Show>
+      <Switch>
+        <Match
+          when={
+            !!playlist_details_online_data() &&
+            playlist_details_online_data()?.source_type === 'netease'
+          }
+        >
+          <NeteaseHead
+            set_show={() => set_sheet_show(true)}
+            desc_show={desc_show()}
+            on_desc_show={on_desc_show}
+            data={playlist_details_online_data()!}
+          />
+        </Match>
+        <Match
+          when={
+            !!playlist_details_online_data() && playlist_details_online_data()?.source_type === 'qq'
+          }
+        >
+          <QQHead
+            set_show={() => set_sheet_show(true)}
+            desc_show={desc_show()}
+            on_desc_show={on_desc_show}
+            data={playlist_details_online_data()!}
+          />
+        </Match>
+      </Switch>
+      <SheetAdd
+        onClick={() => set_sheet_show(false)}
+        visible={sheet_show()}
+        songs={playlist_details_online_data()?.playlist_songs || []}
+      />
     </div>
   );
 };
@@ -197,6 +274,6 @@ const style = css`
 export default () => (
   <div class={style}>
     <Details />
-    <SongList online={true} songs={playlist_details_online_data?.tracks || []} />
+    <SongList online={true} songs={playlist_details_online_data()?.playlist_songs || []} />
   </div>
 );

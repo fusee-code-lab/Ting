@@ -34,12 +34,10 @@ export const audio_device_set = async (deviceId: MediaDeviceInfo['deviceId']) =>
 export const [audio_list_data, set_audio_list_data] = createStore<SongItem[]>([]);
 
 // 播放模式
-export const [audio_type, set_audio_type] = createSignal<'single' | 'list' | 'random'>(
-  'list'
-);
+export const [audio_type, set_audio_type] = createSignal<'single' | 'list' | 'random'>('list');
 
 // 播放质量
-export const [audio_quality, set_audio_quality] = createSignal<SongQualityType>();
+export const [audio_quality, set_audio_quality] = createSignal<SongQualityType>('exhigh');
 
 // 上一曲为负 下一曲为正
 export const [audio_next_type, set_audio_next_type] = createSignal<number>(0);
@@ -121,10 +119,7 @@ export const audio_list_update = (
 
 // 初始化加载
 export const audio_init = async () => {
-  const res = await Promise.all([
-    settingKey('audio_quality'),
-    settingKey('audio_device')
-  ]);
+  const res = await Promise.all([settingKey('audio_quality'), settingKey('audio_device')]);
   res[0] && set_audio_quality(res[0] as SongQualityType);
   // 初始化播放设备
   if (res[1]) {
@@ -147,7 +142,7 @@ export const audioPlay = async (data?: SongItem) => {
     audio.play(song['play_url']);
     set_audio_index(index);
   } else {
-    const res = await song_url([song.id], audio_quality());
+    const res = await song_url(song.source_type, [song.id], audio_quality());
     if (res && res[song.id]) {
       audio_list_update(song.id, { play_url: res[song.id] });
       audio.play(res[song.id]);

@@ -6,18 +6,23 @@ import { set_content_route } from './content';
 import { createSignal } from 'solid-js';
 import { settingKey, settingSet } from '../common/db/basic';
 import { showOpenDialog } from '../common/dialog';
-import { SongItem } from '@/types/music';
+import { MusicType, PlayList, SongItem } from '@/types/music';
 import { windowMessageOn } from '@youliso/electronic/render';
 
 // 当前歌单(在线歌单)
-export const [playlist_details_online_data, set_playlist_details_online_data] = createStore<{
-  [key: string]: any;
-}>();
+export const [playlist_details_online_data, set_playlist_details_online_data] =
+  createSignal<PlayList>();
 
 // 加载在线歌单
-export const playlist_online_load = async (id: string) => {
-  if (playlist_details_online_data?.id === id) return;
-  const res = await playlist_detail(id);
+export const playlist_online_load = async (type: MusicType, id: string) => {
+  const playlist_details_online = playlist_details_online_data();
+  if (
+    playlist_details_online &&
+    playlist_details_online.source_type === type &&
+    playlist_details_online.id === id
+  )
+    return;
+  const res = await playlist_detail(type, id);
   if (res) {
     set_playlist_details_online_data(res);
     set_content_route('playlist_details_online');

@@ -1,9 +1,7 @@
 import { playlist_detail as playlist_detail_api, playlist_track_all } from 'NeteaseCloudMusicApi';
 import { get_song_info_in_list } from '../protocol';
 
-export const playlist_detail = async (
-  id: string
-) => {
+export const playlist_detail = async (id: string) => {
   const res = await playlist_detail_api({
     id
   }).catch((error: Error) => {
@@ -12,15 +10,17 @@ export const playlist_detail = async (
   });
   if (res && res.status === 200 && res.body.code === 200) {
     // @ts-ignore
-    res.body.playlist.tracks = res.body.playlist.tracks.map(get_song_info_in_list);
+    res.body.playlist['playlist_songs'] = res.body.playlist.tracks.map(get_song_info_in_list);
+    // @ts-ignore
+    res.body.playlist['playlist_id'] = res.body.playlist.id;
+    // @ts-ignore
+    res.body.playlist['source_type'] = 'netease';
     return res.body.playlist;
   }
   return;
-}
+};
 
-export const playlist_song_list = async (
-  id: string, limit: number, offset: number
-) => {
+export const playlist_song_list = async (id: string, limit: number, offset: number) => {
   const res = await playlist_track_all({
     id,
     limit,
@@ -34,4 +34,4 @@ export const playlist_song_list = async (
     return res.body.songs.map(get_song_info_in_list);
   }
   return;
-}
+};

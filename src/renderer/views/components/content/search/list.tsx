@@ -43,7 +43,7 @@ export const ListData = (props: { key: MusicSearchType }) => {
         <div>
           <ListTitle title="单曲" />
           <div class={style}>
-            <For each={song_search_list[props.key]?.songs}>
+            <For each={song_search_list[props.key]?.list}>
               {(item) => (
                 <Item
                   onAddClick={(song) => {
@@ -64,7 +64,7 @@ export const ListData = (props: { key: MusicSearchType }) => {
         <div style="margin-top: 15px">
           <ListTitle title="歌单" />
           <div class={style}>
-            <For each={song_search_list[props.key]?.playlists}>
+            <For each={song_search_list[props.key]?.list}>
               {(item) => <PlaylistItem data={item} />}
             </For>
           </div>

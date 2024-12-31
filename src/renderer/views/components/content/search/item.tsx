@@ -1,10 +1,9 @@
 import { css, cx } from '@emotion/css';
 import { textEllipsis } from '../../../styles';
-import { Match, Show, Switch } from 'solid-js';
+import { Match, Switch } from 'solid-js';
 import { audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
-import type { SongItem } from '@/types/music';
+import type { PlayListItem, SongItem } from '@/types/music';
 import { playlist_online_load } from '@/renderer/store/playlist';
-import { PlusIcon } from '../../basis/icons';
 import { unwrap } from 'solid-js/store';
 import { SheetAddIcon } from '../../playlist/sheet_add';
 
@@ -77,6 +76,9 @@ export const Item = (props: {
         <Match when={props.data.source_type === 'netease'}>
           <img class="img" src={`${props.data.song_img_url}?param=120y120`} />
         </Match>
+        <Match when={props.data.source_type === 'qq'}>
+          <img class="img" src={`${props.data.song_img_url}?max_age=2592000`} />
+        </Match>
       </Switch>
       <div class={cx('title', textEllipsis)}>{props.data.song_name}</div>
       <div class={cx('text', textEllipsis)}>{props.data.song_desc}</div>
@@ -90,17 +92,24 @@ export const Item = (props: {
     </div>
   );
 };
-export const PlaylistItem = (props: { class?: string; data: any }) => {
+export const PlaylistItem = (props: { class?: string; data: PlayListItem }) => {
   return (
     <div
-      onClick={() => playlist_online_load(props.data.id)}
+      onClick={() => playlist_online_load(props.data.source_type, props.data.playlist_id)}
       class={cx(style, props.class)}
     >
-      <Show when={!!props.data.id}>
-        <img class="img" src={`${props.data.coverImgUrl}?max_age=2592000`} />
-        <div class={cx('title', textEllipsis)}>{props.data.name}</div>
-        <div class={cx('text', textEllipsis)}>{props.data.description}</div>
-      </Show>
+      <Switch>
+        <Match when={props.data.source_type === 'netease'}>
+          <img class="img" src={`${props.data.coverImgUrl}?param=2592000`} />
+          <div class={cx('title', textEllipsis)}>{props.data.name}</div>
+          <div class={cx('text', textEllipsis)}>{props.data.description}</div>
+        </Match>
+        <Match when={props.data.source_type === 'qq'}>
+          <img class="img" src={`${props.data.imgurl}?max_age=120y120`} />
+          <div class={cx('title', textEllipsis)}>{props.data.dissname}</div>
+          <div class={cx('text', textEllipsis)}>{props.data.introduction}</div>
+        </Match>
+      </Switch>
     </div>
   );
 };
