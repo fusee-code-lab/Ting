@@ -11,11 +11,11 @@ import {
   Volumes3Icon
 } from '@/renderer/views/components/basis/icons';
 import {
-  audio_play_type,
+  audio_type,
   audio_status,
   audioNext,
   audioSetVolume,
-  set_audio_play_type,
+  set_audio_type,
   set_audio_status
 } from '@/renderer/store/audio';
 import { Match, Switch } from 'solid-js';
@@ -112,11 +112,11 @@ const style = css`
 
 export const Control = () => {
   const set_type_switch = (type: 'single' | 'random') => {
-    if (audio_play_type() === type) {
-      set_audio_play_type('list');
+    if (audio_type() === type) {
+      set_audio_type('list');
       return;
     }
-    set_audio_play_type(type);
+    set_audio_type(type);
   };
   return (
     <div class={style}>
@@ -171,7 +171,7 @@ export const Control = () => {
           onInput={(e) => audioSetVolume(Number((e.currentTarget as HTMLInputElement).value))}
         />
       </div>
-      <div class={`switch ${audio_play_type()}`}>
+      <div class={`switch ${audio_type()}`}>
         <ShuffleIcon class="random" onClick={() => set_type_switch('random')} />
         <RepeatIcon class="single" onClick={() => set_type_switch('single')} />
       </div>

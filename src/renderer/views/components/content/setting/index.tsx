@@ -1,10 +1,10 @@
 import { css, cx } from '@emotion/css';
 import Button from '../../basis/button';
 import {
-  audio_play_device,
-  audio_play_device_set,
-  audio_play_quality,
-  audio_play_quality_set
+  audio_device,
+  audio_device_set,
+  audio_quality,
+  audio_quality_set
 } from '@/renderer/store/audio';
 import { SongQualityType } from '@/types/music';
 import { appInfo, download_path, download_path_set } from '@/renderer/store';
@@ -144,8 +144,8 @@ const qualityStyle = css`
 const QualityItem = (props: { type: SongQualityType; text: string }) => (
   <Button
     class="but"
-    type={audio_play_quality() === props.type ? 'primary' : undefined}
-    onClick={() => audio_play_quality_set(props.type)}
+    type={audio_quality() === props.type ? 'primary' : undefined}
+    onClick={() => audio_quality_set(props.type)}
   >
     {props.text}
   </Button>
@@ -181,11 +181,11 @@ const Speaker = () => (
     <div class="value">
       <Select
         class={cx(speakerStyle, textEllipsis)}
-        value={audio_play_device()}
+        value={audio_device()}
         onChange={async (e) => {
           try {
-            await audio_play_device_set(e.target.value);
-            e.target.value = audio_play_device();
+            await audio_device_set(e.target.value);
+            e.target.value = audio_device();
           } catch (error) {
             console.error(error);
           }

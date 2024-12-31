@@ -1,4 +1,4 @@
-import { audio_play_list_data, audio_play_index } from '@/renderer/store/audio';
+import { audio_list_data, audio_index } from '@/renderer/store/audio';
 import { css } from '@emotion/css';
 import { Show } from 'solid-js';
 import { Control } from './control';
@@ -39,10 +39,10 @@ const style = css`
 export default () => {
   return (
     <div class={style}>
-      <Show when={audio_play_index() != -1} fallback={<div>Ting ~</div>}>
+      <Show when={audio_index() != -1} fallback={<div>Ting ~</div>}>
         <Progress />
         <div class="left">
-          <SongInfo data={audio_play_list_data[audio_play_index()]!} />
+          <SongInfo data={audio_list_data[audio_index()]!} />
         </div>
         <div class="center">
           <Control />

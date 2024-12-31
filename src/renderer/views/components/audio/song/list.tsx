@@ -1,4 +1,4 @@
-import { audio_play_index, audio_play_list_data } from '@/renderer/store/audio';
+import { audio_index, audio_list_data } from '@/renderer/store/audio';
 import { css, cx } from '@emotion/css';
 import { createSignal, Show } from 'solid-js';
 import { VirtualizerHandle, VList } from 'virtua/solid';
@@ -53,7 +53,7 @@ export const SongList = () => {
     const is_show = show();
     set_show(!is_show);
     if (handler && !is_show) {
-      handler.scrollToIndex(audio_play_index());
+      handler.scrollToIndex(audio_index());
     }
   };
 
@@ -62,7 +62,7 @@ export const SongList = () => {
       <Show when={show()}>
         <div class={list_style} onClick={() => set_show(false)}>
           <div class="content" onClick={(e) => e.stopPropagation()}>
-            <VList ref={vHandler} class={cx('v-list', scrollYStyle)} data={audio_play_list_data}>
+            <VList ref={vHandler} class={cx('v-list', scrollYStyle)} data={audio_list_data}>
               {(item) => <SongListItem data={item} />}
             </VList>
           </div>

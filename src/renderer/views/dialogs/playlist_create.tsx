@@ -11,7 +11,7 @@ import { isProduction, OS } from '@/renderer/store';
 import { dragStyle } from '../styles';
 import Input from '../components/basis/input';
 import Button from '../components/basis/button';
-import { playlist_list_data_insert } from '@/renderer/store/playlist';
+import { playlist_local_insert } from '@/renderer/store/playlist';
 
 const style = css`
   position: relative;
@@ -81,7 +81,7 @@ export default () => {
   const [val, set_val] = createSignal('');
   const createSheet = async () => {
     const name = val().trim();
-    const is = await playlist_list_data_insert(name);
+    const is = await playlist_local_insert(name);
     if (is) {
       await windowMessageSend(
         'playlist-sheet-update',

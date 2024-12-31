@@ -2,7 +2,7 @@ import { getAppInfo } from '@youliso/electronic/render';
 import { getOS } from '../common/utils';
 import { createSignal } from 'solid-js';
 import { settingKey, settingSet } from '../common/db/basic';
-import { playlist_list_data_init } from './playlist';
+import { playlist_local_init } from './playlist';
 import { audio_init } from './audio';
 
 export const OS = getOS();
@@ -22,7 +22,7 @@ export const download_path_set = async (path: string) => {
 export const store_init = async () => {
   const res = await Promise.all([
     settingKey('download_path'),
-    playlist_list_data_init(),
+    playlist_local_init(),
     audio_init()
   ]);
   res[0] && set_download_path(res[0]);

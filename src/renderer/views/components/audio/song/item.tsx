@@ -1,4 +1,4 @@
-import { audio_play_list_remove, audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
+import { audio_list_remove, audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
 import { textEllipsis } from '@/renderer/views/styles';
 import { css, cx } from '@emotion/css';
 import { SongItem } from '@/types/music';
@@ -84,7 +84,7 @@ export const SongListItem = (props: { data: SongItem }) => {
         class="close"
         onClick={(e) => {
           e.stopPropagation();
-          audio_play_list_remove(props.data.id);
+          audio_list_remove(props.data.id);
         }}
       >
         <CloseIcon />

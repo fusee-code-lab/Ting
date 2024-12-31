@@ -1,4 +1,4 @@
-import { playlist_list_data, playlist_list_data_add } from '@/renderer/store/playlist';
+import { playlist_local_data, playlist_local_add } from '@/renderer/store/playlist';
 import { SongItem } from '@/types/music';
 import { Playlist } from '@/types/playlist';
 import { css, cx } from '@emotion/css';
@@ -85,13 +85,13 @@ const PlaylistItem = (props: { onClick?: (e: MouseEvent) => void; data: Playlist
 };
 const PlaylistList = (props: { onClick?: (e: MouseEvent) => void; songs: SongItem[] }) => {
   return (
-    <For each={playlist_list_data}>
+    <For each={playlist_local_data}>
       {(item) => (
         <PlaylistItem
           data={item}
           onClick={(e) => {
             e.stopPropagation();
-            playlist_list_data_add(item.key, unwrap(props.songs));
+            playlist_local_add(item.key, unwrap(props.songs));
             props.onClick && props.onClick(e);
           }}
         />

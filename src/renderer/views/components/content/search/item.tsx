@@ -3,7 +3,7 @@ import { textEllipsis } from '../../../styles';
 import { Match, Show, Switch } from 'solid-js';
 import { audioPlay, is_audio_play_ing_data } from '@/renderer/store/audio';
 import type { SongItem } from '@/types/music';
-import { playlist_list_online_data_load } from '@/renderer/store/playlist';
+import { playlist_online_load } from '@/renderer/store/playlist';
 import { PlusIcon } from '../../basis/icons';
 import { unwrap } from 'solid-js/store';
 import { SheetAddIcon } from '../../playlist/sheet_add';
@@ -93,7 +93,7 @@ export const Item = (props: {
 export const PlaylistItem = (props: { class?: string; data: any }) => {
   return (
     <div
-      onClick={() => playlist_list_online_data_load(props.data.id)}
+      onClick={() => playlist_online_load(props.data.id)}
       class={cx(style, props.class)}
     >
       <Show when={!!props.data.id}>

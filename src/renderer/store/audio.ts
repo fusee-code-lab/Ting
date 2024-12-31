@@ -7,15 +7,15 @@ import { randomInteger } from '../common/utils';
 import { settingKey, settingSet } from '../common/db/basic';
 
 // 播放设备
-export const [audio_play_device, set_audio_play_device] =
+export const [audio_device, set_audio_device] =
   createSignal<MediaDeviceInfo['deviceId']>('default');
 
 export const audio = new AudioPlay();
 
 // 设置播放设备
-export const audio_play_device_set = async (deviceId: MediaDeviceInfo['deviceId']) => {
+export const audio_device_set = async (deviceId: MediaDeviceInfo['deviceId']) => {
   const speakerList = await getSpeakerList();
-  const old_id = audio_play_device();
+  const old_id = audio_device();
   const id = speakerList.find((e) => e.deviceId === deviceId)?.deviceId || 'default';
   const is_up = old_id == id;
   if (is_up) return;
@@ -23,29 +23,29 @@ export const audio_play_device_set = async (deviceId: MediaDeviceInfo['deviceId'
     await audio.switchOutputDevice(id).catch((error) => {
       throw error;
     });
-    await settingSet('audio_play_device', id);
-    set_audio_play_device(id);
+    await settingSet('audio_device', id);
+    set_audio_device(id);
   } catch (error) {
     console.error(error);
   }
 };
 
 // 当前播放列表
-export const [audio_play_list_data, set_audio_play_list_data] = createStore<SongItem[]>([]);
+export const [audio_list_data, set_audio_list_data] = createStore<SongItem[]>([]);
 
 // 播放模式
-export const [audio_play_type, set_audio_play_type] = createSignal<'single' | 'list' | 'random'>(
+export const [audio_type, set_audio_type] = createSignal<'single' | 'list' | 'random'>(
   'list'
 );
 
 // 播放质量
-export const [audio_play_quality, set_audio_play_quality] = createSignal<SongQualityType>();
+export const [audio_quality, set_audio_quality] = createSignal<SongQualityType>();
 
 // 上一曲为负 下一曲为正
-export const [audio_play_next_type, set_audio_play_next_type] = createSignal<number>(0);
+export const [audio_next_type, set_audio_next_type] = createSignal<number>(0);
 
 // 当前播放下标
-export const [audio_play_index, set_audio_play_index] = createSignal<number>(-1);
+export const [audio_index, set_audio_index] = createSignal<number>(-1);
 
 // 播放状态
 export const [audio_status, set_audio_status] = createStore({
@@ -56,7 +56,7 @@ export const [audio_status, set_audio_status] = createStore({
 });
 
 // 当前播放歌曲
-export const audio_play_ing_data = () => audio_play_list_data[audio_play_index()] || null;
+export const audio_play_ing_data = () => audio_list_data[audio_index()] || null;
 
 // 判断是否是当前歌曲
 export const is_audio_play_ing_data = (key: string) => {
@@ -68,46 +68,50 @@ export const is_audio_play_ing_data = (key: string) => {
 };
 
 // 设置播放质量
-export const audio_play_quality_set = async (type: SongQualityType) => {
-  await settingSet('audio_play_quality', type);
-  set_audio_play_quality(type);
+export const audio_quality_set = async (type: SongQualityType) => {
+  await settingSet('audio_quality', type);
+  set_audio_quality(type);
 };
 
-export const audio_play_list_add_list = (data: SongItem[], reset: boolean = false) => {
-  const old_data = audio_play_list_data.map((e) => `${e.source_type}-${e.id}`);
+// 歌曲列表添加（批量）
+export const audio_list_adds = (data: SongItem[], reset: boolean = false) => {
+  const old_data = audio_list_data.map((e) => `${e.source_type}-${e.id}`);
   const new_data = data.filter((e) => !old_data.includes(`${e.source_type}-${e.id}`));
   if (new_data.length > 0) {
-    set_audio_play_list_data((e) => (reset ? new_data : [...e, ...new_data]));
+    set_audio_list_data((e) => (reset ? new_data : [...e, ...new_data]));
   }
 };
 
-export const audio_play_list_add = (data: SongItem) => {
-  const index = audio_play_list_data.findLastIndex(
+// 歌曲列表添加
+export const audio_list_add = (data: SongItem) => {
+  const index = audio_list_data.findLastIndex(
     (e) => `${e.source_type}-${e.id}` === `${data.source_type}-${data.id}`
   );
   if (index === -1) {
-    set_audio_play_list_data((e) => [...e, data]);
-    return audio_play_list_data.length - 1;
+    set_audio_list_data((e) => [...e, data]);
+    return audio_list_data.length - 1;
   }
   return index;
 };
 
-export const audio_play_list_remove = (id: string | number) => {
-  const index = audio_play_list_data.findLastIndex((e) => e.id === id);
+// 歌曲列表删除
+export const audio_list_remove = (id: string | number) => {
+  const index = audio_list_data.findLastIndex((e) => e.id === id);
   if (index !== -1) {
-    const isIng = index === audio_play_index();
-    set_audio_play_list_data(produce((data) => data.splice(index, 1)));
+    const isIng = index === audio_index();
+    set_audio_list_data(produce((data) => data.splice(index, 1)));
     isIng && audioPlay();
   }
 };
 
-export const audio_play_list_update = (
+// 歌曲列表更新
+export const audio_list_update = (
   id: string | number,
   new_data: { [key: string]: string | number }
 ) => {
-  const index = audio_play_list_data.findLastIndex((e) => e.id === id);
+  const index = audio_list_data.findLastIndex((e) => e.id === id);
   if (index !== -1) {
-    set_audio_play_list_data(
+    set_audio_list_data(
       produce((data) => {
         data[index] = Object.assign(data[index], new_data);
       })
@@ -118,17 +122,17 @@ export const audio_play_list_update = (
 // 初始化加载
 export const audio_init = async () => {
   const res = await Promise.all([
-    settingKey('audio_play_quality'),
-    settingKey('audio_play_device')
+    settingKey('audio_quality'),
+    settingKey('audio_device')
   ]);
-  res[0] && set_audio_play_quality(res[0] as SongQualityType);
+  res[0] && set_audio_quality(res[0] as SongQualityType);
   // 初始化播放设备
   if (res[1]) {
     try {
       await audio.switchOutputDevice(res[1]).catch((error) => {
         throw error;
       });
-      set_audio_play_device(res[1]);
+      set_audio_device(res[1]);
     } catch (error) {
       console.error(error);
     }
@@ -136,51 +140,51 @@ export const audio_init = async () => {
 };
 
 export const audioPlay = async (data?: SongItem) => {
-  let index = (data && audio_play_list_add(data)) ?? audio_play_index();
+  let index = (data && audio_list_add(data)) ?? audio_index();
   index === -1 && (index = 0);
-  const song = audio_play_list_data[index];
+  const song = audio_list_data[index];
   if (song['play_url']) {
     audio.play(song['play_url']);
-    set_audio_play_index(index);
+    set_audio_index(index);
   } else {
-    const res = await song_url([song.id], audio_play_quality());
+    const res = await song_url([song.id], audio_quality());
     if (res && res[song.id]) {
-      audio_play_list_update(song.id, { play_url: res[song.id] });
+      audio_list_update(song.id, { play_url: res[song.id] });
       audio.play(res[song.id]);
-      set_audio_play_index(index);
+      set_audio_index(index);
     }
   }
 };
 
 export const audioPlayList = async (songs: SongItem[]) => {
-  audio_play_list_add_list(songs, true);
-  set_audio_play_index(0);
+  audio_list_adds(songs, true);
+  set_audio_index(0);
   await audioPlay();
 };
 
 export const audioNext = async (num: number) => {
-  set_audio_play_next_type(num);
-  switch (audio_play_type()) {
+  set_audio_next_type(num);
+  switch (audio_type()) {
     case 'single':
       audio.src && (await audio.play());
       break;
     case 'list':
-      if (audio_play_list_data.length === 0) return;
-      if (audio_play_list_data.length === 1) {
+      if (audio_list_data.length === 0) return;
+      if (audio_list_data.length === 1) {
         audio.src && (await audio.play());
         return;
       } else {
-        const index = audio_play_index();
-        if (index + num > audio_play_list_data.length - 1 || index + num < 0) {
-          set_audio_play_index(0);
+        const index = audio_index();
+        if (index + num > audio_list_data.length - 1 || index + num < 0) {
+          set_audio_index(0);
         } else {
-          set_audio_play_index(index + num);
+          set_audio_index(index + num);
         }
         await audioPlay();
       }
       break;
     case 'random':
-      set_audio_play_index(randomInteger(0, audio_play_list_data.length - 1));
+      set_audio_index(randomInteger(0, audio_list_data.length - 1));
       await audioPlay();
       break;
   }
