@@ -4,7 +4,7 @@ import { openUrl } from '@youliso/electronic/render';
 import { css, cx } from '@emotion/css';
 import { playlist_details_online_data } from '@/renderer/store/playlist';
 import { createSignal, Match, Show, Switch } from 'solid-js';
-import { textEllipsis } from '../../../styles';
+import { scrollYStyle, textEllipsis } from '../../../styles';
 import { SongList } from './item';
 import { SheetAdd } from '../../playlist/sheet_add';
 import { MusicIcon } from '../../basis/music_icon';
@@ -132,7 +132,7 @@ const NeteaseHead = (props: {
           <span>{props.data?.tags.join('/')}</span>
         </div>
         <div class="desc">
-          <div class={cx('text', props.desc_show ? 'show' : 'hide')}>
+          <div class={cx(scrollYStyle, 'text', props.desc_show ? 'show' : 'hide')}>
             {props.data?.description || '-'}
           </div>
           <Show
@@ -183,7 +183,9 @@ const QQHead = (props: {
           <span>{props.data?.tags?.map((e: any) => e.name).join('/')}</span>
         </div>
         <div class="desc">
-          <div class={cx('text', props.desc_show ? 'show' : 'hide')}>{props.data?.desc || '-'}</div>
+          <div class={cx('text', scrollYStyle, props.desc_show ? 'show' : 'hide')}>
+            {props.data?.desc || '-'}
+          </div>
           <Show when={!props.desc_show && !!props.data?.desc && props.data?.desc?.length > 40}>
             <div class="more" onClick={props.on_desc_show}>
               更多
