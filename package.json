@@ -20,20 +20,18 @@
     "@rspack/core": "^1.1.8",
     "@rspack/dev-server": "^1.0.10",
     "@types/better-sqlite3": "^7.6.12",
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.10.3",
     "@youliso/electronic": "^5.4.6",
     "babel-loader": "^9.2.1",
     "babel-preset-solid": "^1.9.3",
     "electron": "^33.2.1",
     "electron-builder": "^25.1.8",
     "gsap": "^3.12.5",
-    "prettier": "^3.4.2",
     "solid-js": "^1.9.3",
     "solid-refresh": "^0.7.5",
-    "virtua": "^0.39.2"
+    "virtua": "^0.39.3"
   },
   "dependencies": {
-    "@solidjs/router": "^0.15.2",
     "better-sqlite3": "^11.7.0",
     "NeteaseCloudMusicApi": "^4.25.0"
   }
