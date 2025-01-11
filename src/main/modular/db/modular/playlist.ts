@@ -1,138 +1,90 @@
-import { Statement } from 'better-sqlite3';
-import { playlist_key } from '../keys';
-import { DBInstance } from '../sqilte';
-import { Playlist, PlaylistUpdate } from '@/types/playlist';
 import { preload } from '@youliso/electronic/main';
+import { Realm } from 'realm';
+import { closeDB, loadDB } from '../realm';
+import { PlayList, playlist_name, PlayListConfig } from '../models/playlist';
+import { Playlist, PlaylistUpdate } from '@/types/playlist';
 import { getUUID } from '../../tools';
 
-const playlist_list_key = 'playlist';
-const playlist_list_table = `
-CREATE TABLE IF NOT EXISTS ${playlist_list_key}(
-  ID INTEGER PRIMARY KEY AUTOINCREMENT,
-  key           TEXT       NOT NULL UNIQUE,
-  name          TEXT       NOT NULL UNIQUE,
-  cover         TEXT               ,
-  config        TEXT               ,
-  playlist_path TEXT       NOT NULL,
-  songs         TEXT       NOT NULL,  
-  timestamp     INTEGER    NOT NULL
-);
-`;
+let db: Realm | null = null;
+const playlist_key = 'playlist';
 
-let select_playlist_list_prepare: Statement | null = null;
-export function select_playlist_list(): Playlist[] | undefined {
-  try {
-    if (!select_playlist_list_prepare) {
-      select_playlist_list_prepare = DBInstance.dbs[playlist_key].prepare(
-        `SELECT key, name, cover, config, playlist_path, songs, timestamp FROM ${playlist_list_key} ORDER BY timestamp DESC`
-      );
-    }
-    const data = select_playlist_list_prepare.all() as Playlist[];
-    data.forEach((item) => {
-      // @ts-ignore
-      item.config = JSON.parse(item.config);
-      // @ts-ignore
-      item.songs = JSON.parse(item.songs);
-    });
-    return data;
-  } catch (error) {
-    console.error(error);
-    return;
+export function playlist_list() {
+  const data = db?.objects<PlayList>(playlist_name);
+  if (data) {
+    return Realm.BSON.EJSON.deserialize(data);
   }
+  return;
 }
 
-let insert_playlist_list_prepare: Statement | null = null;
-export function insert_playlist_list(values: Playlist[]) {
-  try {
-    if (!insert_playlist_list_prepare) {
-      insert_playlist_list_prepare = DBInstance.dbs[playlist_key].prepare(
-        `INSERT OR IGNORE INTO ${playlist_list_key} (key, name, cover, config, playlist_path, songs, timestamp) VALUES (@key, @name, @cover, @config, @playlist_path, @songs, @timestamp)`
-      );
-    }
-    const insertMany = DBInstance.dbs[playlist_key].transaction((values: Playlist[]) => {
-      for (const value of values) {
-        value.key = getUUID();
-        value.cover ??= '';
-        value.config ??= {};
-        value.songs ??= [];
-        !value.timestamp && (value.timestamp = Date.now());
-        // @ts-ignore
-        value.config = JSON.stringify(value.config);
-        // @ts-ignore
-        value.songs = JSON.stringify(value.songs);
-        insert_playlist_list_prepare!.run(value);
-      }
-    });
-    insertMany(values);
-  } catch (error) {
-    throw error;
-  }
+export function get_playlist(key: string) {
+  const data = db?.objectForPrimaryKey<PlayList>(playlist_name, key);
+  return data?.toJSON();
 }
 
-export function update_playlist_list(data: PlaylistUpdate, key?: string) {
-  try {
-    let sql_text = `UPDATE ${playlist_key} SET `;
-    let upd_keys: string[] = ['timestamp = ?'];
-    let upd_values: (string | number)[] = [Date.now()];
-    const upds = Object.keys(data) as (keyof PlaylistUpdate)[];
-    upds.forEach((upd_key) => {
-      let value = data[upd_key];
-      if (value) {
-        (upd_key === 'config' || upd_key === 'songs') && (value = JSON.stringify(value));
-        upd_keys.push(`${upd_key} = ?`);
-        upd_values.push(value as string);
-      }
+export function init_playlist(datas: Playlist[]) {
+  db?.write(() => {
+    datas.forEach((data) => {
+      data.key = getUUID();
+      db?.create(playlist_name, data);
     });
-    sql_text += upd_keys.join(', ');
+  });
+}
+
+export function upd_playlist(data: PlaylistUpdate, key?: string) {
+  db?.write(() => {
+    let values = [];
     if (key) {
-      sql_text += ` WHERE key = ?`;
-      upd_values.push(key);
+      let value = db?.objectForPrimaryKey<PlayList>(playlist_name, key);
+      value && values.push(value);
+    } else {
+      let value = db?.objects<PlayList>(playlist_name);
+      value && values.push(...value);
     }
-    DBInstance.dbs[playlist_key].prepare(sql_text).run(...upd_values);
-  } catch (error) {
-    throw error;
-  }
+    if (values && values.length) {
+      for (let index = 0; index < values.length; index++) {
+        for (const prop in values[index]) {
+          if (Object.hasOwn(data, prop)) {
+            // @ts-ignore;
+            values[index][prop] = data[prop];
+          }
+        }
+      }
+    }
+  });
 }
 
-let delete_playlist_list_prepare: Statement | null = null;
-export function delete_playlist_list(key: string) {
-  try {
-    if (!delete_playlist_list_prepare) {
-      delete_playlist_list_prepare = DBInstance.dbs[playlist_key].prepare(
-        `DELETE FROM ${playlist_list_key} WHERE key = ?`
-      );
+export function del_playlist(key: string) {
+  db?.write(() => {
+    const value = get_playlist(key);
+    if (value) {
+      db?.delete(value);
     }
-    delete_playlist_list_prepare.run(key);
-  } catch (error) {
-    throw error;
-  }
+  });
 }
 
 /**
  * 初始化
  */
 export async function playlist_init() {
-  await DBInstance.load(playlist_key, []);
-  // 歌单
-  DBInstance.dbs[playlist_key].exec(playlist_list_table);
+  db = await loadDB([playlist_key, 'db'], playlist_key, [PlayList, PlayListConfig]);
 }
 
 /**
  * 卸载
  */
 export function playlist_close() {
-  select_playlist_list_prepare = null;
-  insert_playlist_list_prepare = null;
-  delete_playlist_list_prepare = null;
-  DBInstance.close(playlist_key);
+  closeDB(playlist_key);
 }
 
 /**
  * 监听
  */
 export function playlist_on() {
-  preload.handle('playlist-list', () => select_playlist_list());
-  preload.handle('playlist-insert', (_, data) => insert_playlist_list(data));
-  preload.handle('playlist-update', (_, data) => update_playlist_list(data.data, data.key));
-  preload.handle('playlist-delete', (_, key) => delete_playlist_list(key));
+  preload.handle('playlist-list', () => {
+    const data = playlist_list();
+    return data;
+  });
+  preload.handle('playlist-insert', (_, data) => init_playlist(data));
+  preload.handle('playlist-update', (_, data) => upd_playlist(data.data, data.key));
+  preload.handle('playlist-delete', (_, key) => del_playlist(key));
 }

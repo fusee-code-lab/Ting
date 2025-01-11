@@ -1,6 +1,6 @@
 import { basic_close, basic_init, basic_on } from './modular/basic';
 import { playlist_close, playlist_init, playlist_on } from './modular/playlist';
-import { DBInstance } from './sqilte';
+
 
 // 全局初始化
 export async function DBInit() {
@@ -11,7 +11,6 @@ export async function DBInit() {
 export function DBClose() {
   basic_close();
   playlist_close();
-  DBInstance.close();
 }
 
 /**

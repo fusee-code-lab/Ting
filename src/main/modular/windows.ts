@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { baseTheme } from '@/cfg/theme';
 import { theme } from './theme';
 import { preload, type WindowDefaultCfg, windowInstance } from '@youliso/electronic/main';
-import { insert_basic_setting, select_basic_setting } from './db/modular/basic';
+import { init_basic_setting, get_basic_setting } from './db/modular/basic';
 import { createTray } from './tray';
 
 // 初始窗口组参数
@@ -94,8 +94,8 @@ export const createDialog = (route: string, winId?: number) => {
 };
 
 export const windowInit = async () => {
-  const is = select_basic_setting<number | undefined>('is_first');
-  if (is == 1) {
+  const is = get_basic_setting('is_first');
+  if (is == '1') {
     const win = await createHome();
     createTray();
   } else {
@@ -107,7 +107,7 @@ export const windowOn = () => {
   preload.on('window-first', async (e) => {
     const win = windowInstance.get(e.sender.id);
     win?.hide();
-    insert_basic_setting([{ key: 'is_first', data: 1 }]);
+    init_basic_setting('is_first', '1');
     await createHome();
     win?.destroy();
   });
