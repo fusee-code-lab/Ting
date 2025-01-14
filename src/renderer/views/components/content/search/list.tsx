@@ -8,6 +8,7 @@ import { SheetAdd } from '../../playlist/sheet_add';
 const listTitleStyle = css`
   position: sticky;
   top: -1px;
+  z-index: 1;
   padding: 0 30px 15px;
   font-size: var(--size-xs);
   background-color: var(--basic-color);
