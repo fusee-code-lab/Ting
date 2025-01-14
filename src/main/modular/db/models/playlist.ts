@@ -1,6 +1,7 @@
 import { SongItem } from '@/types/music';
 import { Playlist } from '@/types/playlist';
 import Realm, { ObjectSchema } from 'realm';
+import { getUUID } from '@/main/modular/tools';
 
 export const playlistconfig_name = 'PlayListConfig';
 
@@ -30,9 +31,9 @@ export class PlayList extends Realm.Object {
     name: playlist_name,
     primaryKey: 'key',
     properties: {
-      key: 'string',
+      key: { type: 'string', default: () => getUUID() },
       name: 'string',
-      playlist_path: 'string',
+      playlist_path: { type: 'string', indexed: true },
       cover: 'string?',
       config: `${playlistconfig_name}?`,
       songs: {

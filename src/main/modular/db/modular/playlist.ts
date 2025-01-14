@@ -3,30 +3,31 @@ import { Realm } from 'realm';
 import { closeDB, loadDB } from '../realm';
 import { PlayList, playlist_name, PlayListConfig } from '../models/playlist';
 import { Playlist, PlaylistUpdate } from '@/types/playlist';
-import { getUUID } from '../../tools';
 
 let db: Realm | null = null;
 const playlist_key = 'playlist';
 
 export function playlist_list() {
   const data = db?.objects<PlayList>(playlist_name);
-  if (data) {
-    return Realm.BSON.EJSON.deserialize(data);
-  }
-  return;
+  return data && Realm.BSON.EJSON.deserialize(data);
 }
 
 export function get_playlist(key: string) {
   const data = db?.objectForPrimaryKey<PlayList>(playlist_name, key);
-  return data?.toJSON();
+  return data && Realm.BSON.EJSON.deserialize(data);
 }
 
 export function init_playlist(datas: Playlist[]) {
   db?.write(() => {
-    datas.forEach((data) => {
-      data.key = getUUID();
-      db?.create(playlist_name, data);
+    datas.forEach((playlist) => {
+      const existingPlaylist = db
+        ?.objects<PlayList>(playlist_name)
+        .filtered('playlist_path = $0', playlist.playlist_path);
+      if (existingPlaylist && existingPlaylist.length > 0) {
+        throw new Error('playlist_path must be unique');
+      }
     });
+    db?.create(playlist_name, datas, Realm.UpdateMode.Modified);
   });
 }
 

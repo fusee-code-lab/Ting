@@ -8,8 +8,8 @@ let db: Realm | null = null;
 const basic_key = 'basic';
 
 export function get_basic_setting(key: string) {
-  const data = db?.objectForPrimaryKey<Store>(store_name, key);
-  return data?.data;
+  const res = db?.objectForPrimaryKey<Store>(store_name, key);
+  return res?.data;
 }
 
 export function init_basic_setting(key: string, data: string) {
